@@ -11,6 +11,7 @@ class AppScaffold extends StatelessWidget {
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final bool useScrollView;
+  final EdgeInsetsGeometry padding;
 
   const AppScaffold({
     super.key,
@@ -21,6 +22,7 @@ class AppScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.floatingActionButtonLocation,
     this.useScrollView = false,
+    this.padding = EdgeInsets.zero,
   });
 
   @override
@@ -43,8 +45,16 @@ class AppScaffold extends StatelessWidget {
           onTap: () => FocusScope.of(context).unfocus(),
           behavior: HitTestBehavior.opaque,
           child: useScrollView
-              ? SingleChildScrollView(child: body)
-              : body,
+              ? SingleChildScrollView(
+                  child: Padding(
+                    padding: padding,
+                    child: body,
+                  ),
+                )
+              : Padding(
+                  padding: padding,
+                  child: body,
+                ),
         ),
         bottomNavigationBar: bottomNavigationBar,
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
