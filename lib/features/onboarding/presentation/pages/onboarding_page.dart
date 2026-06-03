@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:spend_sum/core/common/widget/app_button.dart';
+import 'package:spend_sum/core/common/widget/app_scaffold.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
 import 'package:spend_sum/features/onboarding/presentation/widgets/onboarding_slide_one.dart';
@@ -66,77 +67,66 @@ class _OnboardingPageState extends State<OnboardingPage> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final themeExt = Theme.of(context).extension<AppThemeExtension>()!;
 
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [themeExt.backgroundGradientStart, themeExt.backgroundGradientEnd],
-            stops: const [0.0, 0.45],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Page Carousel View containing the separate Slide widgets
-              Expanded(
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  children: [
-                    OnboardingSlideOne(orbitController: _orbitController),
-                    OnboardingSlideTwo(
-                      pageController: _pageController,
-                      currentIndex: _currentIndex,
-                    ),
-                    const OnboardingSlideThree(),
-                  ],
-                ),
+    return AppScaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Page Carousel View containing the separate Slide widgets
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                children: [
+                  OnboardingSlideOne(orbitController: _orbitController),
+                  OnboardingSlideTwo(
+                    pageController: _pageController,
+                    currentIndex: _currentIndex,
+                  ),
+                  const OnboardingSlideThree(),
+                ],
               ),
+            ),
 
-              // Bottom Area (Smooth Page Indicator & Actions Button)
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: AppDimensions.marginPage,
-                  right: AppDimensions.marginPage,
-                  bottom: AppDimensions.marginPage,
-                  top: AppDimensions.stackSm,
-                ),
-                child: Column(
-                  children: [
-                    // Smooth page indicator attached to the controller
-                    SmoothPageIndicator(
-                      controller: _pageController,
-                      count: 3,
-                      effect: ExpandingDotsEffect(
-                        activeDotColor: themeExt.primaryContainer,
-                        dotColor: themeExt.outlineVariant,
-                        dotHeight: 8.0,
-                        dotWidth: 8.0,
-                        expansionFactor: 3.5,
-                        spacing: 8.0,
-                      ),
+            // Bottom Area (Smooth Page Indicator & Actions Button)
+            Padding(
+              padding: const EdgeInsets.only(
+                left: AppDimensions.marginPage,
+                right: AppDimensions.marginPage,
+                bottom: AppDimensions.marginPage,
+                top: AppDimensions.stackSm,
+              ),
+              child: Column(
+                children: [
+                  // Smooth page indicator attached to the controller
+                  SmoothPageIndicator(
+                    controller: _pageController,
+                    count: 3,
+                    effect: ExpandingDotsEffect(
+                      activeDotColor: themeExt.primaryContainer,
+                      dotColor: themeExt.outlineVariant,
+                      dotHeight: 8.0,
+                      dotWidth: 8.0,
+                      expansionFactor: 3.5,
+                      spacing: 8.0,
                     ),
-                    const SizedBox(height: AppDimensions.stackXl),
+                  ),
+                  const SizedBox(height: AppDimensions.stackXl),
 
-                    // Primary action button (utilizes AppButton.filled)
-                    AppButton.filled(
+                  // Primary action button (utilizes AppButton.filled)
+                  AppButton.filled(
                       onPressed: _onNext,
                       child: Text(_currentIndex == 2 ? 'Get Started' : 'Next'),
                     ),
-                  ],
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
