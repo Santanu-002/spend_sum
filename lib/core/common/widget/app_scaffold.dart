@@ -10,6 +10,7 @@ class AppScaffold extends StatelessWidget {
   final bool resizeToAvoidBottomInset;
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final bool useScrollView;
 
   const AppScaffold({
     super.key,
@@ -19,6 +20,7 @@ class AppScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset = true,
     this.floatingActionButton,
     this.floatingActionButtonLocation,
+    this.useScrollView = false,
   });
 
   @override
@@ -40,7 +42,9 @@ class AppScaffold extends StatelessWidget {
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           behavior: HitTestBehavior.opaque,
-          child: body,
+          child: useScrollView
+              ? SingleChildScrollView(child: body)
+              : body,
         ),
         bottomNavigationBar: bottomNavigationBar,
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,

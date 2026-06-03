@@ -45,6 +45,23 @@ class _OnboardingPageState extends State<OnboardingPage> with SingleTickerProvid
     super.dispose();
   }
 
+  void _completeOnboarding() {
+    final themeExt = Theme.of(context).extension<AppThemeExtension>()!;
+    // Completed Onboarding
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Successfully completed onboarding!'),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimensions.radiusDefault)),
+        backgroundColor: themeExt.primaryContainer,
+      ),
+    );
+  }
+
+  void _onSkip() {
+    _completeOnboarding();
+  }
+
   void _onNext() {
     if (_currentIndex < 2) {
       _pageController.nextPage(
@@ -52,16 +69,7 @@ class _OnboardingPageState extends State<OnboardingPage> with SingleTickerProvid
         curve: Curves.easeInOutCubic,
       );
     } else {
-      final themeExt = Theme.of(context).extension<AppThemeExtension>()!;
-      // Completed Onboarding
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Successfully completed onboarding!'),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimensions.radiusDefault)),
-          backgroundColor: themeExt.primaryContainer,
-        ),
-      );
+      _completeOnboarding();
     }
   }
 
@@ -71,61 +79,83 @@ class _OnboardingPageState extends State<OnboardingPage> with SingleTickerProvid
 
     return AppScaffold(
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            // Page Carousel View containing the separate Slide widgets
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-                children: [
-                  OnboardingSlideOne(orbitController: _orbitController),
-                  OnboardingSlideTwo(
-                    pageController: _pageController,
-                    currentIndex: _currentIndex,
-                  ),
-                  const OnboardingSlideThree(),
-                ],
-              ),
-            ),
-
-            // Bottom Area (Smooth Page Indicator & Actions Button)
-            Padding(
-              padding: const EdgeInsets.only(
-                left: AppDimensions.marginPage,
-                right: AppDimensions.marginPage,
-                bottom: AppDimensions.marginPage,
-                top: AppDimensions.stackSm,
-              ),
-              child: Column(
-                children: [
-                  // Smooth page indicator attached to the controller
-                  SmoothPageIndicator(
+            Column(
+              children: [
+                // Page Carousel View containing the separate Slide widgets
+                Expanded(
+                  child: PageView(
                     controller: _pageController,
-                    count: 3,
-                    effect: ExpandingDotsEffect(
-                      activeDotColor: themeExt.primaryContainer,
-                      dotColor: themeExt.outlineVariant,
-                      dotHeight: 8.0,
-                      dotWidth: 8.0,
-                      expansionFactor: 3.5,
-                      spacing: 8.0,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    children: [
+                      OnboardingSlideOne(orbitController: _orbitController),
+                      OnboardingSlideTwo(
+                        pageController: _pageController,
+                        currentIndex: _currentIndex,
+                      ),
+                      const OnboardingSlideThree(),
+                    ],
+                  ),
+                ),
+
+                // Bottom Area (Smooth Page Indicator & Actions Button)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppDimensions.marginPage,
+                    right: AppDimensions.marginPage,
+                    bottom: AppDimensions.marginPage,
+                    top: AppDimensions.stackSm,
+                  ),
+                  child: Column(
+                    children: [
+                      // Smooth page indicator attached to the controller
+                      SmoothPageIndicator(
+                        controller: _pageController,
+                        count: 3,
+                        effect: ExpandingDotsEffect(
+                          activeDotColor: themeExt.primaryContainer,
+                          dotColor: themeExt.outlineVariant,
+                          dotHeight: 8.0,
+                          dotWidth: 8.0,
+                          expansionFactor: 3.5,
+                          spacing: 8.0,
+                        ),
+                      ),
+                      const SizedBox(height: AppDimensions.stackXl),
+
+                      // Primary action button (utilizes AppButton.filled)
+                      AppButton.filled(
+                        onPressed: _onNext,
+                        child: Text(_currentIndex == 2 ? 'Get Started' : 'Next'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            // Top-right corner Skip button (hidden on the final slide)
+            if (_currentIndex < 2)
+              Positioned(
+                top: 8.0,
+                right: AppDimensions.marginPage,
+                child: TextButton(
+                  onPressed: _onSkip,
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(
+                      color: themeExt.primary,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15.0,
                     ),
                   ),
-                  const SizedBox(height: AppDimensions.stackXl),
-
-                  // Primary action button (utilizes AppButton.filled)
-                  AppButton.filled(
-                      onPressed: _onNext,
-                      child: Text(_currentIndex == 2 ? 'Get Started' : 'Next'),
-                    ),
-                ],
+                ),
               ),
-            ),
           ],
         ),
       ),
