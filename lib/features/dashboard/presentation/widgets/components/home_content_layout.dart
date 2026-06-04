@@ -69,32 +69,7 @@ class HomeContentLayout extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             child: Stack(
               children: [
-                // — Decorative background: two overlapping circles (Mastercard-style) —
-                Positioned(
-                  right: -28,
-                  top: -28,
-                  child: Container(
-                    width: 140,
-                    height: 140,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.07),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 36,
-                  top: -10,
-                  child: Container(
-                    width: 110,
-                    height: 110,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.07),
-                    ),
-                  ),
-                ),
-                // — Large ghost currency symbol —
+                // — Large ghost currency symbol watermark —
                 Positioned(
                   right: -8,
                   bottom: -18,
