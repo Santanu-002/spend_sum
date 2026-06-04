@@ -409,7 +409,9 @@ class _AddCategoryPageContentState extends State<_AddCategoryPageContent>
                             ? Center(
                                 child: Icon(
                                   Icons.check_rounded,
-                                  color: themeExt.onPrimary,
+                                  color: ThemeData.estimateBrightnessForColor(color) == Brightness.light
+                                      ? const Color(0xFF121212)
+                                      : Colors.white,
                                   size: 20,
                                 ),
                               )
