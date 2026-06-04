@@ -183,58 +183,42 @@ class _ExpenseDetailsSurveyPageContentState
                       RegExp(r'^\d*\.?\d{0,2}'),
                     ),
                   ],
-                  style: GoogleFonts.inter(color: themeExt.onSurface),
+                  style: GoogleFonts.outfit(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: themeExt.onSurface,
+                  ),
                   decoration: InputDecoration(
-                    hintText: 'Enter amount (e.g. 50000)',
+                    hintText: '0.00',
                     hintStyle: TextStyle(
-                      color: themeExt.onSurfaceVariant.withValues(alpha: 0.5),
+                      color: themeExt.onSurfaceVariant.withValues(alpha: 0.3),
                     ),
-                    filled: true,
-                    fillColor: themeExt.surfaceContainer,
                     prefixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 12.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.account_balance_wallet_outlined,
-                            color: themeExt.onSurfaceVariant,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            currencySymbol,
-                            style: GoogleFonts.inter(
-                              color: themeExt.onSurface,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
+                      padding: const EdgeInsets.only(right: 8.0, left: 4.0),
+                      child: Text(
+                        currencySymbol,
+                        style: GoogleFonts.outfit(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: themeExt.primary,
+                        ),
                       ),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
+                    prefixIconConstraints: const BoxConstraints(
+                      minWidth: 0,
+                      minHeight: 0,
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        AppDimensions.radiusDefault,
-                      ),
+                    filled: false,
+                    border: UnderlineInputBorder(
                       borderSide: BorderSide(color: themeExt.outlineVariant),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        AppDimensions.radiusDefault,
-                      ),
+                    enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: themeExt.outlineVariant),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        AppDimensions.radiusDefault,
-                      ),
+                    focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: themeExt.primary,
-                        width: 1.5,
+                        width: 2,
                       ),
                     ),
                   ),
