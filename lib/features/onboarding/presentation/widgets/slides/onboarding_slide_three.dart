@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_digit/animated_digit.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
-import 'package:spend_sum/features/onboarding/presentation/widgets/donut_chart_painter.dart';
+import 'package:spend_sum/features/onboarding/presentation/widgets/painter/donut_chart_painter.dart';
 
 /// The third onboarding slide showing an animated circular progress chart and spending details.
 class OnboardingSlideThree extends StatefulWidget {
@@ -92,8 +92,8 @@ class _OnboardingSlideThreeState extends State<OnboardingSlideThree>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final theme = context.theme;
+    final themeExt = theme.colorscheme;
 
     // Calculate active entrance progress of the third page (1.0 when fully active, 0.0 when offscreen)
     double page = 0.0;

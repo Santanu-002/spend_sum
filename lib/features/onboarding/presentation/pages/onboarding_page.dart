@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:spend_sum/core/common/widget/app_button.dart';
-import 'package:spend_sum/core/common/widget/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/button/app_button.dart';
+import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
 import 'package:spend_sum/core/router/app_routes.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
-import 'package:spend_sum/features/onboarding/presentation/widgets/onboarding_slide_one.dart';
-import 'package:spend_sum/features/onboarding/presentation/widgets/onboarding_slide_two.dart';
-import 'package:spend_sum/features/onboarding/presentation/widgets/onboarding_slide_three.dart';
+import 'package:spend_sum/features/onboarding/presentation/widgets/slides/onboarding_slide_one.dart';
+import 'package:spend_sum/features/onboarding/presentation/widgets/slides/onboarding_slide_two.dart';
+import 'package:spend_sum/features/onboarding/presentation/widgets/slides/onboarding_slide_three.dart';
 
-/// Onboarding carousel page of the SpendSum application.
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:spend_sum/features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import 'package:spend_sum/core/common/widget/feedback/app_snackbar.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
 
 /// Onboarding carousel page of the SpendSum application.
 /// Coordinates onboarding transitions and manages layout animation timelines.
-class OnboardingPage extends StatefulWidget {
+class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider<OnboardingCubit>(
+      create: (context) => sl<OnboardingCubit>(),
+      child: const _OnboardingPageContent(),
+    );
+  }
 }
 
-class _OnboardingPageState extends State<OnboardingPage>
+class _OnboardingPageContent extends StatefulWidget {
+  const _OnboardingPageContent();
+
+  @override
+  State<_OnboardingPageContent> createState() => _OnboardingPageContentState();
+}
+
+class _OnboardingPageContentState extends State<_OnboardingPageContent>
     with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
@@ -53,10 +66,7 @@ class _OnboardingPageState extends State<OnboardingPage>
   }
 
   void _completeOnboarding() {
-    // Save onboarding completed flag persistently
-    sl<SharedPreferences>().setBool('isOnboardingCompleted', true);
-    // Navigate to Login Page
-    context.go(AppRoutes.auth.login.path);
+    context.read<OnboardingCubit>().completeOnboarding();
   }
 
   void _onSkip() {
@@ -76,11 +86,21 @@ class _OnboardingPageState extends State<OnboardingPage>
 
   @override
   Widget build(BuildContext context) {
-    final themeExt = Theme.of(context).extension<AppThemeExtension>()!;
+    final themeExt = context.colorscheme;
 
-    return AppScaffold(
-      showAppBar: false,
-      child: Stack(
+    return BlocListener<OnboardingCubit, OnboardingState>(
+      listener: (context, state) {
+        if (state is OnboardingCompleted) {
+          context.goNamed(AppRoutes.auth.login.name);
+        } else if (state is OnboardingFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            AppSnackbar.destructive(message: state.message),
+          );
+        }
+      },
+      child: AppScaffold(
+        showAppBar: false,
+        child: Stack(
         children: [
           Column(
             children: [
@@ -148,20 +168,17 @@ class _OnboardingPageState extends State<OnboardingPage>
             Positioned(
               top: 8.0,
               right: AppDimensions.marginPage,
-              child: TextButton(
+              child: AppButton.ghost(
                 onPressed: _onSkip,
-                child: Text(
-                  'Skip',
-                  style: TextStyle(
-                    color: themeExt.primary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15.0,
-                  ),
-                ),
+                text: 'Skip',
+                width: null,
+                height: null,
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               ),
             ),
         ],
       ),
+    ),
     );
   }
 }

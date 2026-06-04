@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
-import 'package:spend_sum/features/onboarding/presentation/widgets/crescent_logo_painter.dart';
+import 'package:spend_sum/features/onboarding/presentation/widgets/painter/crescent_logo_painter.dart';
 
 /// The first onboarding slide showing the orbital rotating logo graphic.
 class OnboardingSlideOne extends StatelessWidget {
@@ -14,8 +14,8 @@ class OnboardingSlideOne extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final theme = Theme.of(context);
-        final themeExt = theme.extension<AppThemeExtension>()!;
+        final theme = context.theme;
+        final themeExt = theme.colorscheme;
         final double containerSize = math.min(
           constraints.maxWidth * 0.75,
           280.0,

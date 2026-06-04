@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
-import 'package:spend_sum/core/common/widget/app_button.dart';
-import 'package:spend_sum/features/onboarding/presentation/widgets/network_avatar.dart';
+import 'package:spend_sum/core/common/widget/button/app_button.dart';
+import 'package:spend_sum/features/onboarding/presentation/widgets/avatar/network_avatar.dart';
 
 /// The second onboarding slide showing the staggered list of invite cards.
 /// Rebuilt with an internal AnimationController to ensure staggered animations play smoothly
@@ -107,8 +107,8 @@ class _OnboardingSlideTwoState extends State<OnboardingSlideTwo>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final theme = context.theme;
+    final themeExt = theme.colorscheme;
 
     // Staggered contacts data
     final contacts = [
