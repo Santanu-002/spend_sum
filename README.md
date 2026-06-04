@@ -26,6 +26,12 @@ The visual aesthetics, typography layout, glassmorphic card stylings, and transi
 
 ---
 
+### 📥 Direct APK Installation
+To run the app directly on an Android device or emulator without building from source, download the pre-compiled release APK from:
+👉 **[Download Release APK (Google Drive)](https://drive.google.com/drive/folders/1WixPnjVGL1q4yiB0pUpNz9QLtPEZ8B0P?usp=sharing)**
+
+---
+
 ## 📋 Take-Home Assignment Checklist
 
 Here is the status of the required features outlined in the assignment email:
