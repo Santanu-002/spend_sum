@@ -29,10 +29,10 @@ class AppTheme {
   static const Color lightErrorContainer = Color(0xFFFFDAD6);
   static const Color lightOnErrorContainer = Color(0xFF93000A);
 
-  static const Color lightBackground = Color(0xFFFFFFFF);
+  static const Color lightBackground = Color(0xFFF4F5F7);
   static const Color lightOnBackground = Color(0xFF1B1B20);
 
-  static const Color lightSurface = Color(0xFFFFFFFF);
+  static const Color lightSurface = Color(0xFFFFFFFF); // surface stays white (cards, sheets)
   static const Color lightOnSurface = Color(0xFF1B1B20);
   static const Color lightSurfaceVariant = Color(0xFFE4E1E9);
 
@@ -379,6 +379,10 @@ class AppTheme {
       scaffoldBackgroundColor: lightExtension.background,
       cardColor: lightExtension.cardColor,
       textTheme: _buildTextTheme(base.textTheme, lightExtension.onSurface),
+      bottomAppBarTheme: const BottomAppBarTheme(
+        color: Colors.white,
+        elevation: 0,
+      ),
       timePickerTheme: TimePickerThemeData(
         backgroundColor: lightExtension.surface,
         hourMinuteColor: WidgetStateColor.resolveWith((states) {
@@ -597,6 +601,10 @@ class AppTheme {
       scaffoldBackgroundColor: darkExtension.background,
       cardColor: darkExtension.cardColor,
       textTheme: _buildTextTheme(base.textTheme, darkExtension.onSurface),
+      bottomAppBarTheme: const BottomAppBarTheme(
+        color: darkSurfaceContainerHigh,
+        elevation: 0,
+      ),
       timePickerTheme: TimePickerThemeData(
         backgroundColor: darkExtension.surface,
         hourMinuteColor: WidgetStateColor.resolveWith((states) {

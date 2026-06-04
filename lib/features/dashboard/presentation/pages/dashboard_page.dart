@@ -164,7 +164,6 @@ class DashboardPageContentState extends State<DashboardPageContent> {
           showAppBar: false,
           extendBody: true, // Allows content to flow behind notched BottomAppBar
           bottomNavigationBar: BottomAppBar(
-            color: theme.colorScheme.surfaceContainer,
             elevation: 8,
             padding: EdgeInsets.zero,
             height: 72,
