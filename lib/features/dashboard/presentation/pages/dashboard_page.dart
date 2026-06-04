@@ -166,31 +166,12 @@ class DashboardPageContentState extends State<DashboardPageContent> {
           bottomNavigationBar: _FloatingNavBar(
             currentIndex: _currentIndex,
             onTap: changeTab,
+            onFabPressed: () {
+              HapticFeedback.lightImpact();
+              SystemSound.play(SystemSoundType.click);
+              context.pushNamed(AppRoutes.addTransaction.name);
+            },
           ),
-          floatingActionButton: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF1E1243).withValues(alpha: 0.25),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: FloatingActionButton(
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                SystemSound.play(SystemSoundType.click);
-                context.pushNamed(AppRoutes.addTransaction.name);
-              },
-              backgroundColor: themeExt.fabColor,
-              elevation: 0,
-              shape: const CircleBorder(),
-              child: Icon(Icons.add_rounded, color: themeExt.onFabColor, size: 28),
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           child: IndexedStack(index: _currentIndex, children: _views),
         ),
       ),
@@ -203,10 +184,12 @@ class DashboardPageContentState extends State<DashboardPageContent> {
 class _FloatingNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final VoidCallback onFabPressed;
 
   const _FloatingNavBar({
     required this.currentIndex,
     required this.onTap,
+    required this.onFabPressed,
   });
 
   static const _items = [
@@ -222,68 +205,107 @@ class _FloatingNavBar extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        // floats above bottom edge; right gap leaves room for the FAB
-        padding: const EdgeInsets.only(left: 20, right: 84, bottom: 16),
-        child: Container(
-          height: 68,
-          decoration: BoxDecoration(
-            color: themeExt.fabColor,
-            borderRadius: BorderRadius.circular(40),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.22),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(_items.length, (i) {
-              final item = _items[i];
-              final selected = currentIndex == i;
-              final color = selected
-                  ? Colors.white
-                  : Colors.white.withValues(alpha: 0.45);
-
-              return GestureDetector(
-                onTap: () {
-                  HapticFeedback.lightImpact();
-                  SystemSound.play(SystemSoundType.click);
-                  onTap(i);
-                },
-                behavior: HitTestBehavior.opaque,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child: Icon(
-                          selected ? item.icon : item.unsel,
-                          key: ValueKey(selected),
-                          color: color,
-                          size: 22,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      AnimatedDefaultTextStyle(
-                        duration: const Duration(milliseconds: 200),
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
-                          color: color,
-                        ),
-                        child: Text(item.label),
-                      ),
-                    ],
-                  ),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // ── Pill nav ──────────────────────────────────────────────────
+            Expanded(
+              child: Container(
+                height: 68,
+                decoration: BoxDecoration(
+                  color: themeExt.fabColor,
+                  borderRadius: BorderRadius.circular(40),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.22),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
                 ),
-              );
-            }),
-          ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(_items.length, (i) {
+                    final item = _items[i];
+                    final selected = currentIndex == i;
+                    final color = selected
+                        ? Colors.white
+                        : Colors.white.withValues(alpha: 0.45);
+
+                    return GestureDetector(
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        SystemSound.play(SystemSoundType.click);
+                        onTap(i);
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 200),
+                              child: Icon(
+                                selected ? item.icon : item.unsel,
+                                key: ValueKey(selected),
+                                color: color,
+                                size: 22,
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            AnimatedDefaultTextStyle(
+                              duration: const Duration(milliseconds: 200),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: selected
+                                    ? FontWeight.w700
+                                    : FontWeight.w400,
+                                color: color,
+                              ),
+                              child: Text(item.label),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ),
+
+            const SizedBox(width: 12),
+
+            // ── FAB ───────────────────────────────────────────────────────
+            GestureDetector(
+              onTap: onFabPressed,
+              child: Container(
+                width: 68,
+                height: 68,
+                decoration: BoxDecoration(
+                  color: themeExt.fabColor,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.22),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  Icons.add_rounded,
+                  color: themeExt.onFabColor,
+                  size: 28,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
