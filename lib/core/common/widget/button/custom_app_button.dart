@@ -26,13 +26,13 @@ class _CustomAppButton extends AppButton {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final themeExt = context.colorscheme;
     final baseStyle = resolveButtonStyle(
       context,
       customBorderRadius: borderRadius,
     );
     final resolvedForegroundColor =
-        foregroundColor ?? theme.colorScheme.onPrimary;
+        foregroundColor ?? themeExt.onPrimary;
 
     return FilledButton(
       onPressed: wrapOnPressed(context),

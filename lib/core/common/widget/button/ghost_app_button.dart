@@ -17,7 +17,7 @@ class _GhostAppButton extends AppButton {
 
   @override
   Widget build(BuildContext context) {
-    final themeExt = Theme.of(context).extension<AppThemeExtension>()!;
+    final themeExt = context.colorscheme;
     final baseStyle = resolveButtonStyle(context);
 
     return TextButton(

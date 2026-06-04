@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spend_sum/core/common/widget/app_back_button.dart';
+import 'package:spend_sum/core/common/widget/button/app_back_button.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
 
@@ -59,8 +59,8 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final theme = context.theme;
+    final themeExt = theme.colorscheme;
 
     Widget bodyContent = useScrollView || useRefreshIndicator
         ? SingleChildScrollView(

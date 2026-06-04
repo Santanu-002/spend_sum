@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:spend_sum/core/database/app_database.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
+import 'package:spend_sum/core/theme/app_dimensions.dart';
 import 'package:spend_sum/core/common/util/category_icon_util.dart';
 
 /// A standard, premium styled transaction list item showing category, date, title and amount.
@@ -18,36 +19,22 @@ class TransactionTile extends StatelessWidget {
   });
 
   String _formatTxDate(DateTime date) {
-    final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
+    return DateFormat('d MMM yyyy').format(date);
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final theme = context.theme;
+    final themeExt = theme.colorscheme;
     final catDetails = getCategoryDetails(transaction.category);
     final prefix = transaction.isIncome ? '+' : '-';
-    final amtColor =
-        transaction.isIncome ? const Color(0xFF4CD964) : const Color(0xFFFF5252);
+    // Income green = themeExt.secondary, expense red = themeExt.error
+    final amtColor = transaction.isIncome ? themeExt.secondary : themeExt.error;
 
     return Container(
       decoration: BoxDecoration(
         color: themeExt.cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusDefault),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -60,9 +47,12 @@ class TransactionTile extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusDefault),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDimensions.tileHorizontalPad,
+              vertical: AppDimensions.tileVerticalPad,
+            ),
             child: Row(
               children: [
                 Container(
@@ -70,28 +60,26 @@ class TransactionTile extends StatelessWidget {
                   height: 40,
                   decoration: BoxDecoration(
                     color: catDetails.color,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusIcon),
                   ),
-                  child: Icon(catDetails.icon, color: Colors.white, size: 20),
+                  // Icon sits on a colored background — use onPrimary for contrast
+                  child: Icon(catDetails.icon, color: themeExt.onPrimary, size: AppDimensions.iconMd),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: AppDimensions.tileHorizontalPad),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         transaction.title,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                        style: theme.textTheme.labelLarge?.copyWith(
                           color: themeExt.onSurface,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         _formatTxDate(transaction.date),
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
+                        style: theme.textTheme.bodySmall?.copyWith(
                           color: themeExt.onSurfaceVariant,
                         ),
                       ),
@@ -100,13 +88,12 @@ class TransactionTile extends StatelessWidget {
                 ),
                 Text(
                   '$prefix$currencySymbol${transaction.amount.toStringAsFixed(2)}',
-                  style: GoogleFonts.outfit(
-                    fontSize: 15,
+                  style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: amtColor,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppDimensions.stackSm),
                 Icon(
                   Icons.chevron_right_rounded,
                   color: themeExt.onSurfaceVariant.withValues(alpha: 0.6),

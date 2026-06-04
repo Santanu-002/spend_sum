@@ -14,10 +14,10 @@ class AppTheme {
   static const Color lightOnPrimaryContainer = Color(0xFF060022);
   static const Color lightInversePrimary = Color(0xFFCCBDFF);
 
-  static const Color lightSecondary = Color(0xFF006C44);
+  static const Color lightSecondary = Color(0xFF00B475);
   static const Color lightOnSecondary = Color(0xFFFFFFFF);
-  static const Color lightSecondaryContainer = Color(0xFF6FFCB5);
-  static const Color lightOnSecondaryContainer = Color(0xFF007349);
+  static const Color lightSecondaryContainer = Color(0xFF00B475);
+  static const Color lightOnSecondaryContainer = Color(0xFFFFFFFF);
 
   static const Color lightTertiary = Color(0xFF0060A8);
   static const Color lightOnTertiary = Color(0xFFFFFFFF);
@@ -29,10 +29,10 @@ class AppTheme {
   static const Color lightErrorContainer = Color(0xFFFFDAD6);
   static const Color lightOnErrorContainer = Color(0xFF93000A);
 
-  static const Color lightBackground = Color(0xFFFBF8FF);
+  static const Color lightBackground = Color(0xFFFFFFFF);
   static const Color lightOnBackground = Color(0xFF1B1B20);
 
-  static const Color lightSurface = Color(0xFFFBF8FF);
+  static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightOnSurface = Color(0xFF1B1B20);
   static const Color lightSurfaceVariant = Color(0xFFE4E1E9);
 
@@ -45,7 +45,7 @@ class AppTheme {
   static const Color lightSurfaceTint = Color(0xFF6638E5);
 
   static const Color lightSurfaceDim = Color(0xFFDCD9E0);
-  static const Color lightSurfaceBright = Color(0xFFFBF8FF);
+  static const Color lightSurfaceBright = Color(0xFFFFFFFF);
   static const Color lightSurfaceContainerLowest = Color(0xFFFFFFFF);
   static const Color lightSurfaceContainerLow = Color(0xFFF6F2FA);
   static const Color lightSurfaceContainer = Color(0xFFF0ECF4);
@@ -57,10 +57,10 @@ class AppTheme {
   static const Color lightOnPrimaryFixed = Color(0xFF1F0060);
   static const Color lightOnPrimaryFixedVariant = Color(0xFF4D0ACD);
 
-  static const Color lightSecondaryFixed = Color(0xFF6FFCB5);
-  static const Color lightSecondaryFixedDim = Color(0xFF4FDF9B);
-  static const Color lightOnSecondaryFixed = Color(0xFF002112);
-  static const Color lightOnSecondaryFixedVariant = Color(0xFF005232);
+  static const Color lightSecondaryFixed = Color(0xFF00B475);
+  static const Color lightSecondaryFixedDim = Color(0xFF00B475);
+  static const Color lightOnSecondaryFixed = Color(0xFFFFFFFF);
+  static const Color lightOnSecondaryFixedVariant = Color(0xFFFFFFFF);
 
   static const Color lightTertiaryFixed = Color(0xFFD3E4FF);
   static const Color lightTertiaryFixedDim = Color(0xFFA2C9FF);
@@ -68,16 +68,16 @@ class AppTheme {
   static const Color lightOnTertiaryFixedVariant = Color(0xFF004881);
 
   // --- Dark Theme Colors ---
-  static const Color darkPrimary = Color(0xFFCCBDFF);
-  static const Color darkOnPrimary = Color(0xFF350097);
-  static const Color darkPrimaryContainer = Color(0xFF7F56FF);
-  static const Color darkOnPrimaryContainer = Color(0xFF060022);
-  static const Color darkInversePrimary = Color(0xFF6638E5);
+  static const Color darkPrimary = Color(0xFF6638E5);
+  static const Color darkOnPrimary = Color(0xFFFFFFFF);
+  static const Color darkPrimaryContainer = Color(0xFF6638E5);
+  static const Color darkOnPrimaryContainer = Color(0xFFFFFFFF);
+  static const Color darkInversePrimary = Color(0xFFCCBDFF);
 
-  static const Color darkSecondary = Color(0xFF4FDF9B);
-  static const Color darkOnSecondary = Color(0xFF003821);
+  static const Color darkSecondary = Color(0xFF00B475);
+  static const Color darkOnSecondary = Color(0xFFFFFFFF);
   static const Color darkSecondaryContainer = Color(0xFF00B475);
-  static const Color darkOnSecondaryContainer = Color(0xFF003E25);
+  static const Color darkOnSecondaryContainer = Color(0xFFFFFFFF);
 
   static const Color darkTertiary = Color(0xFFA2C9FF);
   static const Color darkOnTertiary = Color(0xFF00315B);
@@ -89,10 +89,10 @@ class AppTheme {
   static const Color darkErrorContainer = Color(0xFF93000A);
   static const Color darkOnErrorContainer = Color(0xFFFFDAD6);
 
-  static const Color darkBackground = Color(0xFF131318);
+  static const Color darkBackground = Color(0xFF000000);
   static const Color darkOnBackground = Color(0xFFE4E1E9);
 
-  static const Color darkSurface = Color(0xFF131318);
+  static const Color darkSurface = Color(0xFF000000);
   static const Color darkOnSurface = Color(0xFFE4E1E9);
   static const Color darkSurfaceVariant = Color(0xFF35343A);
 
@@ -102,25 +102,25 @@ class AppTheme {
   static const Color darkOutlineVariant = Color(0xFF494455);
   static const Color darkInverseSurface = Color(0xFFE4E1E9);
   static const Color darkInverseOnSurface = Color(0xFF303035);
-  static const Color darkSurfaceTint = Color(0xFFCCBDFF);
+  static const Color darkSurfaceTint = Color(0xFF6638E5);
 
-  static const Color darkSurfaceDim = Color(0xFF131318);
-  static const Color darkSurfaceBright = Color(0xFF39393E);
-  static const Color darkSurfaceContainerLowest = Color(0xFF0E0E13);
-  static const Color darkSurfaceContainerLow = Color(0xFF1B1B20);
-  static const Color darkSurfaceContainer = Color(0xFF1F1F24);
-  static const Color darkSurfaceContainerHigh = Color(0xFF2A292F);
-  static const Color darkSurfaceContainerHighest = Color(0xFF35343A);
+  static const Color darkSurfaceDim = Color(0xFF000000);
+  static const Color darkSurfaceBright = Color(0xFF121212);
+  static const Color darkSurfaceContainerLowest = Color(0xFF000000);
+  static const Color darkSurfaceContainerLow = Color(0xFF0A0A0A);
+  static const Color darkSurfaceContainer = Color(0xFF0F0F0F);
+  static const Color darkSurfaceContainerHigh = Color(0xFF181818);
+  static const Color darkSurfaceContainerHighest = Color(0xFF242424);
 
   static const Color darkPrimaryFixed = Color(0xFFE7DEFF);
   static const Color darkPrimaryFixedDim = Color(0xFFCCBDFF);
   static const Color darkOnPrimaryFixed = Color(0xFF1F0060);
   static const Color darkOnPrimaryFixedVariant = Color(0xFF4D0ACD);
 
-  static const Color darkSecondaryFixed = Color(0xFF6FFCB5);
-  static const Color darkSecondaryFixedDim = Color(0xFF4FDF9B);
-  static const Color darkOnSecondaryFixed = Color(0xFF002112);
-  static const Color darkOnSecondaryFixedVariant = Color(0xFF005232);
+  static const Color darkSecondaryFixed = Color(0xFF00B475);
+  static const Color darkSecondaryFixedDim = Color(0xFF00B475);
+  static const Color darkOnSecondaryFixed = Color(0xFFFFFFFF);
+  static const Color darkOnSecondaryFixedVariant = Color(0xFFFFFFFF);
 
   static const Color darkTertiaryFixed = Color(0xFFD3E4FF);
   static const Color darkTertiaryFixedDim = Color(0xFFA2C9FF);
@@ -237,13 +237,29 @@ class AppTheme {
   /// Helper to build typographic styling according to the design specifications.
   static TextTheme _buildTextTheme(TextTheme base, Color textColor) {
     return base.copyWith(
-      displayLarge: GoogleFonts.inter(
-        fontSize: 32,
-        fontWeight: FontWeight.w700, // Bold
-        height: 40 / 32,
-        letterSpacing: -0.02,
+      // --- Display: Outfit — numeric / currency hero displays ---
+      displayLarge: GoogleFonts.outfit(
+        fontSize: 42,
+        fontWeight: FontWeight.w700,
+        height: 1.1,
+        letterSpacing: -1.0,
         color: textColor,
       ),
+      displayMedium: GoogleFonts.outfit(
+        fontSize: 32,
+        fontWeight: FontWeight.w700,
+        height: 1.15,
+        letterSpacing: -0.5,
+        color: textColor,
+      ),
+      displaySmall: GoogleFonts.outfit(
+        fontSize: 22,
+        fontWeight: FontWeight.w700,
+        height: 1.2,
+        letterSpacing: -0.3,
+        color: textColor,
+      ),
+      // --- Headlines: Inter — page / card titles ---
       headlineLarge: GoogleFonts.inter(
         fontSize: 24,
         fontWeight: FontWeight.w600, // Semi-Bold
@@ -257,6 +273,27 @@ class AppTheme {
         height: 28 / 20,
         color: textColor,
       ),
+      // --- Titles: Inter — section / widget headers ---
+      titleLarge: GoogleFonts.inter(
+        fontSize: 18,
+        fontWeight: FontWeight.w600, // Semi-Bold — section headers
+        height: 26 / 18,
+        letterSpacing: -0.01,
+        color: textColor,
+      ),
+      titleMedium: GoogleFonts.inter(
+        fontSize: 16,
+        fontWeight: FontWeight.w500, // Medium — sub-section labels
+        height: 24 / 16,
+        color: textColor,
+      ),
+      titleSmall: GoogleFonts.inter(
+        fontSize: 14,
+        fontWeight: FontWeight.w500, // Medium — compact titles
+        height: 20 / 14,
+        color: textColor,
+      ),
+      // --- Body: Inter — content text ---
       bodyLarge: GoogleFonts.inter(
         fontSize: 16,
         fontWeight: FontWeight.w400, // Regular
@@ -269,6 +306,13 @@ class AppTheme {
         height: 20 / 14,
         color: textColor,
       ),
+      bodySmall: GoogleFonts.inter(
+        fontSize: 12,
+        fontWeight: FontWeight.w400, // Regular — captions
+        height: 16 / 12,
+        color: textColor,
+      ),
+      // --- Labels: Inter — chips / badges / small controls ---
       labelLarge: GoogleFonts.inter(
         fontSize: 14,
         fontWeight: FontWeight.w600, // Semi-Bold
@@ -281,8 +325,15 @@ class AppTheme {
         height: 16 / 12,
         color: textColor,
       ),
+      labelSmall: GoogleFonts.inter(
+        fontSize: 11,
+        fontWeight: FontWeight.w400, // Regular — tiny metadata
+        height: 14 / 11,
+        color: textColor,
+      ),
     );
   }
+
 
   /// Light theme definition.
   static ThemeData get lightTheme {
@@ -556,7 +607,7 @@ class AppTheme {
         }),
         hourMinuteTextColor: WidgetStateColor.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.white;
+            return darkExtension.onPrimaryContainer;
           }
           return darkExtension.onSurface;
         }),
@@ -568,7 +619,7 @@ class AppTheme {
         }),
         dayPeriodTextColor: WidgetStateColor.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.white;
+            return darkExtension.onPrimaryContainer;
           }
           return darkExtension.onSurface;
         }),
@@ -581,7 +632,7 @@ class AppTheme {
         dialHandColor: darkExtension.primaryContainer,
         dialTextColor: WidgetStateColor.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.white;
+            return darkExtension.onPrimaryContainer;
           }
           return darkExtension.onSurface;
         }),
@@ -590,10 +641,10 @@ class AppTheme {
       datePickerTheme: DatePickerThemeData(
         backgroundColor: darkExtension.surface,
         headerBackgroundColor: darkExtension.primaryContainer,
-        headerForegroundColor: Colors.white,
+        headerForegroundColor: darkExtension.onPrimaryContainer,
         dayForegroundColor: WidgetStateColor.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.white;
+            return darkExtension.onPrimaryContainer;
           }
           return darkExtension.onSurface;
         }),
@@ -605,7 +656,7 @@ class AppTheme {
         }),
         yearForegroundColor: WidgetStateColor.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.white;
+            return darkExtension.onPrimaryContainer;
           }
           return darkExtension.onSurface;
         }),
@@ -617,7 +668,7 @@ class AppTheme {
         }),
         todayForegroundColor: WidgetStateColor.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.white;
+            return darkExtension.onPrimaryContainer;
           }
           return darkExtension.primaryContainer;
         }),
@@ -649,7 +700,7 @@ class AppTheme {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: darkExtension.primaryContainer,
-          foregroundColor: Colors.white,
+          foregroundColor: darkExtension.onPrimaryContainer,
           minimumSize: const Size(88, 56),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppDimensions.radiusLg), // 32px

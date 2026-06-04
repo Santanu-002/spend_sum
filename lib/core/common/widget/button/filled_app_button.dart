@@ -17,8 +17,7 @@ class _FilledAppButton extends AppButton {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final themeExt = context.colorscheme;
 
     return FilledButton(
       onPressed: wrapOnPressed(context),

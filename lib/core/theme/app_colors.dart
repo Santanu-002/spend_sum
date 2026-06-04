@@ -416,3 +416,18 @@ class AppTextThemeExtension extends ThemeExtension<AppTextThemeExtension> {
     );
   }
 }
+
+extension ThemeDataColorsExtension on ThemeData {
+  AppThemeExtension get colorscheme => extension<AppThemeExtension>()!;
+  AppTextThemeExtension get textThemeExt => extension<AppTextThemeExtension>()!;
+}
+
+extension BuildContextColorsExtension on BuildContext {
+  ThemeData get theme => Theme.of(this);
+  TextTheme get textTheme => theme.textTheme;
+  AppThemeExtension get colorscheme => theme.extension<AppThemeExtension>()!;
+  AppTextThemeExtension get textThemeExt => theme.extension<AppTextThemeExtension>()!;
+  double get width => MediaQuery.sizeOf(this).width;
+  double get height => MediaQuery.sizeOf(this).height;
+}
+
