@@ -5,22 +5,36 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/common/util/currency_util.dart';
-import 'package:spend_sum/core/common/widget/app_button.dart';
-import 'package:spend_sum/core/common/widget/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/button/app_button.dart';
+import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/feedback/app_snackbar.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
-import 'package:spend_sum/features/dashboard/domain/repository/i_home_repository.dart';
-import 'package:spend_sum/features/dashboard/presentation/widgets/select_category_sheet.dart';
+import 'package:spend_sum/features/dashboard/presentation/cubit/transaction_cubit.dart';
+import 'package:spend_sum/features/dashboard/presentation/widgets/components/type_toggle_tab.dart';
+import 'package:spend_sum/features/dashboard/presentation/widgets/sheets/select_category_sheet.dart';
 
 /// Full-page form for adding a new expense or income transaction.
-class AddTransactionPage extends StatefulWidget {
+class AddTransactionPage extends StatelessWidget {
   const AddTransactionPage({super.key});
 
   @override
-  State<AddTransactionPage> createState() => _AddTransactionPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider<TransactionCubit>(
+      create: (context) => sl<TransactionCubit>(),
+      child: const _AddTransactionPageContent(),
+    );
+  }
 }
 
-class _AddTransactionPageState extends State<AddTransactionPage>
+class _AddTransactionPageContent extends StatefulWidget {
+  const _AddTransactionPageContent();
+
+  @override
+  State<_AddTransactionPageContent> createState() => _AddTransactionPageContentState();
+}
+
+class _AddTransactionPageContentState extends State<_AddTransactionPageContent>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountController = TextEditingController();
@@ -29,7 +43,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
 
   String _selectedCategory = 'Groceries';
   IconData _selectedCategoryIcon = Icons.shopping_basket_rounded;
-  Color _selectedCategoryColor = const Color(0xFF4CD964);
+  Color _selectedCategoryColor = const Color(0xFF00B475);
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   bool _isSaving = false;
@@ -69,11 +83,11 @@ class _AddTransactionPageState extends State<AddTransactionPage>
       if (isExpense) {
         _selectedCategory = 'Groceries';
         _selectedCategoryIcon = Icons.shopping_basket_rounded;
-        _selectedCategoryColor = const Color(0xFF4CD964);
+        _selectedCategoryColor = const Color(0xFF00B475);
       } else {
         _selectedCategory = 'Salary';
         _selectedCategoryIcon = Icons.attach_money_rounded;
-        _selectedCategoryColor = const Color(0xFF4CD964);
+        _selectedCategoryColor = const Color(0xFF00B475);
       }
     });
   }
@@ -149,7 +163,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
     final double? amount = double.tryParse(_amountController.text.trim());
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid amount')),
+        AppSnackbar.destructive(message: 'Please enter a valid amount'),
       );
       return;
     }
@@ -162,24 +176,16 @@ class _AddTransactionPageState extends State<AddTransactionPage>
       _selectedTime.minute,
     );
 
-    setState(() {
-      _isSaving = true;
-    });
-
     final userState = context.read<UserCubit>().state;
     if (userState is! UserLoggedIn) {
-      setState(() {
-        _isSaving = false;
-      });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User not logged in')),
+        AppSnackbar.destructive(message: 'User not logged in'),
       );
       return;
     }
     final userUid = userState.user.uid;
 
-    final repository = sl<IHomeRepository>();
-    final result = await repository.addExpense(
+    context.read<TransactionCubit>().addTransaction(
       userUid: userUid,
       title: _titleController.text.trim(),
       amount: amount,
@@ -190,54 +196,16 @@ class _AddTransactionPageState extends State<AddTransactionPage>
           ? _notesController.text.trim()
           : null,
     );
-
-    if (mounted) {
-      result.fold(
-        (failure) {
-          setState(() {
-            _isSaving = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Failed to save ${_isExpense ? "expense" : "income"}: ${failure.message}',
-              ),
-              backgroundColor: const Color(0xFFFF2D55),
-            ),
-          );
-        },
-        (_) {
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  const Icon(Icons.check_circle_rounded, color: Colors.white),
-                  const SizedBox(width: 10),
-                  Text(
-                    '${_isExpense ? "Expense" : "Income"} saved successfully!',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: const Color(0xFF4CD964),
-            ),
-          );
-        },
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final themeExt = context.colorscheme;
     final userState = context.watch<UserCubit>().state;
 
     String currencySymbol = '\$';
     if (userState is UserLoggedIn) {
-      currencySymbol = getCurrencySymbol(userState.user.phoneNumber);
+      currencySymbol = getUserCurrencySymbol(userState.user);
     }
 
     return AppScaffold(
@@ -246,7 +214,31 @@ class _AddTransactionPageState extends State<AddTransactionPage>
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimensions.marginPage,
       ),
-      child: FadeTransition(
+      child: BlocListener<TransactionCubit, TransactionState>(
+        listener: (context, state) {
+          if (state is TransactionLoading) {
+            setState(() {
+              _isSaving = true;
+            });
+          } else if (state is TransactionSuccess) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              AppSnackbar.success(
+                message: '${_isExpense ? "Expense" : "Income"} saved successfully!',
+              ),
+            );
+          } else if (state is TransactionFailure) {
+            setState(() {
+              _isSaving = false;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              AppSnackbar.destructive(
+                message: 'Failed to save ${_isExpense ? "expense" : "income"}: ${state.message}',
+              ),
+            );
+          }
+        },
+        child: FadeTransition(
         opacity: _fadeAnimation,
         child: SlideTransition(
           position: _slideAnimation,
@@ -261,22 +253,18 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                 Row(
                   children: [
                     Expanded(
-                      child: _buildTypeTab(
+                      child: TypeToggleTab(
                         label: 'Expense',
                         isSelected: _isExpense,
                         onTap: () => _toggleType(true),
-                        theme: theme,
-                        themeExt: themeExt,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildTypeTab(
+                      child: TypeToggleTab(
                         label: 'Income',
                         isSelected: !_isExpense,
                         onTap: () => _toggleType(false),
-                        theme: theme,
-                        themeExt: themeExt,
                       ),
                     ),
                   ],
@@ -649,49 +637,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTypeTab({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-    required ThemeData theme,
-    required AppThemeExtension themeExt,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-        height: 44,
-        decoration: BoxDecoration(
-          color:
-              isSelected ? themeExt.primary : themeExt.surfaceContainer,
-          borderRadius: BorderRadius.circular(22),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: themeExt.primary.withValues(alpha: 0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : null,
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: isSelected
-                  ? Colors.white
-                  : themeExt.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ),
+    ),
     );
   }
 }

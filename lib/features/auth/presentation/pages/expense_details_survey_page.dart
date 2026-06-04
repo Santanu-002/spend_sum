@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
-import 'package:spend_sum/core/common/widget/app_button.dart';
-import 'package:spend_sum/core/common/widget/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/button/app_button.dart';
+import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/feedback/app_snackbar.dart';
 import 'package:spend_sum/core/router/app_routes.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
@@ -76,7 +77,7 @@ class _ExpenseDetailsSurveyPageContentState
     final double? amount = double.tryParse(_amountController.text.trim());
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid budget amount')),
+        AppSnackbar.destructive(message: 'Please enter a valid budget amount'),
       );
       return;
     }
@@ -92,14 +93,13 @@ class _ExpenseDetailsSurveyPageContentState
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
-    final textThemeExt = theme.extension<AppTextThemeExtension>()!;
+    final themeExt = context.colorscheme;
+    final textThemeExt = context.textThemeExt;
     final userState = context.watch<UserCubit>().state;
 
     String currencySymbol = '\$';
     if (userState is UserLoggedIn) {
-      currencySymbol = getCurrencySymbol(userState.user.phoneNumber);
+      currencySymbol = getUserCurrencySymbol(userState.user);
     }
 
     return AppScaffold(
@@ -112,34 +112,13 @@ class _ExpenseDetailsSurveyPageContentState
             context.read<UserCubit>().loadUserProfile(widget.uid);
 
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Row(
-                  children: [
-                    const Icon(Icons.check_circle_outline, color: Colors.white),
-                    const SizedBox(width: 12),
-                    Text(
-                      'Budget set successfully!',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusDefault,
-                  ),
-                ),
-                backgroundColor: themeExt.secondaryContainer,
-              ),
+              AppSnackbar.success(message: 'Budget set successfully!'),
             );
             // Redirect direct to dashboard
             context.go(AppRoutes.dashboard.path);
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                backgroundColor: themeExt.error,
-              ),
+              AppSnackbar.destructive(message: state.error),
             );
           }
         },
@@ -173,12 +152,23 @@ class _ExpenseDetailsSurveyPageContentState
                 const SizedBox(height: AppDimensions.stackXl),
 
                 // Budget Amount Input
-                Text(
-                  'Budget Amount',
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: themeExt.onSurface,
+                Text.rich(
+                  TextSpan(
+                    text: 'Budget Amount ',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: themeExt.onSurface,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                          color: themeExt.error,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -261,12 +251,23 @@ class _ExpenseDetailsSurveyPageContentState
                 const SizedBox(height: AppDimensions.stackLg),
 
                 // Budget Frequency (Period) Selection
-                Text(
-                  'Budget Period',
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: themeExt.onSurface,
+                Text.rich(
+                  TextSpan(
+                    text: 'Budget Period ',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: themeExt.onSurface,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                          color: themeExt.error,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -324,7 +325,7 @@ class _ExpenseDetailsSurveyPageContentState
                   onPressed: isLoading ? null : _submitBudget,
                   loading: isLoading,
                   child: Text(
-                    'Submit Survey',
+                    'Save and Continue',
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,

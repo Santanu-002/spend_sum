@@ -6,34 +6,34 @@ class HomeOverviewDataModel extends HomeOverviewData {
     required super.thisMonthSpend,
     required super.walletBalance,
     required super.budgetAmount,
+    super.percentageChange = 0.0,
     required super.recentTransactions,
     super.allTransactions = const [],
   });
 
   factory HomeOverviewDataModel.fromJson(Map<String, dynamic> json) {
-    final List<dynamic> list = json['recentTransactions'] as List<dynamic>? ?? [];
-    final transactions = list.map((item) {
-      if (item is Map<String, dynamic>) {
-        return Expense.fromJson(item);
-      }
-      return item as Expense;
-    }).toList();
-
-    final List<dynamic> allList = json['allTransactions'] as List<dynamic>? ?? [];
-    final allTx = allList.map((item) {
-      if (item is Map<String, dynamic>) {
-        return Expense.fromJson(item);
-      }
-      return item as Expense;
-    }).toList();
-
-    return HomeOverviewDataModel(
-      thisMonthSpend: (json['thisMonthSpend'] as num).toDouble(),
-      walletBalance: (json['walletBalance'] as num).toDouble(),
-      budgetAmount: (json['budgetAmount'] as num).toDouble(),
-      recentTransactions: transactions,
-      allTransactions: allTx,
-    );
+    return switch (json) {
+      {
+        'thisMonthSpend': num thisMonthSpend,
+        'walletBalance': num walletBalance,
+        'budgetAmount': num budgetAmount,
+        'recentTransactions': List<dynamic> recentTransactions,
+      } =>
+        HomeOverviewDataModel(
+          thisMonthSpend: thisMonthSpend.toDouble(),
+          walletBalance: walletBalance.toDouble(),
+          budgetAmount: budgetAmount.toDouble(),
+          percentageChange: (json['percentageChange'] as num?)?.toDouble() ?? 0.0,
+          recentTransactions: recentTransactions
+              .map((item) => item is Map<String, dynamic> ? Expense.fromJson(item) : item as Expense)
+              .toList(),
+          allTransactions: (json['allTransactions'] as List<dynamic>?)
+                  ?.map((item) => item is Map<String, dynamic> ? Expense.fromJson(item) : item as Expense)
+                  .toList() ??
+              const [],
+        ),
+      _ => throw const FormatException('Failed to parse HomeOverviewDataModel.'),
+    };
   }
 
   Map<String, dynamic> toJson() {
@@ -41,6 +41,7 @@ class HomeOverviewDataModel extends HomeOverviewData {
       'thisMonthSpend': thisMonthSpend,
       'walletBalance': walletBalance,
       'budgetAmount': budgetAmount,
+      'percentageChange': percentageChange,
       'recentTransactions': recentTransactions.map((e) => e.toJson()).toList(),
       'allTransactions': allTransactions.map((e) => e.toJson()).toList(),
     };

@@ -97,6 +97,17 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _currencyMeta = const VerificationMeta(
+    'currency',
+  );
+  @override
+  late final GeneratedColumn<String> currency = GeneratedColumn<String>(
+    'currency',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     uid,
@@ -107,6 +118,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     email,
     isNew,
     isBudgetCompleted,
+    currency,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -178,6 +190,12 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
         ),
       );
     }
+    if (data.containsKey('currency')) {
+      context.handle(
+        _currencyMeta,
+        currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta),
+      );
+    }
     return context;
   }
 
@@ -219,6 +237,10 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
         DriftSqlType.bool,
         data['${effectivePrefix}is_budget_completed'],
       )!,
+      currency: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}currency'],
+      ),
     );
   }
 
@@ -237,6 +259,7 @@ class User extends DataClass implements Insertable<User> {
   final String? email;
   final bool isNew;
   final bool isBudgetCompleted;
+  final String? currency;
   const User({
     required this.uid,
     required this.phoneNumber,
@@ -246,6 +269,7 @@ class User extends DataClass implements Insertable<User> {
     this.email,
     required this.isNew,
     required this.isBudgetCompleted,
+    this.currency,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -266,6 +290,9 @@ class User extends DataClass implements Insertable<User> {
     }
     map['is_new'] = Variable<bool>(isNew);
     map['is_budget_completed'] = Variable<bool>(isBudgetCompleted);
+    if (!nullToAbsent || currency != null) {
+      map['currency'] = Variable<String>(currency);
+    }
     return map;
   }
 
@@ -283,6 +310,9 @@ class User extends DataClass implements Insertable<User> {
           : Value(email),
       isNew: Value(isNew),
       isBudgetCompleted: Value(isBudgetCompleted),
+      currency: currency == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currency),
     );
   }
 
@@ -300,6 +330,7 @@ class User extends DataClass implements Insertable<User> {
       email: serializer.fromJson<String?>(json['email']),
       isNew: serializer.fromJson<bool>(json['isNew']),
       isBudgetCompleted: serializer.fromJson<bool>(json['isBudgetCompleted']),
+      currency: serializer.fromJson<String?>(json['currency']),
     );
   }
   @override
@@ -314,6 +345,7 @@ class User extends DataClass implements Insertable<User> {
       'email': serializer.toJson<String?>(email),
       'isNew': serializer.toJson<bool>(isNew),
       'isBudgetCompleted': serializer.toJson<bool>(isBudgetCompleted),
+      'currency': serializer.toJson<String?>(currency),
     };
   }
 
@@ -326,6 +358,7 @@ class User extends DataClass implements Insertable<User> {
     Value<String?> email = const Value.absent(),
     bool? isNew,
     bool? isBudgetCompleted,
+    Value<String?> currency = const Value.absent(),
   }) => User(
     uid: uid ?? this.uid,
     phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -335,6 +368,7 @@ class User extends DataClass implements Insertable<User> {
     email: email.present ? email.value : this.email,
     isNew: isNew ?? this.isNew,
     isBudgetCompleted: isBudgetCompleted ?? this.isBudgetCompleted,
+    currency: currency.present ? currency.value : this.currency,
   );
   User copyWithCompanion(UsersCompanion data) {
     return User(
@@ -350,6 +384,7 @@ class User extends DataClass implements Insertable<User> {
       isBudgetCompleted: data.isBudgetCompleted.present
           ? data.isBudgetCompleted.value
           : this.isBudgetCompleted,
+      currency: data.currency.present ? data.currency.value : this.currency,
     );
   }
 
@@ -363,7 +398,8 @@ class User extends DataClass implements Insertable<User> {
           ..write('gender: $gender, ')
           ..write('email: $email, ')
           ..write('isNew: $isNew, ')
-          ..write('isBudgetCompleted: $isBudgetCompleted')
+          ..write('isBudgetCompleted: $isBudgetCompleted, ')
+          ..write('currency: $currency')
           ..write(')'))
         .toString();
   }
@@ -378,6 +414,7 @@ class User extends DataClass implements Insertable<User> {
     email,
     isNew,
     isBudgetCompleted,
+    currency,
   );
   @override
   bool operator ==(Object other) =>
@@ -390,7 +427,8 @@ class User extends DataClass implements Insertable<User> {
           other.gender == this.gender &&
           other.email == this.email &&
           other.isNew == this.isNew &&
-          other.isBudgetCompleted == this.isBudgetCompleted);
+          other.isBudgetCompleted == this.isBudgetCompleted &&
+          other.currency == this.currency);
 }
 
 class UsersCompanion extends UpdateCompanion<User> {
@@ -402,6 +440,7 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<String?> email;
   final Value<bool> isNew;
   final Value<bool> isBudgetCompleted;
+  final Value<String?> currency;
   final Value<int> rowid;
   const UsersCompanion({
     this.uid = const Value.absent(),
@@ -412,6 +451,7 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.email = const Value.absent(),
     this.isNew = const Value.absent(),
     this.isBudgetCompleted = const Value.absent(),
+    this.currency = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UsersCompanion.insert({
@@ -423,6 +463,7 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.email = const Value.absent(),
     this.isNew = const Value.absent(),
     this.isBudgetCompleted = const Value.absent(),
+    this.currency = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : uid = Value(uid),
        phoneNumber = Value(phoneNumber);
@@ -435,6 +476,7 @@ class UsersCompanion extends UpdateCompanion<User> {
     Expression<String>? email,
     Expression<bool>? isNew,
     Expression<bool>? isBudgetCompleted,
+    Expression<String>? currency,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -446,6 +488,7 @@ class UsersCompanion extends UpdateCompanion<User> {
       if (email != null) 'email': email,
       if (isNew != null) 'is_new': isNew,
       if (isBudgetCompleted != null) 'is_budget_completed': isBudgetCompleted,
+      if (currency != null) 'currency': currency,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -459,6 +502,7 @@ class UsersCompanion extends UpdateCompanion<User> {
     Value<String?>? email,
     Value<bool>? isNew,
     Value<bool>? isBudgetCompleted,
+    Value<String?>? currency,
     Value<int>? rowid,
   }) {
     return UsersCompanion(
@@ -470,6 +514,7 @@ class UsersCompanion extends UpdateCompanion<User> {
       email: email ?? this.email,
       isNew: isNew ?? this.isNew,
       isBudgetCompleted: isBudgetCompleted ?? this.isBudgetCompleted,
+      currency: currency ?? this.currency,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -501,6 +546,9 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (isBudgetCompleted.present) {
       map['is_budget_completed'] = Variable<bool>(isBudgetCompleted.value);
     }
+    if (currency.present) {
+      map['currency'] = Variable<String>(currency.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -518,6 +566,7 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('email: $email, ')
           ..write('isNew: $isNew, ')
           ..write('isBudgetCompleted: $isBudgetCompleted, ')
+          ..write('currency: $currency, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1712,6 +1761,423 @@ class BudgetsCompanion extends UpdateCompanion<Budget> {
   }
 }
 
+class $CountryCurrenciesTable extends CountryCurrencies
+    with TableInfo<$CountryCurrenciesTable, CountryCurrency> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CountryCurrenciesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _codeMeta = const VerificationMeta('code');
+  @override
+  late final GeneratedColumn<String> code = GeneratedColumn<String>(
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _flagMeta = const VerificationMeta('flag');
+  @override
+  late final GeneratedColumn<String> flag = GeneratedColumn<String>(
+    'flag',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _maxLengthMeta = const VerificationMeta(
+    'maxLength',
+  );
+  @override
+  late final GeneratedColumn<int> maxLength = GeneratedColumn<int>(
+    'max_length',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _currencySymbolMeta = const VerificationMeta(
+    'currencySymbol',
+  );
+  @override
+  late final GeneratedColumn<String> currencySymbol = GeneratedColumn<String>(
+    'currency_symbol',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _currencyLabelMeta = const VerificationMeta(
+    'currencyLabel',
+  );
+  @override
+  late final GeneratedColumn<String> currencyLabel = GeneratedColumn<String>(
+    'currency_label',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    code,
+    flag,
+    name,
+    maxLength,
+    currencySymbol,
+    currencyLabel,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'country_currencies';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CountryCurrency> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('code')) {
+      context.handle(
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_codeMeta);
+    }
+    if (data.containsKey('flag')) {
+      context.handle(
+        _flagMeta,
+        flag.isAcceptableOrUnknown(data['flag']!, _flagMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_flagMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('max_length')) {
+      context.handle(
+        _maxLengthMeta,
+        maxLength.isAcceptableOrUnknown(data['max_length']!, _maxLengthMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_maxLengthMeta);
+    }
+    if (data.containsKey('currency_symbol')) {
+      context.handle(
+        _currencySymbolMeta,
+        currencySymbol.isAcceptableOrUnknown(
+          data['currency_symbol']!,
+          _currencySymbolMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_currencySymbolMeta);
+    }
+    if (data.containsKey('currency_label')) {
+      context.handle(
+        _currencyLabelMeta,
+        currencyLabel.isAcceptableOrUnknown(
+          data['currency_label']!,
+          _currencyLabelMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {code};
+  @override
+  CountryCurrency map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CountryCurrency(
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      flag: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}flag'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      maxLength: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}max_length'],
+      )!,
+      currencySymbol: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}currency_symbol'],
+      )!,
+      currencyLabel: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}currency_label'],
+      )!,
+    );
+  }
+
+  @override
+  $CountryCurrenciesTable createAlias(String alias) {
+    return $CountryCurrenciesTable(attachedDatabase, alias);
+  }
+}
+
+class CountryCurrency extends DataClass implements Insertable<CountryCurrency> {
+  final String code;
+  final String flag;
+  final String name;
+  final int maxLength;
+  final String currencySymbol;
+  final String currencyLabel;
+  const CountryCurrency({
+    required this.code,
+    required this.flag,
+    required this.name,
+    required this.maxLength,
+    required this.currencySymbol,
+    required this.currencyLabel,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['code'] = Variable<String>(code);
+    map['flag'] = Variable<String>(flag);
+    map['name'] = Variable<String>(name);
+    map['max_length'] = Variable<int>(maxLength);
+    map['currency_symbol'] = Variable<String>(currencySymbol);
+    map['currency_label'] = Variable<String>(currencyLabel);
+    return map;
+  }
+
+  CountryCurrenciesCompanion toCompanion(bool nullToAbsent) {
+    return CountryCurrenciesCompanion(
+      code: Value(code),
+      flag: Value(flag),
+      name: Value(name),
+      maxLength: Value(maxLength),
+      currencySymbol: Value(currencySymbol),
+      currencyLabel: Value(currencyLabel),
+    );
+  }
+
+  factory CountryCurrency.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CountryCurrency(
+      code: serializer.fromJson<String>(json['code']),
+      flag: serializer.fromJson<String>(json['flag']),
+      name: serializer.fromJson<String>(json['name']),
+      maxLength: serializer.fromJson<int>(json['maxLength']),
+      currencySymbol: serializer.fromJson<String>(json['currencySymbol']),
+      currencyLabel: serializer.fromJson<String>(json['currencyLabel']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'code': serializer.toJson<String>(code),
+      'flag': serializer.toJson<String>(flag),
+      'name': serializer.toJson<String>(name),
+      'maxLength': serializer.toJson<int>(maxLength),
+      'currencySymbol': serializer.toJson<String>(currencySymbol),
+      'currencyLabel': serializer.toJson<String>(currencyLabel),
+    };
+  }
+
+  CountryCurrency copyWith({
+    String? code,
+    String? flag,
+    String? name,
+    int? maxLength,
+    String? currencySymbol,
+    String? currencyLabel,
+  }) => CountryCurrency(
+    code: code ?? this.code,
+    flag: flag ?? this.flag,
+    name: name ?? this.name,
+    maxLength: maxLength ?? this.maxLength,
+    currencySymbol: currencySymbol ?? this.currencySymbol,
+    currencyLabel: currencyLabel ?? this.currencyLabel,
+  );
+  CountryCurrency copyWithCompanion(CountryCurrenciesCompanion data) {
+    return CountryCurrency(
+      code: data.code.present ? data.code.value : this.code,
+      flag: data.flag.present ? data.flag.value : this.flag,
+      name: data.name.present ? data.name.value : this.name,
+      maxLength: data.maxLength.present ? data.maxLength.value : this.maxLength,
+      currencySymbol: data.currencySymbol.present
+          ? data.currencySymbol.value
+          : this.currencySymbol,
+      currencyLabel: data.currencyLabel.present
+          ? data.currencyLabel.value
+          : this.currencyLabel,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CountryCurrency(')
+          ..write('code: $code, ')
+          ..write('flag: $flag, ')
+          ..write('name: $name, ')
+          ..write('maxLength: $maxLength, ')
+          ..write('currencySymbol: $currencySymbol, ')
+          ..write('currencyLabel: $currencyLabel')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(code, flag, name, maxLength, currencySymbol, currencyLabel);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CountryCurrency &&
+          other.code == this.code &&
+          other.flag == this.flag &&
+          other.name == this.name &&
+          other.maxLength == this.maxLength &&
+          other.currencySymbol == this.currencySymbol &&
+          other.currencyLabel == this.currencyLabel);
+}
+
+class CountryCurrenciesCompanion extends UpdateCompanion<CountryCurrency> {
+  final Value<String> code;
+  final Value<String> flag;
+  final Value<String> name;
+  final Value<int> maxLength;
+  final Value<String> currencySymbol;
+  final Value<String> currencyLabel;
+  final Value<int> rowid;
+  const CountryCurrenciesCompanion({
+    this.code = const Value.absent(),
+    this.flag = const Value.absent(),
+    this.name = const Value.absent(),
+    this.maxLength = const Value.absent(),
+    this.currencySymbol = const Value.absent(),
+    this.currencyLabel = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CountryCurrenciesCompanion.insert({
+    required String code,
+    required String flag,
+    required String name,
+    required int maxLength,
+    required String currencySymbol,
+    this.currencyLabel = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : code = Value(code),
+       flag = Value(flag),
+       name = Value(name),
+       maxLength = Value(maxLength),
+       currencySymbol = Value(currencySymbol);
+  static Insertable<CountryCurrency> custom({
+    Expression<String>? code,
+    Expression<String>? flag,
+    Expression<String>? name,
+    Expression<int>? maxLength,
+    Expression<String>? currencySymbol,
+    Expression<String>? currencyLabel,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (code != null) 'code': code,
+      if (flag != null) 'flag': flag,
+      if (name != null) 'name': name,
+      if (maxLength != null) 'max_length': maxLength,
+      if (currencySymbol != null) 'currency_symbol': currencySymbol,
+      if (currencyLabel != null) 'currency_label': currencyLabel,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CountryCurrenciesCompanion copyWith({
+    Value<String>? code,
+    Value<String>? flag,
+    Value<String>? name,
+    Value<int>? maxLength,
+    Value<String>? currencySymbol,
+    Value<String>? currencyLabel,
+    Value<int>? rowid,
+  }) {
+    return CountryCurrenciesCompanion(
+      code: code ?? this.code,
+      flag: flag ?? this.flag,
+      name: name ?? this.name,
+      maxLength: maxLength ?? this.maxLength,
+      currencySymbol: currencySymbol ?? this.currencySymbol,
+      currencyLabel: currencyLabel ?? this.currencyLabel,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (code.present) {
+      map['code'] = Variable<String>(code.value);
+    }
+    if (flag.present) {
+      map['flag'] = Variable<String>(flag.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (maxLength.present) {
+      map['max_length'] = Variable<int>(maxLength.value);
+    }
+    if (currencySymbol.present) {
+      map['currency_symbol'] = Variable<String>(currencySymbol.value);
+    }
+    if (currencyLabel.present) {
+      map['currency_label'] = Variable<String>(currencyLabel.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CountryCurrenciesCompanion(')
+          ..write('code: $code, ')
+          ..write('flag: $flag, ')
+          ..write('name: $name, ')
+          ..write('maxLength: $maxLength, ')
+          ..write('currencySymbol: $currencySymbol, ')
+          ..write('currencyLabel: $currencyLabel, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1719,6 +2185,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ExpensesTable expenses = $ExpensesTable(this);
   late final $CategoriesTable categories = $CategoriesTable(this);
   late final $BudgetsTable budgets = $BudgetsTable(this);
+  late final $CountryCurrenciesTable countryCurrencies =
+      $CountryCurrenciesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1728,6 +2196,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     expenses,
     categories,
     budgets,
+    countryCurrencies,
   ];
 }
 
@@ -1741,6 +2210,7 @@ typedef $$UsersTableCreateCompanionBuilder =
       Value<String?> email,
       Value<bool> isNew,
       Value<bool> isBudgetCompleted,
+      Value<String?> currency,
       Value<int> rowid,
     });
 typedef $$UsersTableUpdateCompanionBuilder =
@@ -1753,6 +2223,7 @@ typedef $$UsersTableUpdateCompanionBuilder =
       Value<String?> email,
       Value<bool> isNew,
       Value<bool> isBudgetCompleted,
+      Value<String?> currency,
       Value<int> rowid,
     });
 
@@ -1844,6 +2315,11 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
 
   ColumnFilters<bool> get isBudgetCompleted => $composableBuilder(
     column: $table.isBudgetCompleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currency => $composableBuilder(
+    column: $table.currency,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1946,6 +2422,11 @@ class $$UsersTableOrderingComposer
     column: $table.isBudgetCompleted,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$UsersTableAnnotationComposer
@@ -1984,6 +2465,9 @@ class $$UsersTableAnnotationComposer
     column: $table.isBudgetCompleted,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get currency =>
+      $composableBuilder(column: $table.currency, builder: (column) => column);
 
   Expression<T> expensesRefs<T extends Object>(
     Expression<T> Function($$ExpensesTableAnnotationComposer a) f,
@@ -2072,6 +2556,7 @@ class $$UsersTableTableManager
                 Value<String?> email = const Value.absent(),
                 Value<bool> isNew = const Value.absent(),
                 Value<bool> isBudgetCompleted = const Value.absent(),
+                Value<String?> currency = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => UsersCompanion(
                 uid: uid,
@@ -2082,6 +2567,7 @@ class $$UsersTableTableManager
                 email: email,
                 isNew: isNew,
                 isBudgetCompleted: isBudgetCompleted,
+                currency: currency,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -2094,6 +2580,7 @@ class $$UsersTableTableManager
                 Value<String?> email = const Value.absent(),
                 Value<bool> isNew = const Value.absent(),
                 Value<bool> isBudgetCompleted = const Value.absent(),
+                Value<String?> currency = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => UsersCompanion.insert(
                 uid: uid,
@@ -2104,6 +2591,7 @@ class $$UsersTableTableManager
                 email: email,
                 isNew: isNew,
                 isBudgetCompleted: isBudgetCompleted,
+                currency: currency,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -3036,6 +3524,238 @@ typedef $$BudgetsTableProcessedTableManager =
       Budget,
       PrefetchHooks Function({bool userUid})
     >;
+typedef $$CountryCurrenciesTableCreateCompanionBuilder =
+    CountryCurrenciesCompanion Function({
+      required String code,
+      required String flag,
+      required String name,
+      required int maxLength,
+      required String currencySymbol,
+      Value<String> currencyLabel,
+      Value<int> rowid,
+    });
+typedef $$CountryCurrenciesTableUpdateCompanionBuilder =
+    CountryCurrenciesCompanion Function({
+      Value<String> code,
+      Value<String> flag,
+      Value<String> name,
+      Value<int> maxLength,
+      Value<String> currencySymbol,
+      Value<String> currencyLabel,
+      Value<int> rowid,
+    });
+
+class $$CountryCurrenciesTableFilterComposer
+    extends Composer<_$AppDatabase, $CountryCurrenciesTable> {
+  $$CountryCurrenciesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get flag => $composableBuilder(
+    column: $table.flag,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get maxLength => $composableBuilder(
+    column: $table.maxLength,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currencySymbol => $composableBuilder(
+    column: $table.currencySymbol,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currencyLabel => $composableBuilder(
+    column: $table.currencyLabel,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$CountryCurrenciesTableOrderingComposer
+    extends Composer<_$AppDatabase, $CountryCurrenciesTable> {
+  $$CountryCurrenciesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get code => $composableBuilder(
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get flag => $composableBuilder(
+    column: $table.flag,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get maxLength => $composableBuilder(
+    column: $table.maxLength,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currencySymbol => $composableBuilder(
+    column: $table.currencySymbol,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currencyLabel => $composableBuilder(
+    column: $table.currencyLabel,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$CountryCurrenciesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CountryCurrenciesTable> {
+  $$CountryCurrenciesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get code =>
+      $composableBuilder(column: $table.code, builder: (column) => column);
+
+  GeneratedColumn<String> get flag =>
+      $composableBuilder(column: $table.flag, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get maxLength =>
+      $composableBuilder(column: $table.maxLength, builder: (column) => column);
+
+  GeneratedColumn<String> get currencySymbol => $composableBuilder(
+    column: $table.currencySymbol,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get currencyLabel => $composableBuilder(
+    column: $table.currencyLabel,
+    builder: (column) => column,
+  );
+}
+
+class $$CountryCurrenciesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $CountryCurrenciesTable,
+          CountryCurrency,
+          $$CountryCurrenciesTableFilterComposer,
+          $$CountryCurrenciesTableOrderingComposer,
+          $$CountryCurrenciesTableAnnotationComposer,
+          $$CountryCurrenciesTableCreateCompanionBuilder,
+          $$CountryCurrenciesTableUpdateCompanionBuilder,
+          (
+            CountryCurrency,
+            BaseReferences<
+              _$AppDatabase,
+              $CountryCurrenciesTable,
+              CountryCurrency
+            >,
+          ),
+          CountryCurrency,
+          PrefetchHooks Function()
+        > {
+  $$CountryCurrenciesTableTableManager(
+    _$AppDatabase db,
+    $CountryCurrenciesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CountryCurrenciesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CountryCurrenciesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CountryCurrenciesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> code = const Value.absent(),
+                Value<String> flag = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<int> maxLength = const Value.absent(),
+                Value<String> currencySymbol = const Value.absent(),
+                Value<String> currencyLabel = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CountryCurrenciesCompanion(
+                code: code,
+                flag: flag,
+                name: name,
+                maxLength: maxLength,
+                currencySymbol: currencySymbol,
+                currencyLabel: currencyLabel,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String code,
+                required String flag,
+                required String name,
+                required int maxLength,
+                required String currencySymbol,
+                Value<String> currencyLabel = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CountryCurrenciesCompanion.insert(
+                code: code,
+                flag: flag,
+                name: name,
+                maxLength: maxLength,
+                currencySymbol: currencySymbol,
+                currencyLabel: currencyLabel,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$CountryCurrenciesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $CountryCurrenciesTable,
+      CountryCurrency,
+      $$CountryCurrenciesTableFilterComposer,
+      $$CountryCurrenciesTableOrderingComposer,
+      $$CountryCurrenciesTableAnnotationComposer,
+      $$CountryCurrenciesTableCreateCompanionBuilder,
+      $$CountryCurrenciesTableUpdateCompanionBuilder,
+      (
+        CountryCurrency,
+        BaseReferences<_$AppDatabase, $CountryCurrenciesTable, CountryCurrency>,
+      ),
+      CountryCurrency,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3048,4 +3768,6 @@ class $AppDatabaseManager {
       $$CategoriesTableTableManager(_db, _db.categories);
   $$BudgetsTableTableManager get budgets =>
       $$BudgetsTableTableManager(_db, _db.budgets);
+  $$CountryCurrenciesTableTableManager get countryCurrencies =>
+      $$CountryCurrenciesTableTableManager(_db, _db.countryCurrencies);
 }

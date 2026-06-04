@@ -9,7 +9,11 @@ import 'package:spend_sum/features/auth/presentation/pages/registration_page.dar
 import 'package:spend_sum/features/dashboard/presentation/pages/add_category_page.dart';
 import 'package:spend_sum/features/dashboard/presentation/pages/add_transaction_page.dart';
 import 'package:spend_sum/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:spend_sum/features/dashboard/presentation/pages/profile_settings_page.dart';
+import 'package:spend_sum/features/dashboard/presentation/pages/edit_profile_page.dart';
 import 'package:spend_sum/features/onboarding/presentation/pages/onboarding_page.dart';
+
+import 'package:spend_sum/features/dashboard/presentation/pages/wallet_page.dart';
 
 /// AppRouter defines the GoRouter configuration and pages getters for the application.
 class AppRouter {
@@ -92,6 +96,24 @@ class AppRouter {
               );
             },
           );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.profileSettings.path,
+        name: AppRoutes.profileSettings.name,
+        builder: (context, state) => const ProfileSettingsPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.editProfile.path,
+        name: AppRoutes.editProfile.name,
+        builder: (context, state) => const EditProfilePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.wallet.path,
+        name: AppRoutes.wallet.name,
+        builder: (context, state) {
+          final initialBudget = state.extra as double? ?? 0.0;
+          return WalletPage(initialBudget: initialBudget);
         },
       ),
     ],

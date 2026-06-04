@@ -105,6 +105,14 @@ class FakeHomeLocalDataSource implements IHomeLocalDataSource {
     }
     return 1;
   }
+
+  @override
+  Future<int> deleteExpense(Expense expense) async {
+    if (shouldThrow) {
+      throw const DatabaseException('Database delete expense error');
+    }
+    return 1;
+  }
 }
 
 void main() {

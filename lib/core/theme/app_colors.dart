@@ -75,6 +75,10 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
   // Global Card Background color matching specifications
   final Color cardColor;
 
+  /// FAB semantic tokens — always dark/black background with white icon
+  final Color fabColor;
+  final Color onFabColor;
+
   const AppThemeExtension({
     required this.primary,
     required this.onPrimary,
@@ -126,6 +130,8 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
     required this.backgroundGradientStart,
     required this.backgroundGradientEnd,
     required this.cardColor,
+    required this.fabColor,
+    required this.onFabColor,
   });
 
   @override
@@ -180,6 +186,8 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
     Color? backgroundGradientStart,
     Color? backgroundGradientEnd,
     Color? cardColor,
+    Color? fabColor,
+    Color? onFabColor,
   }) {
     return AppThemeExtension(
       primary: primary ?? this.primary,
@@ -239,6 +247,8 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
       backgroundGradientEnd:
           backgroundGradientEnd ?? this.backgroundGradientEnd,
       cardColor: cardColor ?? this.cardColor,
+      fabColor: fabColor ?? this.fabColor,
+      onFabColor: onFabColor ?? this.onFabColor,
     );
   }
 
@@ -384,6 +394,8 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
         t,
       )!,
       cardColor: Color.lerp(cardColor, other.cardColor, t)!,
+      fabColor: Color.lerp(fabColor, other.fabColor, t)!,
+      onFabColor: Color.lerp(onFabColor, other.onFabColor, t)!,
     );
   }
 }
@@ -416,3 +428,18 @@ class AppTextThemeExtension extends ThemeExtension<AppTextThemeExtension> {
     );
   }
 }
+
+extension ThemeDataColorsExtension on ThemeData {
+  AppThemeExtension get colorscheme => extension<AppThemeExtension>()!;
+  AppTextThemeExtension get textThemeExt => extension<AppTextThemeExtension>()!;
+}
+
+extension BuildContextColorsExtension on BuildContext {
+  ThemeData get theme => Theme.of(this);
+  TextTheme get textTheme => theme.textTheme;
+  AppThemeExtension get colorscheme => theme.extension<AppThemeExtension>()!;
+  AppTextThemeExtension get textThemeExt => theme.extension<AppTextThemeExtension>()!;
+  double get width => MediaQuery.sizeOf(this).width;
+  double get height => MediaQuery.sizeOf(this).height;
+}
+

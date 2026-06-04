@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:spend_sum/features/dashboard/domain/entities/home_overview_data.dart';
 import 'package:spend_sum/features/dashboard/domain/usecases/get_home_data_usecase.dart';
 
 /// Sealed class representing the presentation states of the Home View.
-sealed class HomeState {
+sealed class HomeState extends Equatable {
   const HomeState();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class HomeInitial extends HomeState {
@@ -19,11 +23,17 @@ class HomeLoading extends HomeState {
 class HomeLoaded extends HomeState {
   final HomeOverviewData data;
   const HomeLoaded(this.data);
+
+  @override
+  List<Object?> get props => [data];
 }
 
 class HomeError extends HomeState {
   final String message;
   const HomeError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }
 
 /// Cubit managing loading states, calculations, and active databinding for the Dashboard Home page.

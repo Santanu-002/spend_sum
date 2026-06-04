@@ -6,6 +6,7 @@ class HomeOverviewData extends Equatable {
   final double thisMonthSpend;
   final double walletBalance;
   final double budgetAmount;
+  final double percentageChange;
   final List<Expense> recentTransactions;
   final List<Expense> allTransactions;
 
@@ -13,6 +14,7 @@ class HomeOverviewData extends Equatable {
     required this.thisMonthSpend,
     required this.walletBalance,
     required this.budgetAmount,
+    this.percentageChange = 0.0,
     required this.recentTransactions,
     this.allTransactions = const [],
   });
@@ -22,6 +24,7 @@ class HomeOverviewData extends Equatable {
         thisMonthSpend,
         walletBalance,
         budgetAmount,
+        percentageChange,
         recentTransactions,
         allTransactions,
       ];

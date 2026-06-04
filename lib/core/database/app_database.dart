@@ -38,6 +38,7 @@ class Users extends Table {
   BoolColumn get isNew => boolean().withDefault(const Constant(true))();
   BoolColumn get isBudgetCompleted =>
       boolean().withDefault(const Constant(false))();
+  TextColumn get currency => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {uid};
@@ -52,13 +53,26 @@ class Budgets extends Table {
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
+/// SQLite schema definition for Country Codes, Flags, and Currency Symbols.
+class CountryCurrencies extends Table {
+  TextColumn get code => text()(); // e.g. "+91"
+  TextColumn get flag => text()(); // e.g. "🇮🇳"
+  TextColumn get name => text()(); // e.g. "India"
+  IntColumn get maxLength => integer()(); // e.g. 10
+  TextColumn get currencySymbol => text()(); // e.g. "₹"
+  TextColumn get currencyLabel => text().withDefault(const Constant(''))();
+
+  @override
+  Set<Column> get primaryKey => {code};
+}
+
 /// The Drift SQLite reactive database for SpendSum.
-@DriftDatabase(tables: [Expenses, Categories, Users, Budgets])
+@DriftDatabase(tables: [Expenses, Categories, Users, Budgets, CountryCurrencies])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration {
@@ -72,6 +86,15 @@ class AppDatabase extends _$AppDatabase {
         }
         if (from < 3) {
           await m.addColumn(expenses, expenses.userUid);
+        }
+        if (from < 4) {
+          await m.createTable(countryCurrencies);
+        }
+        if (from < 5) {
+          await m.addColumn(users, users.currency);
+        }
+        if (from < 6) {
+          await m.addColumn(countryCurrencies, countryCurrencies.currencyLabel);
         }
       },
       beforeOpen: (details) async {
@@ -123,6 +146,200 @@ class AppDatabase extends _$AppDatabase {
             }
           }
         }
+
+        final defaultCountryCurrencies = [
+          const CountryCurrenciesCompanion(
+            code: Value('+91'),
+            flag: Value('🇮🇳'),
+            name: Value('India'),
+            maxLength: Value(10),
+            currencySymbol: Value('₹'),
+            currencyLabel: Value('INR'),
+          ),
+          const CountryCurrenciesCompanion(
+            code: Value('+1'),
+            flag: Value('🇺🇸'),
+            name: Value('United States'),
+            maxLength: Value(10),
+            currencySymbol: Value('\$'),
+            currencyLabel: Value('USD'),
+          ),
+          const CountryCurrenciesCompanion(
+            code: Value('+44'),
+            flag: Value('🇬🇧'),
+            name: Value('United Kingdom'),
+            maxLength: Value(10),
+            currencySymbol: Value('£'),
+            currencyLabel: Value('GBP'),
+          ),
+          const CountryCurrenciesCompanion(
+            code: Value('+65'),
+            flag: Value('🇸🇬'),
+            name: Value('Singapore'),
+            maxLength: Value(8),
+            currencySymbol: Value('S\$'),
+            currencyLabel: Value('SGD'),
+          ),
+          const CountryCurrenciesCompanion(
+            code: Value('+61'),
+            flag: Value('🇦🇺'),
+            name: Value('Australia'),
+            maxLength: Value(9),
+            currencySymbol: Value('A\$'),
+            currencyLabel: Value('AUD'),
+          ),
+          const CountryCurrenciesCompanion(
+            code: Value('+33'),
+            flag: Value('🇫🇷'),
+            name: Value('France'),
+            maxLength: Value(9),
+            currencySymbol: Value('€'),
+            currencyLabel: Value('EUR'),
+          ),
+          const CountryCurrenciesCompanion(
+            code: Value('+81'),
+            flag: Value('🇯🇵'),
+            name: Value('Japan'),
+            maxLength: Value(10),
+            currencySymbol: Value('¥'),
+            currencyLabel: Value('JPY'),
+          ),
+          const CountryCurrenciesCompanion(
+            code: Value('+84'),
+            flag: Value('🇻🇳'),
+            name: Value('Vietnam'),
+            maxLength: Value(9),
+            currencySymbol: Value('đ'),
+            currencyLabel: Value('VND'),
+          ),
+        ];
+        for (final entry in defaultCountryCurrencies) {
+          await into(countryCurrencies).insert(entry, mode: InsertMode.insertOrReplace);
+        }
+
+        // Seed default user if not exists
+        final defaultUserExisting = await (select(users)..where((t) => t.phoneNumber.equals('+919876543210'))).getSingleOrNull();
+        if (defaultUserExisting == null) {
+          const defaultUserUid = 'usr9876543'; // exactly 10 characters
+          await into(users).insert(const UsersCompanion(
+            uid: Value(defaultUserUid),
+            phoneNumber: Value('+919876543210'),
+            name: Value('Santanu Dev'),
+            isNew: Value(false),
+            isBudgetCompleted: Value(true),
+            currency: Value('₹'),
+          ));
+
+          await into(budgets).insert(BudgetsCompanion(
+            userUid: const Value(defaultUserUid),
+            amount: const Value(50000.0),
+            period: const Value('Monthly'),
+            createdAt: Value(DateTime.now()),
+          ));
+
+          final now = DateTime.now();
+          final currentYear = now.year;
+          for (int i = 0; i < 57; i++) {
+            var txDate = DateTime(now.year, now.month, now.day).subtract(
+              Duration(days: i + 1, hours: (i * 3) % 24, minutes: (i * 7) % 60),
+            );
+            if (txDate.year != currentYear) {
+              txDate = DateTime(currentYear, 1, 1).add(Duration(hours: i));
+            }
+
+            final isIncome = (i % 5 == 0);
+            final double amount;
+            final String category;
+            final String title;
+
+            if (isIncome) {
+              if (i % 10 == 0) {
+                category = 'Salary';
+                title = 'Salary Credit';
+                amount = 60000.0;
+              } else {
+                category = 'Freelance';
+                title = 'Freelance Project Pay';
+                amount = 12500.0 + (i * 100);
+              }
+            } else {
+              final expType = i % 12;
+              switch (expType) {
+                case 1:
+                  category = 'Groceries';
+                  title = 'Weekly Groceries';
+                  amount = 1500.0 + (i * 15);
+                  break;
+                case 2:
+                  category = 'Travel';
+                  title = 'Petrol Refuel';
+                  amount = 1200.0 + (i * 10);
+                  break;
+                case 3:
+                  category = 'Food';
+                  title = 'Restaurant Dinner';
+                  amount = 850.0 + (i * 5);
+                  break;
+                case 4:
+                  category = 'Entertainment';
+                  title = 'Movie Ticket';
+                  amount = 450.0;
+                  break;
+                case 5:
+                  category = 'shopping';
+                  title = 'New Clothes';
+                  amount = 3200.0;
+                  break;
+                case 6:
+                  category = 'Internet';
+                  title = 'Wifi Bill';
+                  amount = 999.0;
+                  break;
+                case 7:
+                  category = 'Rent';
+                  title = 'Monthly Room Rent';
+                  amount = 12000.0;
+                  break;
+                case 8:
+                  category = 'Gym';
+                  title = 'Gym Fee';
+                  amount = 1500.0;
+                  break;
+                case 9:
+                  category = 'Water';
+                  title = 'Water Delivery';
+                  amount = 350.0;
+                  break;
+                case 10:
+                  category = 'Subscription';
+                  title = 'Streaming Subscription';
+                  amount = 649.0;
+                  break;
+                case 11:
+                  category = 'Bills';
+                  title = 'Electric Bill';
+                  amount = 2200.0;
+                  break;
+                default:
+                  category = 'Other';
+                  title = 'App Purchase';
+                  amount = 250.0;
+                  break;
+              }
+            }
+
+            await into(expenses).insert(ExpensesCompanion(
+              userUid: const Value(defaultUserUid),
+              title: Value(title),
+              amount: Value(amount),
+              date: Value(txDate),
+              category: Value(category),
+              isIncome: Value(isIncome),
+            ));
+          }
+        } else if (defaultUserExisting.currency == null || defaultUserExisting.currency!.trim().isEmpty) {
+          await update(users).replace(defaultUserExisting.copyWith(currency: const Value('₹')));
+        }
       },
     );
   }
@@ -173,6 +390,10 @@ class AppDatabase extends _$AppDatabase {
       (select(budgets)..where((t) => t.userUid.equals(uid))).watch();
   Future<bool> updateBudget(Budget entity) =>
       update(budgets).replace(entity);
+
+  // --- Helper CRUD queries for Country Currencies ---
+  Future<List<CountryCurrency>> getAllCountryCurrencies() =>
+      select(countryCurrencies).get();
 }
 
 /// Helper connection factory using the background native sqlite database executor.

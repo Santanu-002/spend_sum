@@ -24,6 +24,14 @@ class AppRoutes {
 
   static const addCategory =
       AppRoute(name: 'add-category', path: '/add-category');
+
+  static const profileSettings =
+      AppRoute(name: 'profile-settings', path: '/profile-settings');
+
+  static const editProfile =
+      AppRoute(name: 'editProfile', path: '/edit-profile');
+
+  static const wallet = AppRoute(name: 'wallet', path: '/wallet');
 }
 
 /// Private class to group and categorize authentication-related routes.

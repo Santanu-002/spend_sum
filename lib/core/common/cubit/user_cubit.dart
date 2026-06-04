@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spend_sum/core/database/app_database.dart';
-import 'package:spend_sum/features/auth/data/datasources/auth_local_datasource.dart';
+import 'package:spend_sum/features/auth/domain/repository/i_auth_repository.dart';
 
 /// Sealed class representing the different states of the active user profile.
 sealed class UserState {
@@ -26,24 +26,25 @@ class UserLoggedOut extends UserState {
 
 /// Global Cubit managing user profile session state and storage persistence.
 class UserCubit extends Cubit<UserState> {
-  final IAuthLocalDataSource localDataSource;
+  final IAuthRepository authRepository;
 
-  UserCubit({required this.localDataSource})
+  UserCubit({required this.authRepository})
     : super(const UserInitial());
 
   /// Loads the user profile metadata by unique user ID.
   Future<void> loadUserProfile(String uid) async {
     emit(const UserLoading());
-    try {
-      final user = await localDataSource.getUserByUid(uid);
-      if (user != null) {
-        emit(UserLoggedIn(user));
-      } else {
-        emit(const UserLoggedOut());
-      }
-    } catch (_) {
-      emit(const UserLoggedOut());
-    }
+    final result = await authRepository.getUser(uid);
+    result.fold(
+      (failure) => emit(const UserLoggedOut()),
+      (user) {
+        if (user != null) {
+          emit(UserLoggedIn(user));
+        } else {
+          emit(const UserLoggedOut());
+        }
+      },
+    );
   }
 
   /// Refreshes the local memory state directly when updating details.
@@ -54,9 +55,11 @@ class UserCubit extends Cubit<UserState> {
   /// Clears active SharedPreferences credentials and signs out.
   Future<void> logout() async {
     emit(const UserLoading());
-    try {
-      await localDataSource.clearUserSession();
-    } catch (_) {}
+    final result = await authRepository.logout();
+    result.fold(
+      (failure) => {}, // Keep logged out state in UI anyway on failure
+      (_) {},
+    );
     emit(const UserLoggedOut());
   }
 }

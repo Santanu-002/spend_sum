@@ -15,7 +15,7 @@ CategoryDetails getCategoryDetails(String categoryName) {
     case 'groceries':
       return const CategoryDetails(
         icon: Icons.shopping_basket_rounded,
-        color: Color(0xFF4CD964),
+        color: Color(0xFF00B475),
       );
     case 'travel':
       return const CategoryDetails(
@@ -35,7 +35,7 @@ CategoryDetails getCategoryDetails(String categoryName) {
     case 'insurances':
       return const CategoryDetails(
         icon: Icons.shield_rounded,
-        color: Color(0xFF4CD964),
+        color: Color(0xFF00B475),
       );
     case 'education':
       return const CategoryDetails(
@@ -50,7 +50,7 @@ CategoryDetails getCategoryDetails(String categoryName) {
     case 'shopping':
       return const CategoryDetails(
         icon: Icons.shopping_bag_rounded,
-        color: Color(0xFF4CD964),
+        color: Color(0xFF00B475),
       );
     case 'internet':
       return const CategoryDetails(
@@ -80,7 +80,7 @@ CategoryDetails getCategoryDetails(String categoryName) {
     case 'vacation':
       return const CategoryDetails(
         icon: Icons.beach_access_rounded,
-        color: Color(0xFF4CD964),
+        color: Color(0xFF00B475),
       );
     case 'food':
       return const CategoryDetails(
@@ -105,12 +105,12 @@ CategoryDetails getCategoryDetails(String categoryName) {
     case 'savings':
       return const CategoryDetails(
         icon: Icons.savings_rounded,
-        color: Color(0xFF4CD964),
+        color: Color(0xFF00B475),
       );
     case 'salary':
       return const CategoryDetails(
         icon: Icons.attach_money_rounded,
-        color: Color(0xFF4CD964),
+        color: Color(0xFF00B475),
       );
     case 'freelance':
       return const CategoryDetails(
