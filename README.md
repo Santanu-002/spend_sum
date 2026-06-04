@@ -52,6 +52,28 @@ A personal Flutter app for tracking expenses and viewing monthly spend summaries
 
 ---
 
+## 🤖 AI Tools & Development Workflow
+
+This application was created through a collaborative human-AI development process using specialized tools:
+
+1. **Design & Inspiration**:
+   - **Dribbble**: Used as the primary source for visual inspiration to create a modern, premium fintech interface with frosted glass effects and deep gradient overlays.
+   - **STICH**: An AI design tool used to generate the initial style tokens and design guidelines defined in [DESIGN_LIGHT.md](DESIGN_LIGHT.md) and [DESIGN_DARK.md](DESIGN_DARK.md). Color changes made mid-project were updated back into these specification files to maintain design integrity.
+
+2. **Agent Rules & Guidance**:
+   - **gemini.md**: A dedicated constraints file specifying engineering rules, clean architecture patterns, coding style guidelines, and UI principles. This aligned the AI agent's coding behaviors directly with the project goals.
+
+3. **Coding & Acceleration**:
+   - **Antigravity (Google DeepMind)**: The core AI coding agent used to implement, refactor, and finalize the application logic and layouts.
+   - **skills.sh**: Equipped the agent with Dart & Flutter development capabilities (e.g., mock generation, dependency injection setup, and automated static analysis) to accelerate coding speed.
+
+4. **Implementation & Refactoring steps**:
+   - **Core Logic**: Adjusted `HomeRepository` to expand recent transactions to 6 items (satisfying the 5-7 requirement) and dynamically computed current month expenses grouped by category.
+   - **UI Polish**: Created the gradient Spend Card, dynamic category list scroll, and cleanly repositioned the FAB to the bottom-right corner while aligning the bottom navigation bar.
+   - **Verification**: Verified using automated static analysis commands via the agent toolchain (`dart analyze`) to confirm zero compilation errors or lint warnings.
+
+---
+
 ## 🚀 Run Locally
 
 ```bash
