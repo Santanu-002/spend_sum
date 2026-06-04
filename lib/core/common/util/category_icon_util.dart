@@ -8,9 +8,43 @@ class CategoryDetails {
   const CategoryDetails({required this.icon, required this.color});
 }
 
-/// Resolves standard icon and styling configuration from category key names.
+// Global cache for custom categories
+final Map<String, CategoryDetails> _customCategoriesCache = {};
+
+/// Registers a custom category in the cache so [getCategoryDetails] can resolve it dynamically.
+void registerCustomCategory({
+  required String name,
+  required String iconHex,
+  required String colorHex,
+}) {
+  try {
+    final nameLower = name.toLowerCase().trim();
+    final codePoint = int.tryParse(iconHex, radix: 16);
+    if (codePoint != null) {
+      final iconData = IconData(codePoint, fontFamily: 'MaterialIcons');
+      final cleanHex = colorHex.replaceAll('#', '').replaceAll('0x', '');
+      final Color color;
+      if (cleanHex.length == 6) {
+        color = Color(int.parse('FF$cleanHex', radix: 16));
+      } else if (cleanHex.length == 8) {
+        color = Color(int.parse(cleanHex, radix: 16));
+      } else {
+        color = const Color(0xFF5856D6);
+      }
+      _customCategoriesCache[nameLower] = CategoryDetails(icon: iconData, color: color);
+    }
+  } catch (_) {}
+}
+
+/// Resolves standard or custom icon and styling configuration from category key names.
 CategoryDetails getCategoryDetails(String categoryName) {
   final nameLower = categoryName.toLowerCase().trim();
+
+  // Check the custom category cache first
+  if (_customCategoriesCache.containsKey(nameLower)) {
+    return _customCategoriesCache[nameLower]!;
+  }
+
   switch (nameLower) {
     case 'groceries':
       return const CategoryDetails(

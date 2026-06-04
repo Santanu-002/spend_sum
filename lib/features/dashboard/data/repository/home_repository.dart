@@ -7,6 +7,7 @@ import 'package:spend_sum/core/error/app_exception.dart';
 import 'package:spend_sum/features/dashboard/data/datasources/home_local_datasource.dart';
 import 'package:spend_sum/features/dashboard/domain/entities/home_overview_data.dart';
 import 'package:spend_sum/features/dashboard/domain/repository/i_home_repository.dart';
+import 'package:spend_sum/core/common/util/category_icon_util.dart';
 
 /// Data Layer concrete implementation of IHomeRepository.
 class HomeRepository implements IHomeRepository {
@@ -17,6 +18,7 @@ class HomeRepository implements IHomeRepository {
   @override
   Future<Either<AppFailure, HomeOverviewData>> getHomeOverview(String uid) async {
     try {
+      await _warmCategoryCache();
       // 1. Fetch user budgets
       final budgets = await localDataSource.getBudgetsForUser(uid);
       final double budgetAmount = budgets.isNotEmpty ? budgets.first.amount : 0.0;
@@ -88,6 +90,7 @@ class HomeRepository implements IHomeRepository {
     Future<void> update() async {
       if (controller.isClosed) return;
       try {
+        await _warmCategoryCache();
         final budgets = await localDataSource.getBudgetsForUser(uid);
         final double budgetAmount = budgets.isNotEmpty ? budgets.first.amount : 0.0;
 
@@ -167,10 +170,27 @@ class HomeRepository implements IHomeRepository {
     return controller.stream;
   }
 
+  Future<void> _warmCategoryCache() async {
+    try {
+      final expenseCats = await localDataSource.getCategoriesByType(isExpense: true);
+      final incomeCats = await localDataSource.getCategoriesByType(isExpense: false);
+      for (final cat in [...expenseCats, ...incomeCats]) {
+        registerCustomCategory(
+          name: cat.name,
+          iconHex: cat.icon,
+          colorHex: cat.color,
+        );
+      }
+    } catch (_) {}
+  }
+
   @override
   Future<Either<AppFailure, List<Category>>> getCategories({required bool isExpense}) async {
     try {
       final list = await localDataSource.getCategoriesByType(isExpense: isExpense);
+      for (final cat in list) {
+        registerCustomCategory(name: cat.name, iconHex: cat.icon, colorHex: cat.color);
+      }
       return Right(list);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));
@@ -246,6 +266,7 @@ class HomeRepository implements IHomeRepository {
         isExpense: Value(isExpense),
       );
       final id = await localDataSource.insertCategory(companion);
+      registerCustomCategory(name: name, iconHex: icon, colorHex: color);
       return Right(id);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));
