@@ -163,7 +163,9 @@ class HomeContentLayout extends StatelessWidget {
                                 data!.percentageChange < 0
                                     ? Icons.arrow_downward_rounded
                                     : Icons.arrow_upward_rounded,
-                                color: themeExt.onPrimary,
+                                color: data!.percentageChange < 0
+                                    ? const Color(0xFF4ADE80)
+                                    : const Color(0xFFFF6B6B),
                                 size: 16,
                               ),
                               const SizedBox(width: 6),
@@ -173,7 +175,9 @@ class HomeContentLayout extends StatelessWidget {
                                 textStyle: GoogleFonts.inter(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: themeExt.onPrimary,
+                                  color: data!.percentageChange < 0
+                                      ? const Color(0xFF4ADE80)
+                                      : const Color(0xFFFF6B6B),
                                 ),
                                 duration: const Duration(milliseconds: 800),
                               ),
@@ -185,7 +189,9 @@ class HomeContentLayout extends StatelessWidget {
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  color: themeExt.onPrimary.withValues(alpha: 0.9),
+                                  color: data!.percentageChange < 0
+                                      ? const Color(0xFF4ADE80)
+                                      : const Color(0xFFFF6B6B),
                                 ),
                               ),
                             ],
