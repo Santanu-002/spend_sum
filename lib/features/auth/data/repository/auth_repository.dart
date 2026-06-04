@@ -8,6 +8,7 @@ import 'package:spend_sum/features/auth/data/datasources/auth_local_datasource.d
 import 'package:spend_sum/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:spend_sum/features/auth/domain/entities/auth_response.dart';
 import 'package:spend_sum/features/auth/domain/repository/i_auth_repository.dart';
+import 'package:spend_sum/core/common/util/currency_util.dart';
 
 /// Data Layer repository implementing the domain repository contract using Local and Remote Data Sources.
 class AuthRepository implements IAuthRepository {
@@ -45,11 +46,13 @@ class AuthRepository implements IAuthRepository {
       if (existingUser == null) {
         // Create new user record
         final newUid = generateNanoId(length: 10);
+        final defaultCurrency = getCurrencySymbol(phoneNumber);
         final companion = UsersCompanion.insert(
           uid: newUid,
           phoneNumber: phoneNumber,
           isNew: const Value(true),
           isBudgetCompleted: const Value(false),
+          currency: Value(defaultCurrency),
         );
         await localDataSource.insertUser(companion);
 
@@ -146,6 +149,79 @@ class AuthRepository implements IAuthRepository {
       return Left(
         DatabaseFailure('Failed to save budget details: ${e.toString()}'),
       );
+    }
+  }
+
+  @override
+  Future<Either<AppFailure, Unit>> updateProfile({
+    required String uid,
+    required String name,
+    DateTime? dob,
+    String? gender,
+    String? email,
+    String? currency,
+  }) async {
+    try {
+      final existingUser = await localDataSource.getUserByUid(uid);
+      if (existingUser == null) {
+        return const Left(DatabaseFailure('User profile not found.'));
+      }
+
+      final updatedUser = existingUser.copyWith(
+        name: Value(name),
+        dob: Value(dob),
+        gender: Value(gender),
+        email: Value(email),
+        currency: Value(currency),
+      );
+
+      await localDataSource.updateUser(updatedUser);
+
+      return const Right(unit);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      return Left(DatabaseFailure('Failed to update profile: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<AppFailure, User?>> getActiveUser() async {
+    try {
+      final isLogged = await localDataSource.isUserLoggedIn();
+      if (!isLogged) return const Right(null);
+      final uid = await localDataSource.getLoggedInUserId();
+      if (uid == null) return const Right(null);
+      final user = await localDataSource.getUserByUid(uid);
+      return Right(user);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      return Left(DatabaseFailure('Failed to retrieve active user: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<AppFailure, User?>> getUser(String uid) async {
+    try {
+      final user = await localDataSource.getUserByUid(uid);
+      return Right(user);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      return Left(DatabaseFailure('Failed to get user: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<AppFailure, Unit>> logout() async {
+    try {
+      await localDataSource.clearUserSession();
+      return const Right(unit);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      return Left(DatabaseFailure('Logout failed: ${e.toString()}'));
     }
   }
 }

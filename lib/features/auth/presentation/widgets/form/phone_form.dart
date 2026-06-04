@@ -3,21 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
-
-/// Interactive Country Code representation.
-class CountryCode {
-  final String code;
-  final String flag;
-  final String name;
-  final int maxLength;
-
-  const CountryCode({
-    required this.code,
-    required this.flag,
-    required this.name,
-    required this.maxLength,
-  });
-}
+import 'package:spend_sum/features/auth/domain/entities/country_code.dart';
 
 /// Phone entry form component extracted as a dedicated Stateless widget.
 class PhoneForm extends StatelessWidget {
@@ -44,8 +30,7 @@ class PhoneForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final themeExt = context.colorscheme;
 
     return Column(
       key: const ValueKey('phone_form'),

@@ -8,11 +8,19 @@ class AuthResponseModel extends AuthResponse {
   });
 
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
-    return AuthResponseModel(
-      uid: json['uid'] as String,
-      isNew: json['isNew'] as bool,
-      isBudgetCompleted: json['isBudgetCompleted'] as bool,
-    );
+    return switch (json) {
+      {
+        'uid': String uid,
+        'isNew': bool isNew,
+        'isBudgetCompleted': bool isBudgetCompleted,
+      } =>
+        AuthResponseModel(
+          uid: uid,
+          isNew: isNew,
+          isBudgetCompleted: isBudgetCompleted,
+        ),
+      _ => throw const FormatException('Failed to parse AuthResponseModel.'),
+    };
   }
 
   Map<String, dynamic> toJson() {

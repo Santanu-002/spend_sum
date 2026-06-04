@@ -1,76 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
-import 'package:spend_sum/core/database/app_database.dart';
 import 'package:spend_sum/core/router/app_routes.dart';
+import 'package:spend_sum/features/auth/presentation/cubit/auth_gate_cubit.dart';
 
 /// App routing gatekeeper checking persistent authentication and onboarding status.
-class AuthGatePage extends StatefulWidget {
+class AuthGatePage extends StatelessWidget {
   const AuthGatePage({super.key});
 
   @override
-  State<AuthGatePage> createState() => _AuthGatePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider<AuthGateCubit>(
+      create: (context) => sl<AuthGateCubit>()..evaluateAuthRoute(),
+      child: const AuthGatePageContent(),
+    );
+  }
 }
 
-class _AuthGatePageState extends State<AuthGatePage> {
-  @override
-  void initState() {
-    super.initState();
-    // Using post-frame callback to ensure routing is executed outside layout builds
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _evaluateAuthRoute();
-    });
-  }
-
-  Future<void> _evaluateAuthRoute() async {
-    final sharedPrefs = sl<SharedPreferences>();
-    final database = sl<AppDatabase>();
-
-    final isUserLoggedIn = sharedPrefs.getBool('isUserLoggedIn') ?? false;
-
-    if (isUserLoggedIn) {
-      final uid = sharedPrefs.getString('loggedInUserId');
-      if (uid != null) {
-        final user = await database.getUserByUid(uid);
-        if (user != null) {
-          if (mounted) {
-            context.read<UserCubit>().updateUserState(user);
-          }
-          if (user.isBudgetCompleted) {
-            if (mounted) {
-              context.go(AppRoutes.dashboard.path);
-            }
-            return;
-          } else {
-            if (mounted) {
-              context.go(AppRoutes.auth.expenseDetailsSurvey.path, extra: uid);
-            }
-            return;
-          }
-        }
-      }
-      // If user session exists but record is missing, redirect to login
-      if (mounted) {
-        context.go(AppRoutes.auth.login.path);
-      }
-    } else {
-      final isOnboardingCompleted =
-          sharedPrefs.getBool('isOnboardingCompleted') ?? false;
-      if (mounted) {
-        if (isOnboardingCompleted) {
-          context.go(AppRoutes.auth.login.path);
-        } else {
-          context.go(AppRoutes.onboarding.path);
-        }
-      }
-    }
-  }
+class AuthGatePageContent extends StatelessWidget {
+  const AuthGatePageContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    return BlocListener<AuthGateCubit, AuthGateState>(
+      listener: (context, state) {
+        if (state is AuthGateOnboardingRequired) {
+          context.goNamed(AppRoutes.onboarding.name);
+        } else if (state is AuthGateLoginRequired) {
+          context.goNamed(AppRoutes.auth.login.name);
+        } else if (state is AuthGateSurveyRequired) {
+          context.goNamed(AppRoutes.auth.expenseDetailsSurvey.name, extra: state.uid);
+        } else if (state is AuthGateDashboardRequired) {
+          context.read<UserCubit>().updateUserState(state.user);
+          context.goNamed(AppRoutes.dashboard.name);
+        }
+      },
+      child: const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
   }
 }

@@ -33,8 +33,7 @@ class OtpForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final themeExt = context.colorscheme;
 
     return Column(
       key: const ValueKey('otp_form'),

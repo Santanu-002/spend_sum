@@ -3,9 +3,11 @@ import 'package:spend_sum/features/auth/data/datasources/auth_local_datasource.d
 import 'package:spend_sum/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:spend_sum/features/auth/data/repository/auth_repository.dart';
 import 'package:spend_sum/features/auth/domain/repository/i_auth_repository.dart';
+import 'package:spend_sum/features/auth/domain/usecases/get_active_user.dart';
 import 'package:spend_sum/features/auth/domain/usecases/register_user.dart';
 import 'package:spend_sum/features/auth/domain/usecases/send_otp.dart';
 import 'package:spend_sum/features/auth/domain/usecases/submit_budget_details.dart';
+import 'package:spend_sum/features/auth/domain/usecases/update_profile.dart';
 import 'package:spend_sum/features/auth/domain/usecases/verify_otp.dart';
 import 'package:spend_sum/features/auth/presentation/bloc/auth_bloc.dart';
 
@@ -29,6 +31,8 @@ void initAuthDependencies() {
   sl.registerLazySingleton(() => VerifyOtp(sl()));
   sl.registerLazySingleton(() => RegisterUser(sl()));
   sl.registerLazySingleton(() => SubmitBudgetDetails(sl()));
+  sl.registerLazySingleton(() => UpdateProfile(sl()));
+  sl.registerLazySingleton(() => GetActiveUserUseCase(sl()));
 
   // Presentation Layer BLoC
   sl.registerFactory(

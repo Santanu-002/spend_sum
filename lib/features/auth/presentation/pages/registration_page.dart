@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
-import 'package:spend_sum/core/common/widget/app_button.dart';
-import 'package:spend_sum/core/common/widget/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/button/app_button.dart';
+import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/feedback/app_snackbar.dart';
 import 'package:spend_sum/core/router/app_routes.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
@@ -48,6 +50,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
 
   DateTime? _selectedDateOfBirth;
   String? _selectedGender;
+  bool _dobHasError = false;
 
   final List<String> _genders = const ['Male', 'Female', 'Other'];
 
@@ -67,8 +70,8 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
     final lastDate = DateTime(today.year - 12, today.month, today.day);
     final initialDate = lastDate;
 
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final theme = context.theme;
+    final themeExt = theme.colorscheme;
 
     final pickedDate = await showDatePicker(
       context: context,
@@ -80,7 +83,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
           data: theme.copyWith(
             colorScheme: theme.colorScheme.copyWith(
               primary: themeExt.primary,
-              onPrimary: Colors.white,
+              onPrimary: themeExt.onPrimary,
               surface: themeExt.surfaceContainerHigh,
               onSurface: themeExt.onSurface,
             ),
@@ -94,18 +97,40 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
       setState(() {
         _selectedDateOfBirth = pickedDate;
         _dobController.text = _formatDate(pickedDate);
+        _dobHasError = false;
       });
     }
   }
 
   String _formatDate(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+    return DateFormat('dd/MM/yyyy').format(date);
   }
 
   void _submitProfile() {
     if (!_formKey.currentState!.validate()) {
+      if (_selectedDateOfBirth == null) {
+        setState(() {
+          _dobHasError = true;
+        });
+      }
       return;
     }
+
+    if (_selectedDateOfBirth == null) {
+      setState(() {
+        _dobHasError = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        AppSnackbar.destructive(
+          message: 'Please select your date of birth',
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _dobHasError = false;
+    });
 
     context.read<AuthBloc>().add(
       AuthRegisterRequested(
@@ -122,9 +147,9 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
-    final textThemeExt = theme.extension<AppTextThemeExtension>()!;
+    final theme = context.theme;
+    final themeExt = theme.colorscheme;
+    final textThemeExt = theme.textThemeExt;
 
     return AppScaffold(
       useScrollView: true,
@@ -136,24 +161,8 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
             context.read<UserCubit>().loadUserProfile(state.uid);
 
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Row(
-                  children: [
-                    const Icon(Icons.check_circle, color: Colors.white),
-                    const SizedBox(width: 12),
-                    Text(
-                      'Profile completed successfully!',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusDefault,
-                  ),
-                ),
-                backgroundColor: themeExt.secondaryContainer,
+              AppSnackbar.success(
+                message: 'Profile completed successfully!',
               ),
             );
             // Move to initial budget survey screen
@@ -163,9 +172,8 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
             );
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                backgroundColor: themeExt.error,
+              AppSnackbar.destructive(
+                message: state.error,
               ),
             );
           }
@@ -348,17 +356,28 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Date of Birth Choice (Optional)
+                      // Date of Birth Choice
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(
-                              'Date of Birth (Optional)',
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: themeExt.onSurface,
+                            Text.rich(
+                              TextSpan(
+                                text: 'Date of Birth ',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: themeExt.onSurface,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: '*',
+                                    style: TextStyle(
+                                      color: themeExt.error,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -375,7 +394,9 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                                     AppDimensions.radiusDefault,
                                   ),
                                   border: Border.all(
-                                    color: themeExt.outlineVariant,
+                                    color: _dobHasError
+                                        ? theme.colorScheme.error
+                                        : themeExt.outlineVariant,
                                   ),
                                 ),
                                 padding: const EdgeInsets.symmetric(
@@ -385,7 +406,9 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                                   children: [
                                     Icon(
                                       Icons.calendar_month_outlined,
-                                      color: themeExt.onSurfaceVariant,
+                                      color: _dobHasError
+                                          ? theme.colorScheme.error
+                                          : themeExt.onSurfaceVariant,
                                       size: 20,
                                     ),
                                     const SizedBox(width: 10),
@@ -409,6 +432,16 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                                 ),
                               ),
                             ),
+                            if (_dobHasError) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                'Date of birth is required',
+                                style: GoogleFonts.inter(
+                                  color: theme.colorScheme.error,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                       ),

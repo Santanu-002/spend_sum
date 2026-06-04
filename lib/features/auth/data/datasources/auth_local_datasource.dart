@@ -10,6 +10,8 @@ abstract interface class IAuthLocalDataSource {
   Future<int> insertBudget(BudgetsCompanion companion);
   Future<void> saveUserLoggedInSession({required String uid});
   Future<void> clearUserSession();
+  Future<bool> isUserLoggedIn();
+  Future<String?> getLoggedInUserId();
 }
 
 class AuthLocalDataSource implements IAuthLocalDataSource {
@@ -82,6 +84,24 @@ class AuthLocalDataSource implements IAuthLocalDataSource {
       await sharedPreferences.remove('loggedInUserId');
     } catch (e) {
       throw DatabaseException('Failed to clear user session from SharedPreferences', details: e);
+    }
+  }
+
+  @override
+  Future<bool> isUserLoggedIn() async {
+    try {
+      return sharedPreferences.getBool('isUserLoggedIn') ?? false;
+    } catch (e) {
+      throw DatabaseException('Failed to check user login session', details: e);
+    }
+  }
+
+  @override
+  Future<String?> getLoggedInUserId() async {
+    try {
+      return sharedPreferences.getString('loggedInUserId');
+    } catch (e) {
+      throw DatabaseException('Failed to retrieve logged-in user ID', details: e);
     }
   }
 }

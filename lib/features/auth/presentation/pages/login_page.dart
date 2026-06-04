@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
-import 'package:spend_sum/core/common/widget/app_button.dart';
-import 'package:spend_sum/core/common/widget/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/button/app_button.dart';
+import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/feedback/app_snackbar.dart';
 import 'package:spend_sum/core/router/app_routes.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
@@ -13,8 +14,10 @@ import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:spend_sum/features/auth/presentation/bloc/auth_event.dart';
 import 'package:spend_sum/features/auth/presentation/bloc/auth_state.dart';
-import 'package:spend_sum/features/auth/presentation/widgets/phone_form.dart';
-import 'package:spend_sum/features/auth/presentation/widgets/otp_form.dart';
+import 'package:spend_sum/features/auth/presentation/widgets/form/phone_form.dart';
+import 'package:spend_sum/features/auth/presentation/widgets/form/otp_form.dart';
+import 'package:spend_sum/features/auth/domain/entities/country_code.dart';
+import 'package:spend_sum/features/auth/presentation/cubit/country_currency_cubit.dart';
 
 /// Authentication Screen presenting mobile OTP flow.
 /// Powered by AuthBloc for clean separation of concerns and logic.
@@ -23,8 +26,15 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AuthBloc>(
-      create: (context) => sl<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => sl<AuthBloc>(),
+        ),
+        BlocProvider<CountryCurrencyCubit>(
+          create: (context) => sl<CountryCurrencyCubit>()..loadCountryCurrencies(),
+        ),
+      ],
       child: const _LoginPageContent(),
     );
   }
@@ -47,19 +57,9 @@ class _LoginPageContentState extends State<_LoginPageContent> {
   String? _phoneError;
 
   // Selected Country Code
-  final List<CountryCode> _countries = const [
-    CountryCode(code: '+91', flag: '🇮🇳', name: 'India', maxLength: 10),
-    CountryCode(code: '+1', flag: '🇺🇸', name: 'United States', maxLength: 10),
-    CountryCode(
-      code: '+44',
-      flag: '🇬🇧',
-      name: 'United Kingdom',
-      maxLength: 10,
-    ),
-    CountryCode(code: '+65', flag: '🇸🇬', name: 'Singapore', maxLength: 8),
-    CountryCode(code: '+61', flag: '🇦🇺', name: 'Australia', maxLength: 9),
-  ];
-  late CountryCode _selectedCountry;
+  List<CountryCode> _countries = [];
+  CountryCode? _selectedCountry;
+  bool _isLoadingCountries = true;
 
   // OTP step controllers & focus
   final TextEditingController _otpController = TextEditingController();
@@ -74,7 +74,6 @@ class _LoginPageContentState extends State<_LoginPageContent> {
   @override
   void initState() {
     super.initState();
-    _selectedCountry = _countries.first;
     _phoneFocusNode.addListener(_onFocusChange);
     _otpFocusNode.addListener(_onFocusChange);
     _phoneFocusNode.requestFocus();
@@ -117,6 +116,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
   }
 
   void _validateAndSendOtp() {
+    if (_selectedCountry == null) return;
     final phone = _phoneController.text.trim();
     if (phone.isEmpty) {
       setState(() {
@@ -125,10 +125,10 @@ class _LoginPageContentState extends State<_LoginPageContent> {
       return;
     }
     // Enforce dynamic length check based on selected country
-    if (phone.length != _selectedCountry.maxLength) {
+    if (phone.length != _selectedCountry!.maxLength) {
       setState(() {
         _phoneError =
-            'Mobile number must be exactly ${_selectedCountry.maxLength} digits';
+            'Mobile number must be exactly ${_selectedCountry!.maxLength} digits';
       });
       return;
     }
@@ -144,7 +144,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
     });
 
     // Prepend number with country code while passing
-    final fullPhoneNumber = '${_selectedCountry.code}$phone';
+    final fullPhoneNumber = '${_selectedCountry!.code}$phone';
     debugPrint(
       'Passing validated phone number to backend/OTP service: $fullPhoneNumber',
     );
@@ -153,6 +153,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
   }
 
   void _verifyOtp() {
+    if (_selectedCountry == null) return;
     final otp = _otpController.text;
     if (otp.length < 6) {
       setState(() {
@@ -166,7 +167,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
     });
 
     final phone = _phoneController.text.trim();
-    final fullPhoneNumber = '${_selectedCountry.code}$phone';
+    final fullPhoneNumber = '${_selectedCountry!.code}$phone';
     context.read<AuthBloc>().add(
       AuthVerifyOtpRequested(
         phoneNumber: fullPhoneNumber,
@@ -176,22 +177,21 @@ class _LoginPageContentState extends State<_LoginPageContent> {
   }
 
   void _resendCode() {
-    if (!_canResend) return;
+    if (!_canResend || _selectedCountry == null) return;
     _otpController.clear();
     setState(() {
       _otpError = null;
     });
 
     final phone = _phoneController.text.trim();
-    final fullPhoneNumber = '${_selectedCountry.code}$phone';
+    final fullPhoneNumber = '${_selectedCountry!.code}$phone';
     context.read<AuthBloc>().add(AuthSendOtpRequested(fullPhoneNumber));
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
-    final textThemeExt = theme.extension<AppTextThemeExtension>()!;
+    final themeExt = context.colorscheme;
+    final textThemeExt = context.textThemeExt;
 
     return AppScaffold(
       useScrollView: true,
@@ -200,77 +200,67 @@ class _LoginPageContentState extends State<_LoginPageContent> {
           ? () => context.read<AuthBloc>().add(const AuthResetRequested())
           : null,
       padding: const EdgeInsets.symmetric(horizontal: AppDimensions.marginPage),
-      child: BlocConsumer<AuthBloc, AuthState>(
+      child: BlocListener<CountryCurrencyCubit, CountryCurrencyState>(
         listener: (context, state) {
-          if (state is AuthOtpSent) {
-            if (_isOtpStep) {
-              // Code was resent successfully
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Verification code resent successfully',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-                  ),
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppDimensions.radiusDefault,
-                    ),
-                  ),
-                  backgroundColor: themeExt.primaryContainer,
-                  duration: const Duration(seconds: 2),
-                ),
-              );
-            }
-
+          if (state is CountryCurrencyLoaded) {
             setState(() {
-              _isOtpStep = true;
+              _countries = state.countries;
+              if (state.countries.isNotEmpty && _selectedCountry == null) {
+                _selectedCountry = state.countries.first;
+              }
+              _isLoadingCountries = false;
             });
-
-            // Auto-focus OTP input in next frame and start countdown timer
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              _otpFocusNode.requestFocus();
-              _startTimer();
+          } else if (state is CountryCurrencyError) {
+            setState(() {
+              _isLoadingCountries = false;
             });
-          } else if (state is AuthSuccess) {
-            context.read<UserCubit>().loadUserProfile(state.uid);
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Row(
-                  children: [
-                    const Icon(Icons.check_circle_outline, color: Colors.white),
-                    const SizedBox(width: 12),
-                    Text(
-                      state.isNew
-                          ? 'OTP Verified! Please register.'
-                          : 'Welcome back! Login Successful.',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    AppDimensions.radiusDefault,
+          }
+        },
+        child: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthOtpSent) {
+              if (_isOtpStep) {
+                // Code was resent successfully
+                ScaffoldMessenger.of(context).showSnackBar(
+                  AppSnackbar.success(
+                    message: 'Verification code resent successfully',
+                    duration: const Duration(seconds: 2),
                   ),
-                ),
-                backgroundColor: themeExt.secondaryContainer,
-              ),
-            );
+                );
+              }
 
-            // Perform routing decisions based on user status
-            if (state.isNew) {
-              context.go(AppRoutes.auth.registration.path, extra: state.uid);
-            } else if (!state.isBudgetCompleted) {
-              context.go(
-                AppRoutes.auth.expenseDetailsSurvey.path,
-                extra: state.uid,
+              setState(() {
+                _isOtpStep = true;
+              });
+
+              // Auto-focus OTP input in next frame and start countdown timer
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _otpFocusNode.requestFocus();
+                _startTimer();
+              });
+            } else if (state is AuthSuccess) {
+              context.read<UserCubit>().loadUserProfile(state.uid);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                AppSnackbar.success(
+                  message: state.isNew
+                      ? 'OTP Verified! Please register.'
+                      : 'Welcome back! Login Successful.',
+                ),
               );
-            } else {
-              context.go(AppRoutes.dashboard.path);
-            }
-          } else if (state is AuthFailure) {
+
+              // Perform routing decisions based on user status
+              if (state.isNew) {
+                context.goNamed(AppRoutes.auth.registration.name, extra: state.uid);
+              } else if (!state.isBudgetCompleted) {
+                context.goNamed(
+                  AppRoutes.auth.expenseDetailsSurvey.name,
+                  extra: state.uid,
+                );
+              } else {
+                context.goNamed(AppRoutes.dashboard.name);
+              }
+            } else if (state is AuthFailure) {
             if (_isOtpStep) {
               setState(() {
                 _otpError = state.error;
@@ -322,7 +312,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                       const SizedBox(height: AppDimensions.stackSm),
                       Text(
                         _isOtpStep
-                            ? 'Enter the 6-digit confirmation code we sent to\n${_selectedCountry.code} ${_phoneController.text}'
+                            ? 'Enter the 6-digit confirmation code we sent to\n${_selectedCountry?.code ?? ""} ${_phoneController.text}'
                             : 'Enter your mobile number to sign in or create a new account in seconds.',
                         style: GoogleFonts.inter(
                           fontSize: 15,
@@ -339,75 +329,83 @@ class _LoginPageContentState extends State<_LoginPageContent> {
               // Inputs Content
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
-                child: _isOtpStep
-                    ? OtpForm(
-                        otpController: _otpController,
-                        otpFocusNode: _otpFocusNode,
-                        otpError: _otpError,
-                        secondsRemaining: _secondsRemaining,
-                        canResend: _canResend,
-                        onOtpCompleted: (pin) => _verifyOtp(),
-                        onOtpChanged: (value) {
-                          if (_otpError != null) {
-                            setState(() {
-                              _otpError = null;
-                            });
-                          }
-                        },
-                        onResendCode: _resendCode,
-                        state: state,
+                child: _isLoadingCountries
+                    ? const Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24.0),
+                          child: CircularProgressIndicator(),
+                        ),
                       )
-                    : PhoneForm(
-                        selectedCountry: _selectedCountry,
-                        phoneController: _phoneController,
-                        phoneFocusNode: _phoneFocusNode,
-                        phoneError: _phoneError,
-                        countries: _countries,
-                        onCountryChanged: (newValue) {
-                          if (newValue != null) {
-                            setState(() {
-                              _selectedCountry = newValue;
-                              if (_phoneController.text.length >
-                                  newValue.maxLength) {
-                                _phoneController.text = _phoneController.text
-                                    .substring(0, newValue.maxLength);
-                                _phoneController.selection =
-                                    TextSelection.fromPosition(
-                                      TextPosition(
-                                        offset: _phoneController.text.length,
-                                      ),
-                                    );
+                    : (_isOtpStep
+                        ? OtpForm(
+                            otpController: _otpController,
+                            otpFocusNode: _otpFocusNode,
+                            otpError: _otpError,
+                            secondsRemaining: _secondsRemaining,
+                            canResend: _canResend,
+                            onOtpCompleted: (pin) => _verifyOtp(),
+                            onOtpChanged: (value) {
+                              if (_otpError != null) {
+                                setState(() {
+                                  _otpError = null;
+                                });
                               }
-                            });
-                          }
-                        },
-                        onPhoneChanged: (value) {
-                          if (_phoneError != null) {
-                            setState(() {
-                              _phoneError = null;
-                            });
-                          }
-                        },
-                        onSubmitted: _validateAndSendOtp,
-                      ),
+                            },
+                            onResendCode: _resendCode,
+                            state: state,
+                          )
+                        : PhoneForm(
+                            selectedCountry: _selectedCountry!,
+                            phoneController: _phoneController,
+                            phoneFocusNode: _phoneFocusNode,
+                            phoneError: _phoneError,
+                            countries: _countries,
+                            onCountryChanged: (newValue) {
+                              if (newValue != null) {
+                                setState(() {
+                                  _selectedCountry = newValue;
+                                  if (_phoneController.text.length >
+                                      newValue.maxLength) {
+                                    _phoneController.text = _phoneController.text
+                                        .substring(0, newValue.maxLength);
+                                    _phoneController.selection =
+                                        TextSelection.fromPosition(
+                                          TextPosition(
+                                            offset: _phoneController.text.length,
+                                          ),
+                                        );
+                                  }
+                                });
+                              }
+                            },
+                            onPhoneChanged: (value) {
+                              if (_phoneError != null) {
+                                setState(() {
+                                  _phoneError = null;
+                                });
+                              }
+                            },
+                            onSubmitted: _validateAndSendOtp,
+                          )),
               ),
 
               const SizedBox(height: AppDimensions.stackLg),
 
               // Action Button
-              AppButton.filled(
-                onPressed: isAnyLoading
-                    ? null
-                    : (_isOtpStep ? _verifyOtp : _validateAndSendOtp),
-                loading: isVerificationLoading,
-                child: Text(
-                  _isOtpStep ? 'Verify and Continue' : 'Send Verification Code',
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
+              if (!_isLoadingCountries && _selectedCountry != null)
+                AppButton.filled(
+                  onPressed: isAnyLoading
+                      ? null
+                      : (_isOtpStep ? _verifyOtp : _validateAndSendOtp),
+                  loading: isVerificationLoading,
+                  child: Text(
+                    _isOtpStep ? 'Verify and Continue' : 'Send Verification Code',
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
-              ),
 
               const SizedBox(height: AppDimensions.stackMd),
 
@@ -449,6 +447,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
           );
         },
       ),
+    ),
     );
   }
 }

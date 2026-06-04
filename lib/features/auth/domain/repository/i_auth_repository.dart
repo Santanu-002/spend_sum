@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:spend_sum/core/database/app_database.dart';
 import 'package:spend_sum/core/error/app_errors.dart';
 import 'package:spend_sum/features/auth/domain/entities/auth_response.dart';
 
@@ -28,4 +29,23 @@ abstract interface class IAuthRepository {
     required double amount,
     required String period,
   });
+
+  /// Updates profile details for existing users.
+  Future<Either<AppFailure, Unit>> updateProfile({
+    required String uid,
+    required String name,
+    DateTime? dob,
+    String? gender,
+    String? email,
+    String? currency,
+  });
+
+  /// Retrieves the active logged-in user profile, if any.
+  Future<Either<AppFailure, User?>> getActiveUser();
+
+  /// Retrieves a specific user profile by their UID.
+  Future<Either<AppFailure, User?>> getUser(String uid);
+
+  /// Logs the active user out and clears session state.
+  Future<Either<AppFailure, Unit>> logout();
 }
