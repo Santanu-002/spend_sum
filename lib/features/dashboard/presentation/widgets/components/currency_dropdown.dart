@@ -63,6 +63,10 @@ class CurrencyDropdownField extends StatelessWidget {
     final theme = context.theme;
     final themeExt = theme.colorscheme;
 
+    // If the active selection matches the default currency symbol,
+    // display it as the default (null value) dropdown option.
+    final effectiveValue = (value == defaultSymbol) ? null : value;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -91,7 +95,7 @@ class CurrencyDropdownField extends StatelessWidget {
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String?>(
-              value: value,
+              value: effectiveValue,
               icon: Icon(
                 Icons.keyboard_arrow_down_rounded,
                 color: themeExt.onSurfaceVariant,
