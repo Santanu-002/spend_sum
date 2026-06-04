@@ -164,7 +164,7 @@ class HomeContentLayout extends StatelessWidget {
                                     ? Icons.arrow_downward_rounded
                                     : Icons.arrow_upward_rounded,
                                 color: data!.percentageChange < 0
-                                    ? const Color(0xFF4ADE80)
+                                    ? themeExt.error
                                     : const Color(0xFFFF6B6B),
                                 size: 16,
                               ),
@@ -176,7 +176,7 @@ class HomeContentLayout extends StatelessWidget {
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                   color: data!.percentageChange < 0
-                                      ? const Color(0xFF4ADE80)
+                                      ? themeExt.error
                                       : const Color(0xFFFF6B6B),
                                 ),
                                 duration: const Duration(milliseconds: 800),
@@ -190,7 +190,7 @@ class HomeContentLayout extends StatelessWidget {
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                   color: data!.percentageChange < 0
-                                      ? const Color(0xFF4ADE80)
+                                      ? themeExt.error
                                       : const Color(0xFFFF6B6B),
                                 ),
                               ),
