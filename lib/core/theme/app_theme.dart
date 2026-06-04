@@ -179,7 +179,7 @@ class AppTheme {
     backgroundGradientStart: Color(0xFFE2D6FF),
     backgroundGradientEnd: lightBackground,
     cardColor: Colors.white,
-    fabColor: Color(0xFF0D0D0D),
+    fabColor: Color(0xFF1B1B20),
     onFabColor: Colors.white,
   );
 
@@ -234,7 +234,7 @@ class AppTheme {
     backgroundGradientStart: Color(0xFF201648),
     backgroundGradientEnd: darkBackground,
     cardColor: darkSurfaceContainer,
-    fabColor: Color(0xFF0D0D0D),
+    fabColor: Color(0xFF1B1B20),
     onFabColor: Colors.white,
   );
 
