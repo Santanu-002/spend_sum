@@ -253,7 +253,9 @@ class _AddCategoryPageContentState extends State<_AddCategoryPageContent>
                   textCapitalization: TextCapitalization.words,
                   style: GoogleFonts.inter(color: themeExt.onSurface),
                   decoration: InputDecoration(
-                    hintText: 'e.g. Transport, Dividends, Utilities',
+                    hintText: _isExpense
+                        ? 'e.g. Shopping, Travel, Bills, Groceries'
+                        : 'e.g. Salary, Freelance, Investments, Bonus',
                     hintStyle: TextStyle(
                       color: themeExt.onSurfaceVariant.withValues(alpha: 0.5),
                     ),
