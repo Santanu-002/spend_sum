@@ -13,7 +13,7 @@ class AppTheme {
   static const Color lightPrimaryContainer = Color(0xFF7F56FF);
   static const Color lightOnPrimaryContainer = Color(0xFF060022);
   static const Color lightInversePrimary = Color(0xFFCCBDFF);
-  
+
   static const Color lightSecondary = Color(0xFF006C44);
   static const Color lightOnSecondary = Color(0xFFFFFFFF);
   static const Color lightSecondaryContainer = Color(0xFF6FFCB5);
@@ -35,7 +35,7 @@ class AppTheme {
   static const Color lightSurface = Color(0xFFFBF8FF);
   static const Color lightOnSurface = Color(0xFF1B1B20);
   static const Color lightSurfaceVariant = Color(0xFFE4E1E9);
-  
+
   static const Color lightOnSurfaceVariant = Color(0xFF6B7280);
 
   static const Color lightOutline = Color(0xFF7A7487);
@@ -95,7 +95,7 @@ class AppTheme {
   static const Color darkSurface = Color(0xFF131318);
   static const Color darkOnSurface = Color(0xFFE4E1E9);
   static const Color darkSurfaceVariant = Color(0xFF35343A);
-  
+
   static const Color darkOnSurfaceVariant = Color(0xFF9CA3AF);
 
   static const Color darkOutline = Color(0xFF948EA1);
@@ -328,7 +328,95 @@ class AppTheme {
       scaffoldBackgroundColor: lightExtension.background,
       cardColor: lightExtension.cardColor,
       textTheme: _buildTextTheme(base.textTheme, lightExtension.onSurface),
-      
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: lightExtension.surface,
+        hourMinuteColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.primary;
+          }
+          return lightExtension.surfaceContainer;
+        }),
+        hourMinuteTextColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.onPrimary;
+          }
+          return lightExtension.onSurface;
+        }),
+        dayPeriodColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.primary;
+          }
+          return lightExtension.surfaceContainer;
+        }),
+        dayPeriodTextColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.onPrimary;
+          }
+          return lightExtension.onSurface;
+        }),
+        dayPeriodBorderSide: BorderSide(color: lightExtension.outlineVariant, width: 1),
+        hourMinuteShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusDefault),
+          side: BorderSide(color: lightExtension.outlineVariant, width: 1),
+        ),
+        dialBackgroundColor: lightExtension.surfaceContainer,
+        dialHandColor: lightExtension.primary,
+        dialTextColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.onPrimary;
+          }
+          return lightExtension.onSurface;
+        }),
+        entryModeIconColor: lightExtension.primary,
+      ),
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: lightExtension.surface,
+        headerBackgroundColor: lightExtension.primary,
+        headerForegroundColor: lightExtension.onPrimary,
+        dayForegroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.onPrimary;
+          }
+          return lightExtension.onSurface;
+        }),
+        dayBackgroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.primary;
+          }
+          return Colors.transparent;
+        }),
+        yearForegroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.onPrimary;
+          }
+          return lightExtension.onSurface;
+        }),
+        yearBackgroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.primary;
+          }
+          return Colors.transparent;
+        }),
+        todayForegroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.onPrimary;
+          }
+          return lightExtension.primary;
+        }),
+        todayBackgroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return lightExtension.primary;
+          }
+          return Colors.transparent;
+        }),
+        todayBorder: BorderSide(color: lightExtension.primary, width: 1.5),
+        dividerColor: lightExtension.outlineVariant,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusDefault),
+          side: BorderSide(color: lightExtension.outlineVariant, width: 1),
+        ),
+      ),
+
       // Card Theme config
       cardTheme: CardThemeData(
         color: lightExtension.cardColor,
@@ -375,7 +463,10 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: lightExtension.surfaceContainer,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 18,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusLg), // 32px
           borderSide: BorderSide.none,
@@ -455,7 +546,95 @@ class AppTheme {
       scaffoldBackgroundColor: darkExtension.background,
       cardColor: darkExtension.cardColor,
       textTheme: _buildTextTheme(base.textTheme, darkExtension.onSurface),
-      
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: darkExtension.surface,
+        hourMinuteColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return darkExtension.primaryContainer;
+          }
+          return darkExtension.surfaceContainer;
+        }),
+        hourMinuteTextColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return darkExtension.onSurface;
+        }),
+        dayPeriodColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return darkExtension.primaryContainer;
+          }
+          return darkExtension.surfaceContainer;
+        }),
+        dayPeriodTextColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return darkExtension.onSurface;
+        }),
+        dayPeriodBorderSide: BorderSide(color: darkExtension.outlineVariant, width: 1),
+        hourMinuteShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusDefault),
+          side: BorderSide(color: darkExtension.outlineVariant, width: 1),
+        ),
+        dialBackgroundColor: darkExtension.surfaceContainer,
+        dialHandColor: darkExtension.primaryContainer,
+        dialTextColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return darkExtension.onSurface;
+        }),
+        entryModeIconColor: darkExtension.primaryContainer,
+      ),
+      datePickerTheme: DatePickerThemeData(
+        backgroundColor: darkExtension.surface,
+        headerBackgroundColor: darkExtension.primaryContainer,
+        headerForegroundColor: Colors.white,
+        dayForegroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return darkExtension.onSurface;
+        }),
+        dayBackgroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return darkExtension.primaryContainer;
+          }
+          return Colors.transparent;
+        }),
+        yearForegroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return darkExtension.onSurface;
+        }),
+        yearBackgroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return darkExtension.primaryContainer;
+          }
+          return Colors.transparent;
+        }),
+        todayForegroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return darkExtension.primaryContainer;
+        }),
+        todayBackgroundColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return darkExtension.primaryContainer;
+          }
+          return Colors.transparent;
+        }),
+        todayBorder: BorderSide(color: darkExtension.primaryContainer, width: 1.5),
+        dividerColor: darkExtension.outlineVariant,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusDefault),
+          side: BorderSide(color: darkExtension.outlineVariant, width: 1),
+        ),
+      ),
+
       // Card Theme config
       cardTheme: CardThemeData(
         color: darkExtension.cardColor,
@@ -502,7 +681,10 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: darkExtension.surfaceContainer,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 18,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusLg), // 32px
           borderSide: BorderSide.none,

@@ -212,25 +212,32 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
       surfaceTint: surfaceTint ?? this.surfaceTint,
       surfaceDim: surfaceDim ?? this.surfaceDim,
       surfaceBright: surfaceBright ?? this.surfaceBright,
-      surfaceContainerLowest: surfaceContainerLowest ?? this.surfaceContainerLowest,
+      surfaceContainerLowest:
+          surfaceContainerLowest ?? this.surfaceContainerLowest,
       surfaceContainerLow: surfaceContainerLow ?? this.surfaceContainerLow,
       surfaceContainer: surfaceContainer ?? this.surfaceContainer,
       surfaceContainerHigh: surfaceContainerHigh ?? this.surfaceContainerHigh,
-      surfaceContainerHighest: surfaceContainerHighest ?? this.surfaceContainerHighest,
+      surfaceContainerHighest:
+          surfaceContainerHighest ?? this.surfaceContainerHighest,
       primaryFixed: primaryFixed ?? this.primaryFixed,
       primaryFixedDim: primaryFixedDim ?? this.primaryFixedDim,
       onPrimaryFixed: onPrimaryFixed ?? this.onPrimaryFixed,
-      onPrimaryFixedVariant: onPrimaryFixedVariant ?? this.onPrimaryFixedVariant,
+      onPrimaryFixedVariant:
+          onPrimaryFixedVariant ?? this.onPrimaryFixedVariant,
       secondaryFixed: secondaryFixed ?? this.secondaryFixed,
       secondaryFixedDim: secondaryFixedDim ?? this.secondaryFixedDim,
       onSecondaryFixed: onSecondaryFixed ?? this.onSecondaryFixed,
-      onSecondaryFixedVariant: onSecondaryFixedVariant ?? this.onSecondaryFixedVariant,
+      onSecondaryFixedVariant:
+          onSecondaryFixedVariant ?? this.onSecondaryFixedVariant,
       tertiaryFixed: tertiaryFixed ?? this.tertiaryFixed,
       tertiaryFixedDim: tertiaryFixedDim ?? this.tertiaryFixedDim,
       onTertiaryFixed: onTertiaryFixed ?? this.onTertiaryFixed,
-      onTertiaryFixedVariant: onTertiaryFixedVariant ?? this.onTertiaryFixedVariant,
-      backgroundGradientStart: backgroundGradientStart ?? this.backgroundGradientStart,
-      backgroundGradientEnd: backgroundGradientEnd ?? this.backgroundGradientEnd,
+      onTertiaryFixedVariant:
+          onTertiaryFixedVariant ?? this.onTertiaryFixedVariant,
+      backgroundGradientStart:
+          backgroundGradientStart ?? this.backgroundGradientStart,
+      backgroundGradientEnd:
+          backgroundGradientEnd ?? this.backgroundGradientEnd,
       cardColor: cardColor ?? this.cardColor,
     );
   }
@@ -241,53 +248,141 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
     return AppThemeExtension(
       primary: Color.lerp(primary, other.primary, t)!,
       onPrimary: Color.lerp(onPrimary, other.onPrimary, t)!,
-      primaryContainer: Color.lerp(primaryContainer, other.primaryContainer, t)!,
-      onPrimaryContainer: Color.lerp(onPrimaryContainer, other.onPrimaryContainer, t)!,
+      primaryContainer: Color.lerp(
+        primaryContainer,
+        other.primaryContainer,
+        t,
+      )!,
+      onPrimaryContainer: Color.lerp(
+        onPrimaryContainer,
+        other.onPrimaryContainer,
+        t,
+      )!,
       secondary: Color.lerp(secondary, other.secondary, t)!,
       onSecondary: Color.lerp(onSecondary, other.onSecondary, t)!,
-      secondaryContainer: Color.lerp(secondaryContainer, other.secondaryContainer, t)!,
-      onSecondaryContainer: Color.lerp(onSecondaryContainer, other.onSecondaryContainer, t)!,
+      secondaryContainer: Color.lerp(
+        secondaryContainer,
+        other.secondaryContainer,
+        t,
+      )!,
+      onSecondaryContainer: Color.lerp(
+        onSecondaryContainer,
+        other.onSecondaryContainer,
+        t,
+      )!,
       tertiary: Color.lerp(tertiary, other.tertiary, t)!,
       onTertiary: Color.lerp(onTertiary, other.onTertiary, t)!,
-      tertiaryContainer: Color.lerp(tertiaryContainer, other.tertiaryContainer, t)!,
-      onTertiaryContainer: Color.lerp(onTertiaryContainer, other.onTertiaryContainer, t)!,
+      tertiaryContainer: Color.lerp(
+        tertiaryContainer,
+        other.tertiaryContainer,
+        t,
+      )!,
+      onTertiaryContainer: Color.lerp(
+        onTertiaryContainer,
+        other.onTertiaryContainer,
+        t,
+      )!,
       error: Color.lerp(error, other.error, t)!,
       onError: Color.lerp(onError, other.onError, t)!,
       errorContainer: Color.lerp(errorContainer, other.errorContainer, t)!,
-      onErrorContainer: Color.lerp(onErrorContainer, other.onErrorContainer, t)!,
+      onErrorContainer: Color.lerp(
+        onErrorContainer,
+        other.onErrorContainer,
+        t,
+      )!,
       background: Color.lerp(background, other.background, t)!,
       onBackground: Color.lerp(onBackground, other.onBackground, t)!,
       surface: Color.lerp(surface, other.surface, t)!,
       onSurface: Color.lerp(onSurface, other.onSurface, t)!,
       surfaceVariant: Color.lerp(surfaceVariant, other.surfaceVariant, t)!,
-      onSurfaceVariant: Color.lerp(onSurfaceVariant, other.onSurfaceVariant, t)!,
+      onSurfaceVariant: Color.lerp(
+        onSurfaceVariant,
+        other.onSurfaceVariant,
+        t,
+      )!,
       outline: Color.lerp(outline, other.outline, t)!,
       outlineVariant: Color.lerp(outlineVariant, other.outlineVariant, t)!,
       inverseSurface: Color.lerp(inverseSurface, other.inverseSurface, t)!,
-      inverseOnSurface: Color.lerp(inverseOnSurface, other.inverseOnSurface, t)!,
+      inverseOnSurface: Color.lerp(
+        inverseOnSurface,
+        other.inverseOnSurface,
+        t,
+      )!,
       inversePrimary: Color.lerp(inversePrimary, other.inversePrimary, t)!,
       surfaceTint: Color.lerp(surfaceTint, other.surfaceTint, t)!,
       surfaceDim: Color.lerp(surfaceDim, other.surfaceDim, t)!,
       surfaceBright: Color.lerp(surfaceBright, other.surfaceBright, t)!,
-      surfaceContainerLowest: Color.lerp(surfaceContainerLowest, other.surfaceContainerLowest, t)!,
-      surfaceContainerLow: Color.lerp(surfaceContainerLow, other.surfaceContainerLow, t)!,
-      surfaceContainer: Color.lerp(surfaceContainer, other.surfaceContainer, t)!,
-      surfaceContainerHigh: Color.lerp(surfaceContainerHigh, other.surfaceContainerHigh, t)!,
-      surfaceContainerHighest: Color.lerp(surfaceContainerHighest, other.surfaceContainerHighest, t)!,
+      surfaceContainerLowest: Color.lerp(
+        surfaceContainerLowest,
+        other.surfaceContainerLowest,
+        t,
+      )!,
+      surfaceContainerLow: Color.lerp(
+        surfaceContainerLow,
+        other.surfaceContainerLow,
+        t,
+      )!,
+      surfaceContainer: Color.lerp(
+        surfaceContainer,
+        other.surfaceContainer,
+        t,
+      )!,
+      surfaceContainerHigh: Color.lerp(
+        surfaceContainerHigh,
+        other.surfaceContainerHigh,
+        t,
+      )!,
+      surfaceContainerHighest: Color.lerp(
+        surfaceContainerHighest,
+        other.surfaceContainerHighest,
+        t,
+      )!,
       primaryFixed: Color.lerp(primaryFixed, other.primaryFixed, t)!,
       primaryFixedDim: Color.lerp(primaryFixedDim, other.primaryFixedDim, t)!,
       onPrimaryFixed: Color.lerp(onPrimaryFixed, other.onPrimaryFixed, t)!,
-      onPrimaryFixedVariant: Color.lerp(onPrimaryFixedVariant, other.onPrimaryFixedVariant, t)!,
+      onPrimaryFixedVariant: Color.lerp(
+        onPrimaryFixedVariant,
+        other.onPrimaryFixedVariant,
+        t,
+      )!,
       secondaryFixed: Color.lerp(secondaryFixed, other.secondaryFixed, t)!,
-      secondaryFixedDim: Color.lerp(secondaryFixedDim, other.secondaryFixedDim, t)!,
-      onSecondaryFixed: Color.lerp(onSecondaryFixed, other.onSecondaryFixed, t)!,
-      onSecondaryFixedVariant: Color.lerp(onSecondaryFixedVariant, other.onSecondaryFixedVariant, t)!,
+      secondaryFixedDim: Color.lerp(
+        secondaryFixedDim,
+        other.secondaryFixedDim,
+        t,
+      )!,
+      onSecondaryFixed: Color.lerp(
+        onSecondaryFixed,
+        other.onSecondaryFixed,
+        t,
+      )!,
+      onSecondaryFixedVariant: Color.lerp(
+        onSecondaryFixedVariant,
+        other.onSecondaryFixedVariant,
+        t,
+      )!,
       tertiaryFixed: Color.lerp(tertiaryFixed, other.tertiaryFixed, t)!,
-      tertiaryFixedDim: Color.lerp(tertiaryFixedDim, other.tertiaryFixedDim, t)!,
+      tertiaryFixedDim: Color.lerp(
+        tertiaryFixedDim,
+        other.tertiaryFixedDim,
+        t,
+      )!,
       onTertiaryFixed: Color.lerp(onTertiaryFixed, other.onTertiaryFixed, t)!,
-      onTertiaryFixedVariant: Color.lerp(onTertiaryFixedVariant, other.onTertiaryFixedVariant, t)!,
-      backgroundGradientStart: Color.lerp(backgroundGradientStart, other.backgroundGradientStart, t)!,
-      backgroundGradientEnd: Color.lerp(backgroundGradientEnd, other.backgroundGradientEnd, t)!,
+      onTertiaryFixedVariant: Color.lerp(
+        onTertiaryFixedVariant,
+        other.onTertiaryFixedVariant,
+        t,
+      )!,
+      backgroundGradientStart: Color.lerp(
+        backgroundGradientStart,
+        other.backgroundGradientStart,
+        t,
+      )!,
+      backgroundGradientEnd: Color.lerp(
+        backgroundGradientEnd,
+        other.backgroundGradientEnd,
+        t,
+      )!,
       cardColor: Color.lerp(cardColor, other.cardColor, t)!,
     );
   }
@@ -297,24 +392,27 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
 class AppTextThemeExtension extends ThemeExtension<AppTextThemeExtension> {
   final TextStyle headlineLgMobile;
 
-  const AppTextThemeExtension({
-    required this.headlineLgMobile,
-  });
+  const AppTextThemeExtension({required this.headlineLgMobile});
 
   @override
-  AppTextThemeExtension copyWith({
-    TextStyle? headlineLgMobile,
-  }) {
+  AppTextThemeExtension copyWith({TextStyle? headlineLgMobile}) {
     return AppTextThemeExtension(
       headlineLgMobile: headlineLgMobile ?? this.headlineLgMobile,
     );
   }
 
   @override
-  AppTextThemeExtension lerp(ThemeExtension<AppTextThemeExtension>? other, double t) {
+  AppTextThemeExtension lerp(
+    ThemeExtension<AppTextThemeExtension>? other,
+    double t,
+  ) {
     if (other is! AppTextThemeExtension) return this;
     return AppTextThemeExtension(
-      headlineLgMobile: TextStyle.lerp(headlineLgMobile, other.headlineLgMobile, t)!,
+      headlineLgMobile: TextStyle.lerp(
+        headlineLgMobile,
+        other.headlineLgMobile,
+        t,
+      )!,
     );
   }
 }

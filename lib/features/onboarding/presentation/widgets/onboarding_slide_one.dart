@@ -8,10 +8,7 @@ import 'package:spend_sum/features/onboarding/presentation/widgets/crescent_logo
 class OnboardingSlideOne extends StatelessWidget {
   final AnimationController orbitController;
 
-  const OnboardingSlideOne({
-    super.key,
-    required this.orbitController,
-  });
+  const OnboardingSlideOne({super.key, required this.orbitController});
 
   @override
   Widget build(BuildContext context) {
@@ -19,28 +16,42 @@ class OnboardingSlideOne extends StatelessWidget {
       builder: (context, constraints) {
         final theme = Theme.of(context);
         final themeExt = theme.extension<AppThemeExtension>()!;
-        final double containerSize = math.min(constraints.maxWidth * 0.75, 280.0);
-        final double centerRadius = containerSize * 0.17; // center circle radius
-        final double floaterRadius = containerSize * 0.1; // mini floaters radius
+        final double containerSize = math.min(
+          constraints.maxWidth * 0.75,
+          280.0,
+        );
+        final double centerRadius =
+            containerSize * 0.17; // center circle radius
+        final double floaterRadius =
+            containerSize * 0.1; // mini floaters radius
         final double orbitRadius = containerSize * 0.38; // orbit radius
 
         // Orbit icon configurations resolved through theme colors schema
         final List<Map<String, dynamic>> floaters = [
           {'icon': Icons.menu_book, 'color': themeExt.primary, 'angle': -140.0},
           {'icon': Icons.wallet, 'color': themeExt.secondary, 'angle': -90.0},
-          {'icon': Icons.credit_card, 'color': themeExt.primaryContainer, 'angle': -40.0},
+          {
+            'icon': Icons.credit_card,
+            'color': themeExt.primaryContainer,
+            'angle': -40.0,
+          },
           {'icon': Icons.campaign, 'color': themeExt.error, 'angle': 30.0},
           {'icon': Icons.flight, 'color': themeExt.tertiary, 'angle': 90.0},
-          {'icon': Icons.directions_car, 'color': themeExt.primary, 'angle': 180.0},
+          {
+            'icon': Icons.directions_car,
+            'color': themeExt.primary,
+            'angle': 180.0,
+          },
         ];
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppDimensions.marginPage),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.marginPage,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(flex: 3), // Pushes orbital graphic down
-
               // Visual Orbit Graphic (rebuilt smoothly with AnimatedBuilder)
               AnimatedBuilder(
                 animation: orbitController,
@@ -60,7 +71,9 @@ class OnboardingSlideOne extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: themeExt.outlineVariant.withValues(alpha: 0.15),
+                              color: themeExt.outlineVariant.withValues(
+                                alpha: 0.15,
+                              ),
                               width: 1.5,
                             ),
                           ),
@@ -84,7 +97,9 @@ class OnboardingSlideOne extends StatelessWidget {
                           alignment: Alignment.center,
                           child: CustomPaint(
                             size: Size(centerRadius * 0.9, centerRadius * 0.9),
-                            painter: CrescentLogoPainter(color: themeExt.primaryContainer),
+                            painter: CrescentLogoPainter(
+                              color: themeExt.primaryContainer,
+                            ),
                           ),
                         ),
 
@@ -92,10 +107,16 @@ class OnboardingSlideOne extends StatelessWidget {
                         ...floaters.map((data) {
                           final double baseAngle = data['angle'] as double;
                           final double currentAngle = baseAngle + angleOffset;
-                          final double angleRad = currentAngle * math.pi / 180.0;
+                          final double angleRad =
+                              currentAngle * math.pi / 180.0;
 
                           // Subtle sinusoidal bobbing along the radius for floating depth
-                          final double bobbing = 5.0 * math.sin(orbitController.value * 4 * math.pi + (baseAngle * math.pi / 180.0));
+                          final double bobbing =
+                              5.0 *
+                              math.sin(
+                                orbitController.value * 4 * math.pi +
+                                    (baseAngle * math.pi / 180.0),
+                              );
                           final double currentRadius = orbitRadius + bobbing;
 
                           final double x = currentRadius * math.cos(angleRad);
@@ -134,7 +155,6 @@ class OnboardingSlideOne extends StatelessWidget {
               ),
 
               const Spacer(flex: 4), // Pushes text section further down
-
               // Title
               Text(
                 'Your Finances in One Place',
@@ -147,12 +167,14 @@ class OnboardingSlideOne extends StatelessWidget {
               Text(
                 'Get the big picture on all your money. Connect your bank, track cash, or import data.',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                      color: themeExt.onSurfaceVariant,
-                    ),
+                  color: themeExt.onSurfaceVariant,
+                ),
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: AppDimensions.stackLg), // Pushes text close to bottom actions
+              const SizedBox(
+                height: AppDimensions.stackLg,
+              ), // Pushes text close to bottom actions
             ],
           ),
         );

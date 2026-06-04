@@ -25,10 +25,12 @@ class DashedBorderPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final path = Path()
-      ..addRRect(RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, size.width, size.height),
-        Radius.circular(radius),
-      ));
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height),
+          Radius.circular(radius),
+        ),
+      );
 
     final dashPath = _dashPath(path, dashLength, gap);
     canvas.drawPath(dashPath, paint);
@@ -43,7 +45,10 @@ class DashedBorderPainter extends CustomPainter {
         final length = draw ? dashLength : gap;
         if (draw) {
           dest.addPath(
-            metric.extractPath(distance, math.min(distance + length, metric.length)),
+            metric.extractPath(
+              distance,
+              math.min(distance + length, metric.length),
+            ),
             Offset.zero,
           );
         }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
+import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/router/app_router.dart';
 import 'package:spend_sum/core/theme/app_theme.dart';
 import 'package:spend_sum/core/theme/theme_cubit.dart';
@@ -11,8 +12,11 @@ class SpendSumApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<ThemeCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeCubit>(create: (context) => sl<ThemeCubit>()),
+        BlocProvider<UserCubit>(create: (context) => sl<UserCubit>()),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
           return MaterialApp.router(
