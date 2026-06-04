@@ -1,0 +1,20 @@
+flutter_launcher_icons:
+  # Overwrites the default launcher icon for Android with the name "launcher_icon"
+  android: "launcher_icon"
+  
+  # Overwrites the default launcher icon for iOS
+  ios: true
+  
+  # Default fallback image path
+  image_path: "assets/logo/ic_launcher/ic_launcher.png"
+  
+  # Adaptive icons configurations for Android
+  # Note: Both background and foreground must be specified to generate adaptive icons.
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/logo/ic_launcher/ic_launcher.png"
+  
+  # Removes the alpha channel for iOS launcher icons (required by Apple App Store)
+  remove_alpha_ios: true
+  
+  # Background color used when removing the alpha channel for iOS launcher icons
+  background_color_ios: "#FFFFFF"
