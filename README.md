@@ -1,8 +1,28 @@
 # SpendSum — Elegant Expense Tracking & Spend Summary
 
-SpendSum is a premium, high-fidelity Flutter application designed to give users a beautiful, intuitive, and fluid interface for tracking expenses, managing categories, and viewing monthly spend summaries.
+SpendSum is a premium, high-fidelity Flutter application I built as a personal project to deliver a beautiful, intuitive, and fluid interface for tracking expenses, managing categories, and viewing monthly spend summaries.
 
-Tested and designed with meticulous attention to detail, the app implements standard software engineering practices (DRY, Clean Architecture, SOLID, and low coupling) to deliver a polished experience.
+Designed with meticulous attention to detail, the app implements standard software engineering best practices (DRY, Clean Architecture, SOLID, and low coupling) to deliver a polished fintech-grade experience.
+
+---
+
+## 🔐 Login & Account Setup
+
+### Using an Existing Account
+A pre-seeded test account is included for immediate access:
+
+| Field | Value |
+|---|---|
+| **Phone Number** | `+91 98765 43210` |
+| **OTP / Verification Code** | Any 6-digit code **except** `111111` (e.g. `123456`, `000000`) |
+
+> The OTP verification is simulated — any valid 6-digit code (except `111111`) will authenticate you successfully.
+
+### Creating a New Account
+1. Open the app and tap **"Get Started"** on the onboarding screen.
+2. Enter your phone number in international format (e.g. `+91XXXXXXXXXX`).
+3. Tap **Send OTP** and enter any 6-digit code when prompted.
+4. Complete the profile setup (name, currency preference) and you're in.
 
 ---
 
@@ -18,7 +38,6 @@ The visual aesthetics, typography layout, glassmorphic card stylings, and transi
 ---
 
 ### Developed App Screenshots (Tested on Emulator)
-*Replace the placeholders below with screenshots of your running app on the emulator:*
 
 | Light Theme — Spend Summary | Dark Theme — Spend Summary |
 |---|---|
@@ -27,21 +46,19 @@ The visual aesthetics, typography layout, glassmorphic card stylings, and transi
 ---
 
 ### 📥 Direct APK Installation
-To run the app directly on an Android device or emulator without building from source, download the pre-compiled release APK from:
-👉 **[Download Release APK (Google Drive)](https://drive.google.com/drive/folders/1WixPnjVGL1q4yiB0pUpNz9QLtPEZ8B0P?usp=sharing)**
+To run the app directly on an Android device without building from source, download the pre-compiled APK from:
+👉 **[Download APK (Google Drive)](https://drive.google.com/drive/folders/1WixPnjVGL1q4yiB0pUpNz9QLtPEZ8B0P?usp=sharing)**
 
 ---
 
-## 📋 Take-Home Assignment Checklist
+## ✨ Features
 
-Here is the status of the required features outlined in the assignment email:
-
-- [x] **Monthly Spend Header Card**: A full-width, gradient-accented card showing the total monthly spend and an interactive comparison pill showing the percentage change against last month's spend (e.g. `12% less than last month`).
-- [x] **Horizontal Category Scroll**: A horizontal carousel displaying spending categories (Food, Travel, Shopping, Groceries, Bills, etc.) along with their corresponding icons, customized background colors, and aggregated spend amounts for the current month.
-- [x] **Recent Transactions List**: A list of recent transactions (6 items shown directly on the dashboard, satisfying the 5-7 items requirement) with swipe-to-delete functionality and an undo toast indicator.
-- [x] **Floating Action Button (FAB)**: Relocated to the bottom right of the page floating cleanly above the BottomNavigationBar, facilitating single-handed reach.
-- [x] **Mock/Hardcoded Data (57 Items)**: The local SQLite database is pre-seeded on first run with exactly 57 sample transactions distributed across categories, incomes, and expenses to show a realistic dashboard.
-- [x] **AI Tools Usage Note**: Documented below in this README.
+- **Monthly Spend Header Card**: Full-width gradient card showing total monthly spend with an interactive comparison pill (e.g. `12% less than last month`).
+- **Horizontal Category Scroll**: A horizontal carousel of spending categories (Food, Travel, Shopping, Groceries, Bills, etc.) with icons and aggregated spend per category.
+- **Recent Transactions List**: A list of recent transactions with swipe-to-delete functionality and an undo toast indicator.
+- **Floating Action Button (FAB)**: Positioned bottom-right for single-handed reach, floating cleanly above the BottomNavigationBar.
+- **Pre-seeded Data (57 Items)**: The local SQLite database is pre-seeded on first run with 57 sample transactions across multiple categories to showcase a realistic dashboard.
+- **Light & Dark Mode**: Full theme support with smooth transitions between modes.
 
 ---
 
@@ -57,40 +74,36 @@ lib/
 │   ├── router/            # Page navigation configuration using GoRouter
 │   └── theme/             # Styling & design system tokens (light/dark colors, spacing, dimensions)
 │
-└── features/              # Feature modules (e.g., onboarding, auth, dashboard)
-    └── dashboard/
-        ├── data/          # Models, Repositories implementations, Data Sources
+└── features/              # Feature modules (onboarding, auth, dashboard)
+    └── [feature]/
+        ├── data/          # Models, Repository implementations, Data Sources
         ├── domain/        # Entities, Repository interfaces, and Use Cases
-        └── presentation/  # Views, widgets, and Cubit state management
+        └── presentation/  # Views, widgets, and Cubit/Bloc state management
 ```
 
 ### Key Technical Choices:
 * **State Management**: `Flutter BLoC` / `Cubit` for unidirectional data flow and clean separation of UI and business logic.
 * **Local Database**: `Drift` (SQLite wrapper for Dart) providing reactive streams, transactions, and type-safe query generation.
-* **Routing**: `GoRouter` for declarative, URL-friendly navigation with animations.
-* **Typography & Styling**: `Google Fonts` (Outfit for displays, Inter for copy) with custom theme extensions supporting seamless Light and Dark modes.
+* **Routing**: `GoRouter` for declarative, URL-friendly navigation with shared-axis animations.
+* **Typography & Styling**: `Google Fonts` (Outfit for displays, Inter for body) with custom theme extensions for seamless Light and Dark modes.
+* **Error Handling**: `fpdart` `Either` monad for compile-time safe error propagation across all layers.
 
 ---
 
 ## 🤖 AI Tools & Development Workflow
 
-This application was created through a collaborative human-AI development process using specialized tools:
+This project was built through a collaborative human-AI workflow:
 
 1. **Design & Inspiration**:
-   - **Dribbble**: Used as the primary source for visual inspiration to create a modern, premium fintech interface with frosted glass effects and deep gradient overlays.
-   - **STICH**: An AI design tool used to generate the initial style tokens and design guidelines defined in [DESIGN_LIGHT.md](file:///C:/Users/Admin/AndroidStudioProjects/spend_sum/DESIGN_LIGHT.md) and [DESIGN_DARK.md](file:///C:/Users/Admin/AndroidStudioProjects/spend_sum/DESIGN_DARK.md). Color changes made mid-project were updated back into these specification files to maintain design integrity.
+   - **Dribbble**: Primary source for visual inspiration — modern fintech interfaces with frosted glass effects and gradient overlays.
+   - **STICH**: Used to generate initial style tokens and design guidelines defined in [DESIGN_LIGHT.md](DESIGN_LIGHT.md) and [DESIGN_DARK.md](DESIGN_DARK.md).
 
 2. **Agent Rules & Guidance**:
-   - **gemini.md**: A dedicated constraints file specifying engineering rules, clean architecture patterns, coding style guidelines, and UI principles. This aligned the AI agent's coding behaviors directly with the project goals.
+   - **gemini.md**: A constraints file defining engineering rules, clean architecture patterns, and coding style guidelines to align the AI agent with project goals.
 
 3. **Coding & Acceleration**:
-   - **Antigravity (Google DeepMind)**: The core AI coding agent used to implement, refactor, and finalize the application logic and layouts.
-   - **skills.sh**: Equipped the agent with Dart & Flutter development capabilities (e.g., mock generation, dependency injection setup, and automated static analysis) to accelerate coding speed.
-
-4. **Implementation & Refactoring steps**:
-   - **Core Logic**: Adjusted `HomeRepository` to expand recent transactions to 6 items (satisfying the 5-7 requirement) and dynamically computed current month expenses grouped by category.
-   - **UI Polish**: Created the gradient Spend Card, dynamic category list scroll, and cleanly repositioned the FAB to the bottom-right corner while aligning the bottom navigation bar.
-   - **Verification**: Verified using automated static analysis commands via the agent toolchain (`dart analyze`) to confirm zero compilation errors or lint warnings.
+   - **Antigravity (Google DeepMind)**: The core AI coding agent used to implement, refactor, and finalize application logic and layouts.
+   - **skills.sh**: Equipped the agent with Dart & Flutter development capabilities (mock generation, DI setup, static analysis) to accelerate coding speed.
 
 ---
 
@@ -98,8 +111,8 @@ This application was created through a collaborative human-AI development proces
 
 ### Prerequisites:
 * Flutter SDK (3.22.0 or higher recommended)
-* Android Studio / Xcode / VS Code
-* An emulator running (or a physical test device connected)
+* Android Studio / VS Code
+* An emulator running, or a physical Android device connected
 
 ### Execution Steps:
 1. Clone the repository:
