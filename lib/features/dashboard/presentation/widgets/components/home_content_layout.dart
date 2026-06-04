@@ -42,10 +42,15 @@ class HomeContentLayout extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // This Month Spend Header Card (full width card with gradient)
-        FadeInTransition(
-          delay: Duration.zero,
-          child: Container(
+        // This Month Spend Header Card
+        Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppDimensions.marginPage, 0,
+            AppDimensions.marginPage, 0,
+          ),
+          child: FadeInTransition(
+            delay: Duration.zero,
+            child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -201,10 +206,13 @@ class HomeContentLayout extends StatelessWidget {
             ),
           ),
         ),
+        ), // end spend card Padding
         const SizedBox(height: 32),
 
         // Spending Wallet Card
-        FadeInTransition(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimensions.marginPage),
+          child: FadeInTransition(
           delay: const Duration(milliseconds: 100),
           child: GestureDetector(
             onTap: () {
@@ -286,6 +294,7 @@ class HomeContentLayout extends StatelessWidget {
             ),
           ),
         ),
+        ), // end wallet card Padding
         const SizedBox(height: 32),
 
         // Categories Section
@@ -294,9 +303,12 @@ class HomeContentLayout extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Categories',
-                style: theme.textTheme.titleLarge,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppDimensions.marginPage),
+                child: Text(
+                  'Categories',
+                  style: theme.textTheme.titleLarge,
+                ),
               ),
               const SizedBox(height: 12),
               if (isLoading || data == null)
@@ -304,6 +316,7 @@ class HomeContentLayout extends StatelessWidget {
                   height: 110,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.only(left: AppDimensions.marginPage),
                     itemCount: 4,
                     itemBuilder: (context, index) => const SkeletonLoader(
                       child: Padding(
@@ -321,9 +334,11 @@ class HomeContentLayout extends StatelessWidget {
         const SizedBox(height: 32),
 
         // Recent Transactions Section Header
-        FadeInTransition(
-          delay: const Duration(milliseconds: 180),
-          child: Row(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimensions.marginPage),
+          child: FadeInTransition(
+            delay: const Duration(milliseconds: 180),
+            child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -342,10 +357,16 @@ class HomeContentLayout extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               ),
             ],
+            ),
           ),
-        ),
+        ), // end transactions header Padding
         SizedBox(height: AppDimensions.stackMd),
 
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppDimensions.marginPage),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
         if (isLoading || data == null)
           const Column(
             mainAxisSize: MainAxisSize.min,
@@ -430,6 +451,9 @@ class HomeContentLayout extends StatelessWidget {
               );
             }).toList(),
           ),
+          ], // Padding > Column children
+        ), // inner Column
+        ), // transactions Padding
         const SizedBox(height: 100), // padding for FAB offset
       ],
     );
@@ -464,6 +488,7 @@ class HomeContentLayout extends StatelessWidget {
       height: 110,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: AppDimensions.marginPage),
         itemCount: sortedCategories.length,
         itemBuilder: (context, index) {
           final entry = sortedCategories[index];

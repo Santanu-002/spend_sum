@@ -68,9 +68,6 @@ class HomeView extends StatelessWidget {
                   backgroundColor: themeExt.cardColor,
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppDimensions.marginPage,
-                    ),
                     child: HomeContentLayout(
                       data: data,
                       isLoading: isLoading,
