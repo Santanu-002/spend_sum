@@ -163,7 +163,9 @@ class HomeContentLayout extends StatelessWidget {
                                 data!.percentageChange < 0
                                     ? Icons.arrow_downward_rounded
                                     : Icons.arrow_upward_rounded,
-                                color: themeExt.onPrimary,
+                                color: data!.percentageChange < 0
+                                    ? const Color(0xFF22C55E)
+                                    : const Color(0xFFFF6B6B),
                                 size: 16,
                               ),
                               const SizedBox(width: 6),
