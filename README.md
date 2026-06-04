@@ -11,9 +11,9 @@ Tested and designed with meticulous attention to detail, the app implements stan
 ### UI Design Inspiration (Dribbble References)
 The visual aesthetics, typography layout, glassmorphic card stylings, and transitions were inspired by high-fidelity design concepts from Dribbble. The reference assets used during planning are:
 
-| Dribbble Reference 1 | Dribbble Reference 2 | Dribbble Reference 3 |
+| Dribbble Reference 3 | Dribbble Reference 2 | Dribbble Reference 1 |
 |---|---|---|
-| ![Inspiration 1](assets/inspiration/img1.png) | ![Inspiration 2](assets/inspiration/img2.png) | ![Inspiration 3](assets/inspiration/img3.png) |
+| ![Inspiration 3](assets/inspiration/img3.png) | ![Inspiration 2](assets/inspiration/img2.png) | ![Inspiration 1](assets/inspiration/img1.png) |
 
 ---
 
