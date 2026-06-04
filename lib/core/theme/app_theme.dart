@@ -379,7 +379,7 @@ class AppTheme {
       scaffoldBackgroundColor: lightExtension.background,
       cardColor: lightExtension.cardColor,
       textTheme: _buildTextTheme(base.textTheme, lightExtension.onSurface),
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: Colors.white,
         elevation: 0,
       ),
@@ -601,7 +601,7 @@ class AppTheme {
       scaffoldBackgroundColor: darkExtension.background,
       cardColor: darkExtension.cardColor,
       textTheme: _buildTextTheme(base.textTheme, darkExtension.onSurface),
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: darkSurfaceContainerHigh,
         elevation: 0,
       ),
