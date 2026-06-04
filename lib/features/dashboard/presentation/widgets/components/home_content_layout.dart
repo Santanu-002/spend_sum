@@ -70,8 +70,8 @@ class HomeContentLayout extends StatelessWidget {
               children: [
                 // — Large ghost currency symbol watermark —
                 Positioned(
-                  right: 24,
-                  bottom: -24,
+                  right: 8,
+                  bottom: -48,
                   child: Text(
                     currencySymbol,
                     style: GoogleFonts.outfit(
