@@ -202,6 +202,23 @@ class _FloatingNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeExt = context.colorscheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Pill background
+    final pillBg = isDark ? themeExt.fabColor : themeExt.cardColor;
+
+    // Selected circle fill
+    final selCircleBg = isDark
+        ? themeExt.surfaceContainerHigh   // off-white lavender on dark pill
+        : themeExt.primary;               // primary purple on light pill
+
+    // Selected icon color
+    final selIconColor = isDark ? themeExt.primary : themeExt.onPrimary;
+
+    // Unselected icon/label color
+    final unselColor = isDark
+        ? Colors.white.withValues(alpha: 0.45)
+        : themeExt.onSurfaceVariant.withValues(alpha: 0.55);
 
     return SafeArea(
       child: Padding(
@@ -209,16 +226,16 @@ class _FloatingNavBar extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // ── Pill nav ──────────────────────────────────────────────────
+            // ── Pill nav ─────────────────────────────────────────────────
             Expanded(
               child: Container(
                 height: 68,
                 decoration: BoxDecoration(
-                  color: themeExt.fabColor,
+                  color: pillBg,
                   borderRadius: BorderRadius.circular(40),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.22),
+                      color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.08),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -229,9 +246,6 @@ class _FloatingNavBar extends StatelessWidget {
                   children: List.generate(_items.length, (i) {
                     final item = _items[i];
                     final selected = currentIndex == i;
-                    final color = selected
-                        ? Colors.white
-                        : Colors.white.withValues(alpha: 0.45);
 
                     return GestureDetector(
                       onTap: () {
@@ -242,31 +256,46 @@ class _FloatingNavBar extends StatelessWidget {
                       behavior: HitTestBehavior.opaque,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
+                          horizontal: 10,
                           vertical: 8,
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 200),
-                              child: Icon(
-                                selected ? item.icon : item.unsel,
-                                key: ValueKey(selected),
-                                color: color,
-                                size: 22,
+                            // Icon inside animated circle
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 220),
+                              curve: Curves.easeInOut,
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: selected
+                                    ? selCircleBg
+                                    : Colors.transparent,
+                              ),
+                              child: Center(
+                                child: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 200),
+                                  child: Icon(
+                                    selected ? item.icon : item.unsel,
+                                    key: ValueKey(selected),
+                                    color: selected ? selIconColor : unselColor,
+                                    size: 20,
+                                  ),
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 3),
+                            const SizedBox(height: 2),
                             AnimatedDefaultTextStyle(
                               duration: const Duration(milliseconds: 200),
                               style: TextStyle(
-                                fontSize: 10,
+                                fontSize: 9,
                                 fontWeight: selected
                                     ? FontWeight.w700
                                     : FontWeight.w400,
-                                color: color,
+                                color: selected ? selIconColor : unselColor,
                               ),
                               child: Text(item.label),
                             ),
@@ -281,7 +310,7 @@ class _FloatingNavBar extends StatelessWidget {
 
             const SizedBox(width: 12),
 
-            // ── FAB ───────────────────────────────────────────────────────
+            // ── FAB ──────────────────────────────────────────────────────
             GestureDetector(
               onTap: onFabPressed,
               child: Container(
