@@ -254,52 +254,25 @@ class _FloatingNavBar extends StatelessWidget {
                         onTap(i);
                       },
                       behavior: HitTestBehavior.opaque,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 220),
+                        curve: Curves.easeInOut,
+                        width: 68,
+                        height: 68,
+                        decoration: BoxDecoration(
+                          color: selected ? selCircleBg : Colors.transparent,
+                          shape: BoxShape.circle,
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Icon inside animated circle
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 220),
-                              curve: Curves.easeInOut,
-                              width: 36,
-                              height: 36,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: selected
-                                    ? selCircleBg
-                                    : Colors.transparent,
-                              ),
-                              child: Center(
-                                child: AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 200),
-                                  child: Icon(
-                                    selected ? item.icon : item.unsel,
-                                    key: ValueKey(selected),
-                                    color: selected ? selIconColor : unselColor,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
+                        child: Center(
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            child: Icon(
+                              selected ? item.icon : item.unsel,
+                              key: ValueKey(selected),
+                              color: selected ? selIconColor : unselColor,
+                              size: 24,
                             ),
-                            const SizedBox(height: 2),
-                            AnimatedDefaultTextStyle(
-                              duration: const Duration(milliseconds: 200),
-                              style: TextStyle(
-                                fontSize: 9,
-                                fontWeight: selected
-                                    ? FontWeight.w700
-                                    : FontWeight.w400,
-                                color: selected ? selIconColor : unselColor,
-                              ),
-                              child: Text(item.label),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     );
