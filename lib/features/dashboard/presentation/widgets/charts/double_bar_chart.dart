@@ -132,12 +132,8 @@ class _DoubleBarChartState extends State<DoubleBarChart>
                 ),
                 titlesData: FlTitlesData(
                   show: true,
-                  rightTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 42,
-                      getTitlesWidget: (value, meta) => const SizedBox.shrink(),
-                    ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
                   ),
                   topTitles: const AxisTitles(
                     sideTitles: SideTitles(showTitles: false),
@@ -145,19 +141,30 @@ class _DoubleBarChartState extends State<DoubleBarChart>
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 42,
+                      reservedSize: 50,
                       interval: maxVal / 3 > 0 ? maxVal / 3 : 1.0,
                       getTitlesWidget: (value, meta) {
+                        final double val = value;
+                        String label = '';
+                        if (val.abs() >= 1000000) {
+                          label = '${(val / 1000000).toStringAsFixed(1)}M';
+                        } else if (val.abs() >= 1000) {
+                          label = '${(val / 1000).toStringAsFixed(0)}K';
+                        } else {
+                          label = val.toStringAsFixed(0);
+                        }
                         return SideTitleWidget(
                           meta: meta,
                           space: 6,
                           child: Text(
-                            '${widget.currencySymbol}${value.toStringAsFixed(0)}',
+                            '${widget.currencySymbol}$label',
                             style: GoogleFonts.inter(
                               fontSize: 10,
                               fontWeight: FontWeight.w500,
                               color: themeExt.onSurfaceVariant.withValues(alpha: 0.7),
                             ),
+                            maxLines: 1,
+                            softWrap: false,
                           ),
                         );
                       },

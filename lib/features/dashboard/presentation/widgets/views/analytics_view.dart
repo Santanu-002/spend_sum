@@ -235,6 +235,8 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                             Theme(
                               data: theme.copyWith(
                                 cardColor: themeExt.cardColor,
+                                splashFactory: NoSplash.splashFactory,
+                                highlightColor: Colors.transparent,
                               ),
                               child: PopupMenuButton<String>(
                                 initialValue: _selectedPeriod,
