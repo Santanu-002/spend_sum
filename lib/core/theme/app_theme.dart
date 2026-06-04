@@ -179,6 +179,8 @@ class AppTheme {
     backgroundGradientStart: Color(0xFFE2D6FF),
     backgroundGradientEnd: lightBackground,
     cardColor: Colors.white,
+    fabColor: Color(0xFF0D0D0D),
+    onFabColor: Colors.white,
   );
 
   static const AppThemeExtension darkExtension = AppThemeExtension(
@@ -232,6 +234,8 @@ class AppTheme {
     backgroundGradientStart: Color(0xFF201648),
     backgroundGradientEnd: darkBackground,
     cardColor: darkSurfaceContainer,
+    fabColor: Color(0xFF0D0D0D),
+    onFabColor: Colors.white,
   );
 
   /// Helper to build typographic styling according to the design specifications.
@@ -380,7 +384,7 @@ class AppTheme {
       cardColor: lightExtension.cardColor,
       textTheme: _buildTextTheme(base.textTheme, lightExtension.onSurface),
       bottomAppBarTheme: const BottomAppBarThemeData(
-        color: Colors.white,
+        color: lightSurface,
         elevation: 0,
       ),
       timePickerTheme: TimePickerThemeData(

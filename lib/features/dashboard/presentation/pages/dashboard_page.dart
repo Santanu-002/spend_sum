@@ -218,10 +218,10 @@ class DashboardPageContentState extends State<DashboardPageContent> {
                 SystemSound.play(SystemSoundType.click);
                 context.pushNamed(AppRoutes.addTransaction.name);
               },
-              backgroundColor: themeExt.onBackground,
+              backgroundColor: themeExt.fabColor,
               elevation: 0,
               shape: const CircleBorder(),
-              child: Icon(Icons.add_rounded, color: themeExt.background, size: 28),
+              child: Icon(Icons.add_rounded, color: themeExt.onFabColor, size: 28),
             ),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
