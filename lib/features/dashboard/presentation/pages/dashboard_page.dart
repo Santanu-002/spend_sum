@@ -257,8 +257,8 @@ class _FloatingNavBar extends StatelessWidget {
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 220),
                         curve: Curves.easeInOut,
-                        width: 60,
-                        height: 60,
+                        width: 50,
+                        height: 50,
                         decoration: BoxDecoration(
                           color: selected ? selCircleBg : Colors.transparent,
                           shape: BoxShape.circle,
