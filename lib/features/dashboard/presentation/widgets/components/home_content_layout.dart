@@ -66,112 +66,158 @@ class HomeContentLayout extends StatelessWidget {
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            clipBehavior: Clip.hardEdge,
+            child: Stack(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'This Month Spend',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: themeExt.onPrimary.withValues(alpha: 0.8),
-                      ),
-                    ),
-                    Icon(
-                      Icons.trending_up_rounded,
-                      color: themeExt.onPrimary.withValues(alpha: 0.6),
-                      size: 20,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                if (isLoading || data == null)
-                  const SkeletonLoader(
-                    child: SkeletonBox(width: 180, height: 44, borderRadius: 8),
-                  )
-                else
-                  AnimatedDigitWidget(
-                    value: data!.thisMonthSpend,
-                    prefix: '$currencySymbol ',
-                    fractionDigits: 2,
-                    enableSeparator: true,
-                    textStyle: theme.textTheme.displayMedium?.copyWith(
-                      color: themeExt.onPrimary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    duration: const Duration(milliseconds: 600),
-                    curve: Curves.easeOutCubic,
-                  ),
-                const SizedBox(height: 16),
-                if (isLoading || data == null)
-                  const SkeletonLoader(
-                    child: SkeletonBox(width: 140, height: 24, borderRadius: 12),
-                  )
-                else
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
+                // — Decorative background: two overlapping circles (Mastercard-style) —
+                Positioned(
+                  right: -28,
+                  top: -28,
+                  child: Container(
+                    width: 140,
+                    height: 140,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(20),
+                      shape: BoxShape.circle,
+                      color: Colors.white.withValues(alpha: 0.07),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                  ),
+                ),
+                Positioned(
+                  right: 36,
+                  top: -10,
+                  child: Container(
+                    width: 110,
+                    height: 110,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withValues(alpha: 0.07),
+                    ),
+                  ),
+                ),
+                // — Large ghost currency symbol —
+                Positioned(
+                  right: -8,
+                  bottom: -18,
+                  child: Text(
+                    currencySymbol,
+                    style: GoogleFonts.outfit(
+                      fontSize: 120,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white.withValues(alpha: 0.06),
+                      height: 1,
+                    ),
+                  ),
+                ),
+
+                // — Foreground content —
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        if (data!.percentageChange == 0) ...[
-                          Icon(
-                            Icons.check_circle_outline_rounded,
-                            color: themeExt.onPrimary,
-                            size: 16,
+                        Text(
+                          'This Month Spend',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: themeExt.onPrimary.withValues(alpha: 0.8),
                           ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Up to date',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: themeExt.onPrimary,
-                            ),
-                          ),
-                        ] else ...[
-                          Icon(
-                            data!.percentageChange < 0
-                                ? Icons.arrow_downward_rounded
-                                : Icons.arrow_upward_rounded,
-                            color: themeExt.onPrimary,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 6),
-                          AnimatedDigitWidget(
-                            value: data!.percentageChange.abs().round(),
-                            suffix: '%',
-                            textStyle: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: themeExt.onPrimary,
-                            ),
-                            duration: const Duration(milliseconds: 800),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            data!.percentageChange < 0
-                                ? 'less than last month'
-                                : 'more than last month',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: themeExt.onPrimary.withValues(alpha: 0.9),
-                            ),
-                          ),
-                        ],
+                        ),
+                        Icon(
+                          Icons.trending_up_rounded,
+                          color: themeExt.onPrimary.withValues(alpha: 0.6),
+                          size: 20,
+                        ),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 12),
+                    if (isLoading || data == null)
+                      const SkeletonLoader(
+                        child: SkeletonBox(width: 180, height: 44, borderRadius: 8),
+                      )
+                    else
+                      AnimatedDigitWidget(
+                        value: data!.thisMonthSpend,
+                        prefix: '$currencySymbol ',
+                        fractionDigits: 2,
+                        enableSeparator: true,
+                        textStyle: theme.textTheme.displayMedium?.copyWith(
+                          color: themeExt.onPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        duration: const Duration(milliseconds: 600),
+                        curve: Curves.easeOutCubic,
+                      ),
+                    const SizedBox(height: 16),
+                    if (isLoading || data == null)
+                      const SkeletonLoader(
+                        child: SkeletonBox(width: 140, height: 24, borderRadius: 12),
+                      )
+                    else
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (data!.percentageChange == 0) ...[
+                              Icon(
+                                Icons.check_circle_outline_rounded,
+                                color: themeExt.onPrimary,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                'Up to date',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: themeExt.onPrimary,
+                                ),
+                              ),
+                            ] else ...[
+                              Icon(
+                                data!.percentageChange < 0
+                                    ? Icons.arrow_downward_rounded
+                                    : Icons.arrow_upward_rounded,
+                                color: themeExt.onPrimary,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 6),
+                              AnimatedDigitWidget(
+                                value: data!.percentageChange.abs().round(),
+                                suffix: '%',
+                                textStyle: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: themeExt.onPrimary,
+                                ),
+                                duration: const Duration(milliseconds: 800),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                data!.percentageChange < 0
+                                    ? 'less than last month'
+                                    : 'more than last month',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: themeExt.onPrimary.withValues(alpha: 0.9),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
           ),
