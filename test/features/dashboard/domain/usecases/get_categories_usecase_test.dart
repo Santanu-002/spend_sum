@@ -53,6 +53,11 @@ class FakeHomeRepository implements IHomeRepository {
   }) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<AppFailure, int>> deleteExpense(Expense expense) {
+    throw UnimplementedError();
+  }
 }
 
 void main() {

@@ -2,26 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
-import 'package:spend_sum/core/common/widget/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/feedback/app_snackbar.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/router/app_routes.dart';
-import 'package:spend_sum/core/theme/app_colors.dart';
-import 'package:spend_sum/core/theme/app_dimensions.dart';
 import 'package:spend_sum/features/dashboard/presentation/cubit/home_cubit.dart';
-import 'package:spend_sum/features/dashboard/presentation/widgets/account_view.dart';
-import 'package:spend_sum/features/dashboard/presentation/widgets/analytics_view.dart';
-import 'package:spend_sum/features/dashboard/presentation/widgets/home_view.dart';
-import 'package:spend_sum/features/dashboard/presentation/widgets/transactions_view.dart';
+import 'package:spend_sum/features/dashboard/presentation/widgets/views/account_view.dart';
+import 'package:spend_sum/features/dashboard/presentation/widgets/views/analytics_view.dart';
+import 'package:spend_sum/features/dashboard/presentation/widgets/views/home_view.dart';
+import 'package:spend_sum/features/dashboard/presentation/widgets/views/transactions_view.dart';
+import 'package:spend_sum/features/dashboard/presentation/widgets/components/dashboard_nav_item.dart';
+import 'package:spend_sum/core/theme/app_colors.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:spend_sum/features/dashboard/presentation/cubit/transaction_cubit.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeCubit>(
-      create: (context) => sl<HomeCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeCubit>(
+          create: (context) => sl<HomeCubit>(),
+        ),
+        BlocProvider<TransactionCubit>(
+          create: (context) => sl<TransactionCubit>(),
+        ),
+      ],
       child: const DashboardPageContent(),
     );
   }
@@ -70,8 +81,8 @@ class DashboardPageContentState extends State<DashboardPageContent> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final theme = context.theme;
+    final themeExt = theme.colorscheme;
 
     return PopScope(
       canPop: false,
@@ -83,29 +94,9 @@ class DashboardPageContentState extends State<DashboardPageContent> {
             now.difference(_lastPressedAt!) > const Duration(seconds: 2)) {
           _lastPressedAt = now;
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  const Icon(
-                    Icons.exit_to_app_rounded,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'Press back again to exit',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-              behavior: SnackBarBehavior.floating,
+            AppSnackbar.neutral(
+              message: 'Press back again to exit',
               duration: const Duration(seconds: 2),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  AppDimensions.radiusDefault,
-                ),
-              ),
-              backgroundColor: themeExt.secondaryContainer,
             ),
           );
           return;
@@ -113,71 +104,100 @@ class DashboardPageContentState extends State<DashboardPageContent> {
 
         SystemNavigator.pop();
       },
-      child: BlocListener<UserCubit, UserState>(
-        listener: (context, state) {
-          if (state is UserLoggedIn) {
-            context.read<HomeCubit>().loadHomeOverview(state.user.uid);
-          }
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<UserCubit, UserState>(
+            listener: (context, state) {
+              if (state is UserLoggedIn) {
+                context.read<HomeCubit>().loadHomeOverview(state.user.uid);
+              }
+            },
+          ),
+          BlocListener<TransactionCubit, TransactionState>(
+            listener: (context, state) {
+              if (state is TransactionDeleteSuccess) {
+                final tx = state.transaction;
+                final userState = context.read<UserCubit>().state;
+                final uid = userState is UserLoggedIn ? userState.user.uid : (tx.userUid ?? '');
+                final messenger = ScaffoldMessenger.of(context);
+                messenger.hideCurrentSnackBar();
+                messenger.showSnackBar(
+                  AppSnackbar.neutral(
+                    message: 'Transaction deleted',
+                    duration: const Duration(seconds: 5),
+                    trailingAction: InkWell(
+                      onTap: () {
+                        messenger.hideCurrentSnackBar();
+                        context.read<TransactionCubit>().restoreTransaction(userUid: uid, tx: tx);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        child: Text(
+                          'UNDO',
+                          style: GoogleFonts.inter(
+                            color: themeExt.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              } else if (state is TransactionFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  AppSnackbar.destructive(
+                    message: state.message,
+                  ),
+                );
+              } else if (state is TransactionSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  AppSnackbar.success(
+                    message: 'Transaction restored',
+                  ),
+                );
+              }
+            },
+          ),
+        ],
         child: AppScaffold(
           showAppBar: false,
           extendBody: true, // Allows content to flow behind notched BottomAppBar
           bottomNavigationBar: BottomAppBar(
-            shape: const CircularNotchedRectangle(),
-            notchMargin: 8.0,
-            color: themeExt.cardColor,
-            elevation: 12,
-            shadowColor: Colors.black.withValues(alpha: 0.1),
+            color: theme.colorScheme.surfaceContainer,
+            elevation: 8,
             padding: EdgeInsets.zero,
             height: 72,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // Left Group: Home & Transaction
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildNavItem(
-                        index: 0,
-                        icon: Icons.home_filled,
-                        unselectedIcon: Icons.home_outlined,
-                        label: 'Home',
-                        themeExt: themeExt,
-                      ),
-                      _buildNavItem(
-                        index: 1,
-                        icon: Icons.assignment_rounded,
-                        unselectedIcon: Icons.assignment_outlined,
-                        label: 'Transactions',
-                        themeExt: themeExt,
-                      ),
-                    ],
-                  ),
+                DashboardNavItem(
+                  icon: Icons.home_rounded,
+                  unselectedIcon: Icons.home_outlined,
+                  label: 'Home',
+                  isSelected: _currentIndex == 0,
+                  onTap: () => changeTab(0),
                 ),
-                // Middle empty space for FAB Notch
-                const SizedBox(width: 60),
-                // Right Group: Analytics & Account
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildNavItem(
-                        index: 2,
-                        icon: Icons.insert_chart_rounded,
-                        unselectedIcon: Icons.insert_chart_outlined_rounded,
-                        label: 'Analytics',
-                        themeExt: themeExt,
-                      ),
-                      _buildNavItem(
-                        index: 3,
-                        icon: Icons.person_rounded,
-                        unselectedIcon: Icons.person_outline_rounded,
-                        label: 'Account',
-                        themeExt: themeExt,
-                      ),
-                    ],
-                  ),
+                DashboardNavItem(
+                  icon: Icons.assignment_rounded,
+                  unselectedIcon: Icons.assignment_outlined,
+                  label: 'Transactions',
+                  isSelected: _currentIndex == 1,
+                  onTap: () => changeTab(1),
+                ),
+                DashboardNavItem(
+                  icon: Icons.insert_chart_rounded,
+                  unselectedIcon: Icons.insert_chart_outlined_rounded,
+                  label: 'Analytics',
+                  isSelected: _currentIndex == 2,
+                  onTap: () => changeTab(2),
+                ),
+                DashboardNavItem(
+                  icon: Icons.person_rounded,
+                  unselectedIcon: Icons.person_outline_rounded,
+                  label: 'Account',
+                  isSelected: _currentIndex == 3,
+                  onTap: () => changeTab(3),
                 ),
               ],
             ),
@@ -199,57 +219,14 @@ class DashboardPageContentState extends State<DashboardPageContent> {
                 SystemSound.play(SystemSoundType.click);
                 context.pushNamed(AppRoutes.addTransaction.name);
               },
-              backgroundColor: const Color(
-                0xFF1E1243,
-              ), // High contrast indigo FAB
+              backgroundColor: themeExt.onBackground,
               elevation: 0,
               shape: const CircleBorder(),
-              child: const Icon(Icons.add_rounded, color: Colors.white, size: 28),
+              child: Icon(Icons.add_rounded, color: themeExt.background, size: 28),
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           child: IndexedStack(index: _currentIndex, children: _views),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem({
-    required int index,
-    required IconData icon,
-    required IconData unselectedIcon,
-    required String label,
-    required AppThemeExtension themeExt,
-  }) {
-    final isSelected = _currentIndex == index;
-    final color = isSelected
-        ? themeExt.primary
-        : themeExt.onSurfaceVariant.withValues(alpha: 0.6);
-
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        SystemSound.play(SystemSoundType.click);
-        changeTab(index);
-      },
-      behavior: HitTestBehavior.opaque,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(isSelected ? icon : unselectedIcon, color: color, size: 22),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: GoogleFonts.inter(
-                fontSize: 11,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                color: color,
-              ),
-            ),
-          ],
         ),
       ),
     );

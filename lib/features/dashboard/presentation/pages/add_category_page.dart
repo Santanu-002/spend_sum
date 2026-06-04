@@ -1,25 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
-import 'package:spend_sum/core/common/widget/app_button.dart';
-import 'package:spend_sum/core/common/widget/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/button/app_button.dart';
+import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
+import 'package:spend_sum/core/common/widget/feedback/app_snackbar.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
-import 'package:spend_sum/features/dashboard/domain/usecases/add_category_usecase.dart';
+import 'package:spend_sum/features/dashboard/presentation/cubit/category_cubit.dart';
+import 'package:spend_sum/features/dashboard/presentation/widgets/components/type_toggle_tab.dart';
 
 /// Full-page form for creating a new custom category.
-class AddCategoryPage extends StatefulWidget {
+class AddCategoryPage extends StatelessWidget {
   /// Whether to create an expense category. If false, creates an income category.
   final bool isExpense;
 
   const AddCategoryPage({super.key, this.isExpense = true});
 
   @override
-  State<AddCategoryPage> createState() => _AddCategoryPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider<CategoryCubit>(
+      create: (context) => sl<CategoryCubit>(),
+      child: _AddCategoryPageContent(isExpense: isExpense),
+    );
+  }
 }
 
-class _AddCategoryPageState extends State<AddCategoryPage>
+class _AddCategoryPageContent extends StatefulWidget {
+  final bool isExpense;
+
+  const _AddCategoryPageContent({this.isExpense = true});
+
+  @override
+  State<_AddCategoryPageContent> createState() => _AddCategoryPageContentState();
+}
+
+class _AddCategoryPageContentState extends State<_AddCategoryPageContent>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
@@ -65,14 +82,13 @@ class _AddCategoryPageState extends State<AddCategoryPage>
   // Available color options for selection
   static const List<Color> _colorOptions = [
     Color(0xFF5856D6),
-    Color(0xFF4CD964),
+    Color(0xFF00B475),
     Color(0xFF5AC8FA),
     Color(0xFF007AFF),
     Color(0xFFFF9500),
     Color(0xFFFF2D55),
     Color(0xFFFF3B30),
     Color(0xFFFFCC00),
-    Color(0xFF34C759),
     Color(0xFFAF52DE),
     Color(0xFFFF6482),
     Color(0xFF30B0C7),
@@ -119,58 +135,17 @@ class _AddCategoryPageState extends State<AddCategoryPage>
   Future<void> _saveCategory() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isSaving = true;
-    });
-
-    final addCategoryUseCase = sl<AddCategoryUseCase>();
-    final result = await addCategoryUseCase(AddCategoryParams(
+    context.read<CategoryCubit>().addCategory(
       name: _nameController.text.trim(),
       icon: _selectedIcon.codePoint.toRadixString(16),
       color: '0x${_selectedColor.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}',
       isExpense: _isExpense,
-    ));
-
-    if (mounted) {
-      result.fold(
-        (failure) {
-          setState(() {
-            _isSaving = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to save category: ${failure.message}'),
-              backgroundColor: const Color(0xFFFF2D55),
-            ),
-          );
-        },
-        (_) {
-          Navigator.pop(context, true);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  const Icon(Icons.check_circle_rounded, color: Colors.white),
-                  const SizedBox(width: 10),
-                  Text(
-                    'Category created successfully!',
-                    style: GoogleFonts.inter(fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: const Color(0xFF4CD964),
-            ),
-          );
-        },
-      );
-    }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final themeExt = context.colorscheme;
 
     return AppScaffold(
       title: 'New Category',
@@ -178,7 +153,31 @@ class _AddCategoryPageState extends State<AddCategoryPage>
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimensions.marginPage,
       ),
-      child: FadeTransition(
+      child: BlocListener<CategoryCubit, CategoryState>(
+        listener: (context, state) {
+          if (state is CategoryLoading) {
+            setState(() {
+              _isSaving = true;
+            });
+          } else if (state is CategoryAddSuccess) {
+            Navigator.pop(context, true);
+            ScaffoldMessenger.of(context).showSnackBar(
+              AppSnackbar.success(
+                message: 'Category created successfully!',
+              ),
+            );
+          } else if (state is CategoryFailure) {
+            setState(() {
+              _isSaving = false;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              AppSnackbar.destructive(
+                message: 'Failed to save category: ${state.message}',
+              ),
+            );
+          }
+        },
+        child: FadeTransition(
         opacity: _fadeAnimation,
         child: SlideTransition(
           position: _slideAnimation,
@@ -193,20 +192,18 @@ class _AddCategoryPageState extends State<AddCategoryPage>
                 Row(
                   children: [
                     Expanded(
-                      child: _buildTypeTab(
+                      child: TypeToggleTab(
                         label: 'Expense',
                         isSelected: _isExpense,
                         onTap: () => _toggleType(true),
-                        themeExt: themeExt,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildTypeTab(
+                      child: TypeToggleTab(
                         label: 'Income',
                         isSelected: !_isExpense,
                         onTap: () => _toggleType(false),
-                        themeExt: themeExt,
                       ),
                     ),
                   ],
@@ -409,10 +406,10 @@ class _AddCategoryPageState extends State<AddCategoryPage>
                               : null,
                         ),
                         child: isSelected
-                            ? const Center(
+                            ? Center(
                                 child: Icon(
                                   Icons.check_rounded,
-                                  color: Colors.white,
+                                  color: themeExt.onPrimary,
                                   size: 20,
                                 ),
                               )
@@ -441,45 +438,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTypeTab({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-    required AppThemeExtension themeExt,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-        height: 44,
-        decoration: BoxDecoration(
-          color: isSelected ? themeExt.primary : themeExt.surfaceContainer,
-          borderRadius: BorderRadius.circular(22),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: themeExt.primary.withValues(alpha: 0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : null,
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: isSelected ? Colors.white : themeExt.onSurfaceVariant,
-            ),
-          ),
-        ),
-      ),
+    ),
     );
   }
 }

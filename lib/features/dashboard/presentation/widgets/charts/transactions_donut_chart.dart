@@ -10,6 +10,7 @@ class TransactionsDonutChart extends StatefulWidget {
   final double budgetAmount;
   final String monthLabel;
   final String currencySymbol;
+  final bool isLoading;
 
   const TransactionsDonutChart({
     super.key,
@@ -17,6 +18,7 @@ class TransactionsDonutChart extends StatefulWidget {
     required this.budgetAmount,
     required this.monthLabel,
     this.currencySymbol = '\$',
+    this.isLoading = false,
   });
 
   @override
@@ -74,8 +76,7 @@ class _TransactionsDonutChartState extends State<TransactionsDonutChart>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeExt = theme.extension<AppThemeExtension>()!;
+    final themeExt = context.colorscheme;
 
     final double expense = widget.expenseAmount;
     final double budget = widget.budgetAmount;

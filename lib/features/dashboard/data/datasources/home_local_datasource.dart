@@ -13,6 +13,7 @@ abstract interface class IHomeLocalDataSource {
   Future<int> insertBudget(BudgetsCompanion companion);
   Future<int> insertCategory(CategoriesCompanion companion);
   Future<int> deleteCategory(Category category);
+  Future<int> deleteExpense(Expense expense);
 }
 
 class HomeLocalDataSource implements IHomeLocalDataSource {
@@ -116,6 +117,15 @@ class HomeLocalDataSource implements IHomeLocalDataSource {
       return await database.deleteCategory(category);
     } catch (e) {
       throw DatabaseException('Failed to delete category from local database', details: e);
+    }
+  }
+
+  @override
+  Future<int> deleteExpense(Expense expense) async {
+    try {
+      return await database.deleteExpense(expense);
+    } catch (e) {
+      throw DatabaseException('Failed to delete expense from local database', details: e);
     }
   }
 }

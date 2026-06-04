@@ -28,29 +28,46 @@ class HomeRepository implements IHomeRepository {
         return e.copyWith(isIncome: resolvedIsIncome);
       }).toList();
 
-      // 3. Calculate total expenses and income
-      final double totalExpenses = expenses.where((e) => !e.isIncome).fold(0.0, (sum, e) => sum + e.amount);
-      final double totalIncome = expenses.where((e) => e.isIncome).fold(0.0, (sum, e) => sum + e.amount);
-
-      // 4. Calculate wallet balance: budget + total income - total expenses
-      final double walletBalance = budgetAmount + totalIncome - totalExpenses;
-
-      // 5. Calculate spend for this month (only non-income records)
+      // 3. Calculate spend for this month (only non-income records)
       final now = DateTime.now();
       final double thisMonthSpend = expenses.where((e) {
         return !e.isIncome && e.date.year == now.year && e.date.month == now.month;
       }).fold(0.0, (sum, e) => sum + e.amount);
 
-      // 6. Get 4 most recent transactions sorted by date descending
+      // 4. Calculate income for this month
+      final double thisMonthIncome = expenses.where((e) {
+        return e.isIncome && e.date.year == now.year && e.date.month == now.month;
+      }).fold(0.0, (sum, e) => sum + e.amount);
+
+      // 5. Calculate wallet balance resetting every month: budgetAmount + thisMonthIncome - thisMonthSpend
+      final double walletBalance = budgetAmount + thisMonthIncome - thisMonthSpend;
+
+      // 6. Calculate last month spend to determine percentage change
+      final lastMonthDate = DateTime(now.year, now.month - 1, 1);
+      final double lastMonthSpend = expenses.where((e) {
+        return !e.isIncome && e.date.year == lastMonthDate.year && e.date.month == lastMonthDate.month;
+      }).fold(0.0, (sum, e) => sum + e.amount);
+
+      double percentageChange = 0.0;
+      if (lastMonthSpend > 0) {
+        percentageChange = ((thisMonthSpend - lastMonthSpend) / lastMonthSpend) * 100.0;
+      } else if (thisMonthSpend > 0) {
+        percentageChange = 100.0;
+      } else {
+        percentageChange = 0.0;
+      }
+
+      // 7. Get 4 most recent transactions sorted by date descending
       final sortedExpenses = List<Expense>.from(expenses)
         ..sort((a, b) => b.date.compareTo(a.date));
-      final recentTransactions = sortedExpenses.take(4).toList();
+      final recentTransactions = sortedExpenses.take(6).toList();
 
       return Right(
         HomeOverviewData(
           thisMonthSpend: thisMonthSpend,
           walletBalance: walletBalance,
           budgetAmount: budgetAmount,
+          percentageChange: percentageChange,
           recentTransactions: recentTransactions,
           allTransactions: sortedExpenses,
         ),
@@ -80,18 +97,34 @@ class HomeRepository implements IHomeRepository {
           return e.copyWith(isIncome: resolvedIsIncome);
         }).toList();
 
-        final double totalExpenses = expenses.where((e) => !e.isIncome).fold(0.0, (sum, e) => sum + e.amount);
-        final double totalIncome = expenses.where((e) => e.isIncome).fold(0.0, (sum, e) => sum + e.amount);
-        final double walletBalance = budgetAmount + totalIncome - totalExpenses;
-
         final now = DateTime.now();
         final double thisMonthSpend = expenses.where((e) {
           return !e.isIncome && e.date.year == now.year && e.date.month == now.month;
         }).fold(0.0, (sum, e) => sum + e.amount);
 
+        final double thisMonthIncome = expenses.where((e) {
+          return e.isIncome && e.date.year == now.year && e.date.month == now.month;
+        }).fold(0.0, (sum, e) => sum + e.amount);
+
+        final double walletBalance = budgetAmount + thisMonthIncome - thisMonthSpend;
+
+        final lastMonthDate = DateTime(now.year, now.month - 1, 1);
+        final double lastMonthSpend = expenses.where((e) {
+          return !e.isIncome && e.date.year == lastMonthDate.year && e.date.month == lastMonthDate.month;
+        }).fold(0.0, (sum, e) => sum + e.amount);
+
+        double percentageChange = 0.0;
+        if (lastMonthSpend > 0) {
+          percentageChange = ((thisMonthSpend - lastMonthSpend) / lastMonthSpend) * 100.0;
+        } else if (thisMonthSpend > 0) {
+          percentageChange = 100.0;
+        } else {
+          percentageChange = 0.0;
+        }
+
         final sortedExpenses = List<Expense>.from(expenses)
           ..sort((a, b) => b.date.compareTo(a.date));
-        final recentTransactions = sortedExpenses.take(4).toList();
+        final recentTransactions = sortedExpenses.take(6).toList();
 
         if (!controller.isClosed) {
           controller.add(Right(
@@ -99,6 +132,7 @@ class HomeRepository implements IHomeRepository {
               thisMonthSpend: thisMonthSpend,
               walletBalance: walletBalance,
               budgetAmount: budgetAmount,
+              percentageChange: percentageChange,
               recentTransactions: recentTransactions,
               allTransactions: sortedExpenses,
             ),
@@ -217,6 +251,18 @@ class HomeRepository implements IHomeRepository {
       return Left(DatabaseFailure(e.message));
     } catch (e) {
       return Left(DatabaseFailure('Failed to save category: $e'));
+    }
+  }
+
+  @override
+  Future<Either<AppFailure, int>> deleteExpense(Expense expense) async {
+    try {
+      final rowsAffected = await localDataSource.deleteExpense(expense);
+      return Right(rowsAffected);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      return Left(DatabaseFailure('Failed to delete transaction: $e'));
     }
   }
 

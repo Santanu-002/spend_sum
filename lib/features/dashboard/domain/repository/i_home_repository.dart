@@ -35,4 +35,7 @@ abstract interface class IHomeRepository {
     required String color,
     required bool isExpense,
   });
+
+  /// Deletes a transaction (expense/income) from the local database.
+  Future<Either<AppFailure, int>> deleteExpense(Expense expense);
 }
