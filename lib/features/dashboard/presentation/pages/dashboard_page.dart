@@ -12,7 +12,7 @@ import 'package:spend_sum/features/dashboard/presentation/widgets/views/account_
 import 'package:spend_sum/features/dashboard/presentation/widgets/views/analytics_view.dart';
 import 'package:spend_sum/features/dashboard/presentation/widgets/views/home_view.dart';
 import 'package:spend_sum/features/dashboard/presentation/widgets/views/transactions_view.dart';
-import 'package:spend_sum/features/dashboard/presentation/widgets/components/dashboard_nav_item.dart';
+
 import 'package:spend_sum/core/theme/app_colors.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -162,44 +162,10 @@ class DashboardPageContentState extends State<DashboardPageContent> {
         ],
         child: AppScaffold(
           showAppBar: false,
-          extendBody: true, // Allows content to flow behind notched BottomAppBar
-          bottomNavigationBar: BottomAppBar(
-            elevation: 8,
-            padding: EdgeInsets.zero,
-            height: 72,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                DashboardNavItem(
-                  icon: Icons.home_rounded,
-                  unselectedIcon: Icons.home_outlined,
-                  label: 'Home',
-                  isSelected: _currentIndex == 0,
-                  onTap: () => changeTab(0),
-                ),
-                DashboardNavItem(
-                  icon: Icons.assignment_rounded,
-                  unselectedIcon: Icons.assignment_outlined,
-                  label: 'Transactions',
-                  isSelected: _currentIndex == 1,
-                  onTap: () => changeTab(1),
-                ),
-                DashboardNavItem(
-                  icon: Icons.insert_chart_rounded,
-                  unselectedIcon: Icons.insert_chart_outlined_rounded,
-                  label: 'Analytics',
-                  isSelected: _currentIndex == 2,
-                  onTap: () => changeTab(2),
-                ),
-                DashboardNavItem(
-                  icon: Icons.person_rounded,
-                  unselectedIcon: Icons.person_outline_rounded,
-                  label: 'Account',
-                  isSelected: _currentIndex == 3,
-                  onTap: () => changeTab(3),
-                ),
-              ],
-            ),
+          extendBody: true,
+          bottomNavigationBar: _FloatingNavBar(
+            currentIndex: _currentIndex,
+            onTap: changeTab,
           ),
           floatingActionButton: Container(
             decoration: BoxDecoration(
@@ -226,6 +192,98 @@ class DashboardPageContentState extends State<DashboardPageContent> {
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           child: IndexedStack(index: _currentIndex, children: _views),
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Floating Pill Navigation Bar ────────────────────────────────────────────
+
+class _FloatingNavBar extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  const _FloatingNavBar({
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  static const _items = [
+    (icon: Icons.home_rounded, unsel: Icons.home_outlined, label: 'Home'),
+    (icon: Icons.assignment_rounded, unsel: Icons.assignment_outlined, label: 'Transactions'),
+    (icon: Icons.insert_chart_rounded, unsel: Icons.insert_chart_outlined_rounded, label: 'Analytics'),
+    (icon: Icons.person_rounded, unsel: Icons.person_outline_rounded, label: 'Account'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final themeExt = context.colorscheme;
+
+    return SafeArea(
+      child: Padding(
+        // floats above bottom edge; right gap leaves room for the FAB
+        padding: const EdgeInsets.only(left: 20, right: 84, bottom: 16),
+        child: Container(
+          height: 68,
+          decoration: BoxDecoration(
+            color: themeExt.fabColor,
+            borderRadius: BorderRadius.circular(40),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.22),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(_items.length, (i) {
+              final item = _items[i];
+              final selected = currentIndex == i;
+              final color = selected
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.45);
+
+              return GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  SystemSound.play(SystemSoundType.click);
+                  onTap(i);
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: Icon(
+                          selected ? item.icon : item.unsel,
+                          key: ValueKey(selected),
+                          color: color,
+                          size: 22,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      AnimatedDefaultTextStyle(
+                        duration: const Duration(milliseconds: 200),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
+                          color: color,
+                        ),
+                        child: Text(item.label),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );
