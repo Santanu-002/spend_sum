@@ -47,7 +47,6 @@ class HomeContentLayout extends StatelessWidget {
           delay: Duration.zero,
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -85,7 +84,9 @@ class HomeContentLayout extends StatelessWidget {
                 ),
 
                 // — Foreground content —
-                Column(
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -193,7 +194,8 @@ class HomeContentLayout extends StatelessWidget {
                       ),
                   ],
                 ),
-              ],
+              ),
+              ],           // Stack children
             ),
           ),
         ),
