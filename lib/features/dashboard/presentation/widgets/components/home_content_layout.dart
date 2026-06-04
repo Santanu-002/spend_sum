@@ -163,9 +163,7 @@ class HomeContentLayout extends StatelessWidget {
                                 data!.percentageChange < 0
                                     ? Icons.arrow_downward_rounded
                                     : Icons.arrow_upward_rounded,
-                                color: data!.percentageChange < 0
-                                    ? themeExt.error.withValues(alpha: 0.75)
-                                    : const Color(0xFFFF6B6B).withValues(alpha: 0.75),
+                                color: themeExt.onPrimary,
                                 size: 16,
                               ),
                               const SizedBox(width: 6),
@@ -175,9 +173,7 @@ class HomeContentLayout extends StatelessWidget {
                                 textStyle: GoogleFonts.inter(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: data!.percentageChange < 0
-                                      ? themeExt.error.withValues(alpha: 0.75)
-                                      : const Color(0xFFFF6B6B).withValues(alpha: 0.75),
+                                  color: themeExt.onPrimary,
                                 ),
                                 duration: const Duration(milliseconds: 800),
                               ),
@@ -189,9 +185,7 @@ class HomeContentLayout extends StatelessWidget {
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  color: data!.percentageChange < 0
-                                      ? themeExt.error.withValues(alpha: 0.75)
-                                      : const Color(0xFFFF6B6B).withValues(alpha: 0.75),
+                                  color: themeExt.onPrimary.withValues(alpha: 0.9),
                                 ),
                               ),
                             ],
