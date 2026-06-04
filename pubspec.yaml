@@ -1,5 +1,5 @@
 name: spend_sum
-description: "A new Flutter project."
+description: "An elegant, high-fidelity Spend Summary tracking application built with Flutter and Clean Architecture."
 publish_to: "none"
 version: 1.0.0+1
 
