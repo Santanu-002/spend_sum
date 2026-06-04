@@ -141,6 +141,7 @@ class AppScaffold extends StatelessWidget {
                 )
               : null,
           body: SafeArea(
+            bottom: !extendBody,
             child: Column(
               children: [
                 Expanded(

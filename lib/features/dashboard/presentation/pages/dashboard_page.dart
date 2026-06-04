@@ -222,61 +222,86 @@ class _FloatingNavBar extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+        padding: const EdgeInsets.fromLTRB(8, 8, 8, 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // ── Pill nav ─────────────────────────────────────────────────
             Expanded(
-              child: Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  color: pillBg,
-                  borderRadius: BorderRadius.circular(40),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.08),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: List.generate(_items.length, (i) {
-                    final item = _items[i];
-                    final selected = currentIndex == i;
-
-                    return GestureDetector(
-                      onTap: () {
-                        HapticFeedback.lightImpact();
-                        SystemSound.play(SystemSoundType.click);
-                        onTap(i);
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 220),
-                        curve: Curves.easeInOut,
-                        width: 50,
+              child: Center(
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: pillBg,
+                    borderRadius: BorderRadius.circular(40),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+                  child: Stack(
+                    alignment: Alignment.centerLeft,
+                    children: [
+                      // Sliding selected circle background
+                      AnimatedPositioned(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeOutCubic,
+                        left: currentIndex * 58,
+                        top: 0,
+                        width: 58,
                         height: 50,
-                        decoration: BoxDecoration(
-                          color: selected ? selCircleBg : Colors.transparent,
-                          shape: BoxShape.circle,
-                        ),
                         child: Center(
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 200),
-                            child: Icon(
-                              selected ? item.icon : item.unsel,
-                              key: ValueKey(selected),
-                              color: selected ? selIconColor : unselColor,
-                              size: 24,
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: selCircleBg,
+                              shape: BoxShape.circle,
                             ),
                           ),
                         ),
                       ),
-                    );
-                  }),
+                      // Row of interactive items
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(_items.length, (i) {
+                          final item = _items[i];
+                          final selected = currentIndex == i;
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: GestureDetector(
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                SystemSound.play(SystemSoundType.click);
+                                onTap(i);
+                              },
+                              behavior: HitTestBehavior.opaque,
+                              child: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Center(
+                                  child: AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 200),
+                                    child: Icon(
+                                      selected ? item.icon : item.unsel,
+                                      key: ValueKey(selected),
+                                      color: selected ? selIconColor : unselColor,
+                                      size: 24,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -290,11 +315,11 @@ class _FloatingNavBar extends StatelessWidget {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: themeExt.fabColor,
+                  color: isDark ? themeExt.surfaceContainerHigh : themeExt.cardColor,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.22),
+                      color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.08),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -302,7 +327,7 @@ class _FloatingNavBar extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.add_rounded,
-                  color: themeExt.onFabColor,
+                  color: themeExt.primary,
                   size: 28,
                 ),
               ),

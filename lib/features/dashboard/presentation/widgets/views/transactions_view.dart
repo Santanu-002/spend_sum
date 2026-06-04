@@ -128,6 +128,7 @@ class _TransactionsViewState extends State<TransactionsView> {
           ),
         ),
         SafeArea(
+          bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

@@ -193,6 +193,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
           ),
         ),
         SafeArea(
+          bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

@@ -18,6 +18,7 @@ class HomeView extends StatelessWidget {
     final userId = userState is UserLoggedIn ? userState.user.uid : '';
 
     return SafeArea(
+      bottom: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

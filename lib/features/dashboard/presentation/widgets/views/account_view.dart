@@ -52,6 +52,7 @@ class AccountView extends StatelessWidget {
           ),
         ),
         SafeArea(
+          bottom: false,
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(
