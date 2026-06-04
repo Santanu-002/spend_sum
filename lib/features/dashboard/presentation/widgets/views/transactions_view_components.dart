@@ -210,18 +210,64 @@ class _TransactionsTopSpendingSection extends StatelessWidget {
   }
 }
 
-class _TransactionsSliverListSection extends StatelessWidget {
+class _TransactionsSliverListSection extends StatefulWidget {
   final String selectedFilter;
   final String searchQuery;
   final String currencySymbol;
-  final int displayLimit;
+  final ScrollController scrollController;
 
   const _TransactionsSliverListSection({
     required this.selectedFilter,
     required this.searchQuery,
     required this.currencySymbol,
-    required this.displayLimit,
+    required this.scrollController,
   });
+
+  @override
+  State<_TransactionsSliverListSection> createState() =>
+      _TransactionsSliverListSectionState();
+}
+
+class _TransactionsSliverListSectionState
+    extends State<_TransactionsSliverListSection> {
+  int _displayLimit = 15;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void didUpdateWidget(covariant _TransactionsSliverListSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.searchQuery != oldWidget.searchQuery ||
+        widget.selectedFilter != oldWidget.selectedFilter) {
+      setState(() {
+        _displayLimit = 15;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.scrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!mounted) return;
+    if (widget.scrollController.position.pixels >=
+        widget.scrollController.position.maxScrollExtent - 200) {
+      _loadMore();
+    }
+  }
+
+  void _loadMore() {
+    setState(() {
+      _displayLimit += 15;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -260,12 +306,12 @@ class _TransactionsSliverListSection extends StatelessWidget {
           // Filter transactions for the search and type filter
           final filteredTx = allTx.where((tx) {
             final matchesQuery =
-                tx.title.toLowerCase().contains(searchQuery);
+                tx.title.toLowerCase().contains(widget.searchQuery);
 
             bool matchesType = true;
-            if (selectedFilter == 'Expense') {
+            if (widget.selectedFilter == 'Expense') {
               matchesType = !tx.isIncome;
-            } else if (selectedFilter == 'Income') {
+            } else if (widget.selectedFilter == 'Income') {
               matchesType = tx.isIncome;
             }
 
@@ -304,41 +350,38 @@ class _TransactionsSliverListSection extends StatelessWidget {
               ),
             );
           } else {
-            final displayedTx = filteredTx.take(displayLimit).toList();
-            final hasMore = filteredTx.length > displayLimit;
+            final displayedTx = filteredTx.take(_displayLimit).toList();
+            final hasMore = filteredTx.length > _displayLimit;
 
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   if (index < displayedTx.length) {
                     final tx = displayedTx[index];
-                    return FadeInTransition(
-                      delay: Duration(milliseconds: (index % 10) * 50),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Dismissible(
-                          key: ValueKey(tx.id),
-                          direction: DismissDirection.endToStart,
-                          background: Container(
-                            alignment: Alignment.centerRight,
-                            padding: const EdgeInsets.only(right: 20.0),
-                            decoration: BoxDecoration(
-                              color: themeExt.error,
-                              borderRadius: BorderRadius.circular(AppDimensions.radiusDefault),
-                            ),
-                            child: Icon(
-                              Icons.delete_outline_rounded,
-                              color: themeExt.onError,
-                              size: AppDimensions.iconLg,
-                            ),
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Dismissible(
+                        key: ValueKey(tx.id),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20.0),
+                          decoration: BoxDecoration(
+                            color: themeExt.error,
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusDefault),
                           ),
-                          onDismissed: (direction) {
-                            context.read<TransactionCubit>().deleteTransaction(tx);
-                          },
-                          child: TransactionTile(
-                            transaction: tx,
-                            currencySymbol: currencySymbol,
+                          child: Icon(
+                            Icons.delete_outline_rounded,
+                            color: themeExt.onError,
+                            size: AppDimensions.iconLg,
                           ),
+                        ),
+                        onDismissed: (direction) {
+                          context.read<TransactionCubit>().deleteTransaction(tx);
+                        },
+                        child: TransactionTile(
+                          transaction: tx,
+                          currencySymbol: widget.currencySymbol,
                         ),
                       ),
                     );

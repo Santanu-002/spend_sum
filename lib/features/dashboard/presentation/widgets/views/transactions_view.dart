@@ -32,7 +32,6 @@ class _TransactionsViewState extends State<TransactionsView> {
   final ScrollController _scrollController = ScrollController();
   String _selectedFilter = 'All'; // 'All', 'Expense', 'Income'
   String _searchQuery = '';
-  int _displayLimit = 15;
 
   @override
   void initState() {
@@ -40,23 +39,9 @@ class _TransactionsViewState extends State<TransactionsView> {
     _searchController.addListener(() {
       setState(() {
         _searchQuery = _searchController.text.trim().toLowerCase();
-        _displayLimit = 15;
       });
     });
     _searchFocusNode.addListener(_onSearchFocusChange);
-    _scrollController.addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
-      _loadMore();
-    }
-  }
-
-  void _loadMore() {
-    setState(() {
-      _displayLimit += 15;
-    });
   }
 
   void _onSearchFocusChange() {
@@ -81,7 +66,6 @@ class _TransactionsViewState extends State<TransactionsView> {
     _searchController.dispose();
     _searchFocusNode.removeListener(_onSearchFocusChange);
     _searchFocusNode.dispose();
-    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
@@ -91,7 +75,6 @@ class _TransactionsViewState extends State<TransactionsView> {
     SystemSound.play(SystemSoundType.click);
     setState(() {
       _selectedFilter = filter;
-      _displayLimit = 15;
     });
   }
 
@@ -262,7 +245,7 @@ class _TransactionsViewState extends State<TransactionsView> {
                           selectedFilter: _selectedFilter,
                           searchQuery: _searchQuery,
                           currencySymbol: currencySymbol,
-                          displayLimit: _displayLimit,
+                          scrollController: _scrollController,
                         ),
                       ),
                       const SliverToBoxAdapter(child: SizedBox(height: 100)),
