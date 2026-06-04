@@ -21,6 +21,17 @@ A personal Flutter app for tracking expenses and viewing monthly spend summaries
 
 ---
 
+## ✅ Features
+
+- [x] Monthly Spend Header Card with % change vs last month
+- [x] Horizontal Category Scroll (Food, Travel, Shopping, Groceries, Bills, etc.)
+- [x] Recent Transactions List with swipe-to-delete & undo toast
+- [x] Floating Action Button (bottom-right, above BottomNavigationBar)
+- [x] 57 pre-seeded mock transactions on first run
+- [x] Full Light & Dark theme support
+
+---
+
 ## 🎨 Design Inspiration
 
 | Reference 3 | Reference 2 | Reference 1 |
