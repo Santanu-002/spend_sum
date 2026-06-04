@@ -229,7 +229,7 @@ class _FloatingNavBar extends StatelessWidget {
             // ── Pill nav ─────────────────────────────────────────────────
             Expanded(
               child: Container(
-                height: 68,
+                height: 60,
                 decoration: BoxDecoration(
                   color: pillBg,
                   borderRadius: BorderRadius.circular(40),
@@ -257,8 +257,8 @@ class _FloatingNavBar extends StatelessWidget {
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 220),
                         curve: Curves.easeInOut,
-                        width: 68,
-                        height: 68,
+                        width: 60,
+                        height: 60,
                         decoration: BoxDecoration(
                           color: selected ? selCircleBg : Colors.transparent,
                           shape: BoxShape.circle,
@@ -287,8 +287,8 @@ class _FloatingNavBar extends StatelessWidget {
             GestureDetector(
               onTap: onFabPressed,
               child: Container(
-                width: 68,
-                height: 68,
+                width: 60,
+                height: 60,
                 decoration: BoxDecoration(
                   color: themeExt.fabColor,
                   shape: BoxShape.circle,
