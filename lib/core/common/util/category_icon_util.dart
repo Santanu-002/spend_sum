@@ -21,6 +21,7 @@ void registerCustomCategory({
     final nameLower = name.toLowerCase().trim();
     final codePoint = int.tryParse(iconHex, radix: 16);
     if (codePoint != null) {
+      // ignore: non_const_argument_for_const_parameter
       final iconData = IconData(codePoint, fontFamily: 'MaterialIcons');
       final cleanHex = colorHex.replaceAll('#', '').replaceAll('0x', '');
       final Color color;
