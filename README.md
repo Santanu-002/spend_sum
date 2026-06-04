@@ -57,7 +57,7 @@ The visual aesthetics, glassmorphic card stylings, and transitions were inspired
 ## 🚀 Run Locally
 
 ```bash
-git clone <repo_url> && cd spend_sum
+git clone https://github.com/Santanu-002/spend_sum.git && cd spend_sum
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs
 flutter run
