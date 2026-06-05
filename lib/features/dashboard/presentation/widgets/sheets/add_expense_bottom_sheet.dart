@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/common/util/currency_util.dart';
@@ -268,7 +268,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
                 ],
-                style: GoogleFonts.outfit(
+                style: TextStyle(fontFamily: 'Outfit', 
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: themeExt.onSurface,
@@ -282,7 +282,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                     padding: const EdgeInsets.only(right: 8.0, left: 4.0),
                     child: Text(
                       currencySymbol,
-                      style: GoogleFonts.outfit(
+                      style: TextStyle(fontFamily: 'Outfit', 
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: themeExt.primary,
@@ -319,7 +319,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               // Title / Label spent input
               Text(
                 _isExpense ? 'Where did you spend?' : 'Where did you receive?',
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'Inter', 
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: themeExt.onSurface,
@@ -329,7 +329,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               TextFormField(
                 controller: _titleController,
                 textCapitalization: TextCapitalization.sentences,
-                style: GoogleFonts.inter(color: themeExt.onSurface),
+                style: TextStyle(fontFamily: 'Inter', color: themeExt.onSurface),
                 decoration: InputDecoration(
                   hintText: _isExpense
                       ? 'e.g. Coffee, Groceries, Movie'
@@ -378,7 +378,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               // Category Selector
               Text(
                 'Category Tag',
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'Inter', 
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: themeExt.onSurface,
@@ -419,7 +419,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                       SizedBox(width: AppDimensions.tileHorizontalPad - 2),
                       Text(
                         _selectedCategory,
-                        style: GoogleFonts.inter(
+                        style: TextStyle(fontFamily: 'Inter', 
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: themeExt.onSurface,
@@ -439,7 +439,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               // Spent Time picker row
               Text(
                 'Spent Date & Time',
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'Inter', 
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: themeExt.onSurface,
@@ -476,7 +476,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                             const SizedBox(width: 10),
                             Text(
                               '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-                              style: GoogleFonts.inter(
+                              style: TextStyle(fontFamily: 'Inter', 
                                 color: themeExt.onSurface,
                                 fontSize: 14,
                               ),
@@ -515,7 +515,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                             const SizedBox(width: 10),
                             Text(
                               _selectedTime.format(context),
-                              style: GoogleFonts.inter(
+                              style: TextStyle(fontFamily: 'Inter', 
                                 color: themeExt.onSurface,
                                 fontSize: 14,
                               ),
@@ -532,7 +532,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
               // Notes Spent text field
               Text(
                 'Notes (Optional)',
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'Inter', 
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: themeExt.onSurface,
@@ -543,7 +543,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 controller: _notesController,
                 maxLines: 3,
                 textCapitalization: TextCapitalization.sentences,
-                style: GoogleFonts.inter(color: themeExt.onSurface),
+                style: TextStyle(fontFamily: 'Inter', color: themeExt.onSurface),
                 decoration: InputDecoration(
                   hintText: 'Add additional details or remarks...',
                   hintStyle: TextStyle(
@@ -583,7 +583,7 @@ class _AddExpenseBottomSheetState extends State<AddExpenseBottomSheet> {
                 loading: _isSaving,
                 child: Text(
                   _isExpense ? 'Save Expense' : 'Save Income',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter', 
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
                   ),

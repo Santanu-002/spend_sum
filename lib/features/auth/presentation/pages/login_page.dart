@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/widget/button/app_button.dart';
 import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
@@ -314,7 +314,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                         _isOtpStep
                             ? 'Enter the 6-digit confirmation code we sent to\n${_selectedCountry?.code ?? ""} ${_phoneController.text}'
                             : 'Enter your mobile number to sign in or create a new account in seconds.',
-                        style: GoogleFonts.inter(
+                        style: TextStyle(fontFamily: 'Inter', 
                           fontSize: 15,
                           color: themeExt.onSurfaceVariant,
                           height: 1.4,
@@ -400,7 +400,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                   loading: isVerificationLoading,
                   child: Text(
                     _isOtpStep ? 'Verify and Continue' : 'Send Verification Code',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
@@ -416,7 +416,7 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                   child: Text.rich(
                     TextSpan(
                       text: 'By continuing, you agree to our ',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'Inter', 
                         fontSize: 12,
                         color: themeExt.onSurfaceVariant,
                         height: 1.4,

@@ -161,7 +161,7 @@ class _TransactionsTopSpendingSection extends StatelessWidget {
                           else
                             Text(
                               topCategory,
-                              style: GoogleFonts.inter(
+                              style: TextStyle(fontFamily: 'Inter', 
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 color: themeExt.onSurface,
@@ -177,7 +177,7 @@ class _TransactionsTopSpendingSection extends StatelessWidget {
                               hasExpenses
                                   ? 'Highest spend category this month'
                                   : 'No expenses this month',
-                              style: GoogleFonts.inter(
+                              style: TextStyle(fontFamily: 'Inter', 
                                 fontSize: 12,
                                 color: themeExt.onSurfaceVariant,
                                 fontWeight: FontWeight.w500,
@@ -193,7 +193,7 @@ class _TransactionsTopSpendingSection extends StatelessWidget {
                     else
                       Text(
                         '$currencySymbol${topAmount.toStringAsFixed(2)}',
-                        style: GoogleFonts.outfit(
+                        style: TextStyle(fontFamily: 'Outfit', 
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: themeExt.onSurface,
@@ -294,7 +294,7 @@ class _TransactionsSliverListSectionState
                 padding: const EdgeInsets.symmetric(vertical: 32),
                 child: Text(
                   state.message,
-                  style: GoogleFonts.inter(color: themeExt.error),
+                  style: TextStyle(fontFamily: 'Inter', color: themeExt.error),
                 ),
               ),
             ),
@@ -337,7 +337,7 @@ class _TransactionsSliverListSectionState
                         const SizedBox(height: 12),
                         Text(
                           'No transactions found.',
-                          style: GoogleFonts.inter(
+                          style: TextStyle(fontFamily: 'Inter', 
                             fontSize: 14,
                             color: themeExt.onSurfaceVariant,
                             fontWeight: FontWeight.w500,

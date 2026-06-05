@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
 
@@ -242,21 +242,21 @@ class AppTheme {
   static TextTheme _buildTextTheme(TextTheme base, Color textColor) {
     return base.copyWith(
       // --- Display: Outfit — numeric / currency hero displays ---
-      displayLarge: GoogleFonts.outfit(
+      displayLarge: TextStyle(fontFamily: 'Outfit', 
         fontSize: 42,
         fontWeight: FontWeight.w700,
         height: 1.1,
         letterSpacing: -1.0,
         color: textColor,
       ),
-      displayMedium: GoogleFonts.outfit(
+      displayMedium: TextStyle(fontFamily: 'Outfit', 
         fontSize: 32,
         fontWeight: FontWeight.w700,
         height: 1.15,
         letterSpacing: -0.5,
         color: textColor,
       ),
-      displaySmall: GoogleFonts.outfit(
+      displaySmall: TextStyle(fontFamily: 'Outfit', 
         fontSize: 22,
         fontWeight: FontWeight.w700,
         height: 1.2,
@@ -264,72 +264,72 @@ class AppTheme {
         color: textColor,
       ),
       // --- Headlines: Inter — page / card titles ---
-      headlineLarge: GoogleFonts.inter(
+      headlineLarge: TextStyle(fontFamily: 'Inter', 
         fontSize: 24,
         fontWeight: FontWeight.w600, // Semi-Bold
         height: 32 / 24,
         letterSpacing: -0.01,
         color: textColor,
       ),
-      headlineMedium: GoogleFonts.inter(
+      headlineMedium: TextStyle(fontFamily: 'Inter', 
         fontSize: 20,
         fontWeight: FontWeight.w600, // Semi-Bold
         height: 28 / 20,
         color: textColor,
       ),
       // --- Titles: Inter — section / widget headers ---
-      titleLarge: GoogleFonts.inter(
+      titleLarge: TextStyle(fontFamily: 'Inter', 
         fontSize: 18,
         fontWeight: FontWeight.w600, // Semi-Bold — section headers
         height: 26 / 18,
         letterSpacing: -0.01,
         color: textColor,
       ),
-      titleMedium: GoogleFonts.inter(
+      titleMedium: TextStyle(fontFamily: 'Inter', 
         fontSize: 16,
         fontWeight: FontWeight.w500, // Medium — sub-section labels
         height: 24 / 16,
         color: textColor,
       ),
-      titleSmall: GoogleFonts.inter(
+      titleSmall: TextStyle(fontFamily: 'Inter', 
         fontSize: 14,
         fontWeight: FontWeight.w500, // Medium — compact titles
         height: 20 / 14,
         color: textColor,
       ),
       // --- Body: Inter — content text ---
-      bodyLarge: GoogleFonts.inter(
+      bodyLarge: TextStyle(fontFamily: 'Inter', 
         fontSize: 16,
         fontWeight: FontWeight.w400, // Regular
         height: 24 / 16,
         color: textColor,
       ),
-      bodyMedium: GoogleFonts.inter(
+      bodyMedium: TextStyle(fontFamily: 'Inter', 
         fontSize: 14,
         fontWeight: FontWeight.w400, // Regular
         height: 20 / 14,
         color: textColor,
       ),
-      bodySmall: GoogleFonts.inter(
+      bodySmall: TextStyle(fontFamily: 'Inter', 
         fontSize: 12,
         fontWeight: FontWeight.w400, // Regular — captions
         height: 16 / 12,
         color: textColor,
       ),
       // --- Labels: Inter — chips / badges / small controls ---
-      labelLarge: GoogleFonts.inter(
+      labelLarge: TextStyle(fontFamily: 'Inter', 
         fontSize: 14,
         fontWeight: FontWeight.w600, // Semi-Bold
         height: 20 / 14,
         color: textColor,
       ),
-      labelMedium: GoogleFonts.inter(
+      labelMedium: TextStyle(fontFamily: 'Inter', 
         fontSize: 12,
         fontWeight: FontWeight.w500, // Medium
         height: 16 / 12,
         color: textColor,
       ),
-      labelSmall: GoogleFonts.inter(
+      labelSmall: TextStyle(fontFamily: 'Inter', 
         fontSize: 11,
         fontWeight: FontWeight.w400, // Regular — tiny metadata
         height: 14 / 11,
@@ -495,7 +495,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppDimensions.radiusLg), // 32px
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: TextStyle(fontFamily: 'Inter', 
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -511,7 +511,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppDimensions.radiusLg), // 32px
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: TextStyle(fontFamily: 'Inter', 
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -538,7 +538,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDimensions.radiusLg),
           borderSide: const BorderSide(color: lightPrimary, width: 1.5),
         ),
-        labelStyle: GoogleFonts.inter(
+        labelStyle: TextStyle(fontFamily: 'Inter', 
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: lightOnSurfaceVariant,
@@ -550,7 +550,7 @@ class AppTheme {
       extensions: [
         lightExtension,
         AppTextThemeExtension(
-          headlineLgMobile: GoogleFonts.inter(
+          headlineLgMobile: TextStyle(fontFamily: 'Inter', 
             fontSize: 22,
             fontWeight: FontWeight.w600,
             height: 28 / 22,
@@ -717,7 +717,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppDimensions.radiusLg), // 32px
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: TextStyle(fontFamily: 'Inter', 
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -733,7 +733,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppDimensions.radiusLg), // 32px
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: TextStyle(fontFamily: 'Inter', 
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -760,7 +760,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppDimensions.radiusLg),
           borderSide: const BorderSide(color: darkPrimary, width: 1.5),
         ),
-        labelStyle: GoogleFonts.inter(
+        labelStyle: TextStyle(fontFamily: 'Inter', 
           fontSize: 12,
           fontWeight: FontWeight.w500,
           color: darkOnSurfaceVariant,
@@ -772,7 +772,7 @@ class AppTheme {
       extensions: [
         darkExtension,
         AppTextThemeExtension(
-          headlineLgMobile: GoogleFonts.inter(
+          headlineLgMobile: TextStyle(fontFamily: 'Inter', 
             fontSize: 22,
             fontWeight: FontWeight.w600,
             height: 28 / 22,

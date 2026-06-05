@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
 import 'package:spend_sum/features/auth/domain/entities/country_code.dart';
@@ -82,7 +82,7 @@ class PhoneForm extends StatelessWidget {
                           const SizedBox(width: 8),
                           Text(
                             country.code,
-                            style: GoogleFonts.inter(
+                            style: TextStyle(fontFamily: 'Inter', 
                               color: themeExt.onSurface,
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
@@ -109,7 +109,7 @@ class PhoneForm extends StatelessWidget {
                   controller: phoneController,
                   focusNode: phoneFocusNode,
                   keyboardType: TextInputType.phone,
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter', 
                     color: themeExt.onSurface,
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
@@ -120,7 +120,7 @@ class PhoneForm extends StatelessWidget {
                   ],
                   decoration: InputDecoration(
                     hintText: 'Enter mobile number',
-                    hintStyle: GoogleFonts.inter(
+                    hintStyle: TextStyle(fontFamily: 'Inter', 
                       color: themeExt.onSurfaceVariant.withValues(alpha: 0.6),
                       fontWeight: FontWeight.w400,
                     ),
@@ -148,7 +148,7 @@ class PhoneForm extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               phoneError!,
-              style: GoogleFonts.inter(
+              style: TextStyle(fontFamily: 'Inter', 
                 color: themeExt.error,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,

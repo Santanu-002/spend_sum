@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/common/widget/button/app_button.dart';
@@ -200,7 +200,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                   const SizedBox(height: AppDimensions.stackSm),
                   Text(
                     'Please fill in your details to finalize your SpendSum account.',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontSize: 15,
                       color: themeExt.onSurfaceVariant,
                       height: 1.4,
@@ -212,7 +212,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                   Text.rich(
                     TextSpan(
                       text: 'Full Name ',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'Inter', 
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: themeExt.onSurface,
@@ -238,7 +238,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
                     ],
-                    style: GoogleFonts.inter(color: themeExt.onSurface),
+                    style: TextStyle(fontFamily: 'Inter', color: themeExt.onSurface),
                     decoration: InputDecoration(
                       hintText: 'Enter full name',
                       hintStyle: TextStyle(
@@ -284,7 +284,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                   // Email Input (Optional)
                   Text(
                     'Email Address (Optional)',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: themeExt.onSurface,
@@ -303,7 +303,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                       ),
                     ],
                     onFieldSubmitted: (_) => _submitProfile(),
-                    style: GoogleFonts.inter(color: themeExt.onSurface),
+                    style: TextStyle(fontFamily: 'Inter', color: themeExt.onSurface),
                     decoration: InputDecoration(
                       hintText: 'Enter email address',
                       hintStyle: TextStyle(
@@ -364,7 +364,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                             Text.rich(
                               TextSpan(
                                 text: 'Date of Birth ',
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'Inter', 
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: themeExt.onSurface,
@@ -419,7 +419,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                                             : _formatDate(
                                                 _selectedDateOfBirth!,
                                               ),
-                                        style: GoogleFonts.inter(
+                                        style: TextStyle(fontFamily: 'Inter', 
                                           color: _selectedDateOfBirth == null
                                               ? themeExt.onSurfaceVariant
                                                     .withValues(alpha: 0.5)
@@ -436,7 +436,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                               const SizedBox(height: 4),
                               Text(
                                 'Date of birth is required',
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'Inter', 
                                   color: theme.colorScheme.error,
                                   fontSize: 12,
                                 ),
@@ -454,7 +454,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                           children: [
                             Text(
                               'Gender (Optional)',
-                              style: GoogleFonts.inter(
+                              style: TextStyle(fontFamily: 'Inter', 
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: themeExt.onSurface,
@@ -490,7 +490,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                                     color: themeExt.onSurfaceVariant,
                                   ),
                                   dropdownColor: themeExt.surfaceContainerHigh,
-                                  style: GoogleFonts.inter(
+                                  style: TextStyle(fontFamily: 'Inter', 
                                     color: themeExt.onSurface,
                                     fontSize: 15,
                                   ),
@@ -532,7 +532,7 @@ class _RegistrationPageContentState extends State<_RegistrationPageContent> {
                     loading: isLoading,
                     child: Text(
                       'Complete Profile',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'Inter', 
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
                       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
 
@@ -72,7 +72,7 @@ class CurrencyDropdownField extends StatelessWidget {
       children: [
         Text(
           'Currency / Symbol',
-          style: GoogleFonts.inter(
+          style: TextStyle(fontFamily: 'Inter', 
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: themeExt.onSurface,
@@ -101,7 +101,7 @@ class CurrencyDropdownField extends StatelessWidget {
                 color: themeExt.onSurfaceVariant,
               ),
               dropdownColor: themeExt.surfaceContainerHigh,
-              style: GoogleFonts.inter(
+              style: TextStyle(fontFamily: 'Inter', 
                 color: themeExt.onSurface,
                 fontSize: 15,
               ),

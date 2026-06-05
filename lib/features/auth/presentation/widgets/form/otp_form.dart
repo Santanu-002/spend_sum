@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:pinput/pinput.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
@@ -52,7 +52,7 @@ class OtpForm extends StatelessWidget {
           defaultPinTheme: PinTheme(
             width: 48,
             height: 56,
-            textStyle: GoogleFonts.inter(
+            textStyle: TextStyle(fontFamily: 'Inter', 
               fontSize: 22,
               fontWeight: FontWeight.w600,
               color: themeExt.onSurface,
@@ -66,7 +66,7 @@ class OtpForm extends StatelessWidget {
           focusedPinTheme: PinTheme(
             width: 48,
             height: 56,
-            textStyle: GoogleFonts.inter(
+            textStyle: TextStyle(fontFamily: 'Inter', 
               fontSize: 22,
               fontWeight: FontWeight.w600,
               color: themeExt.onSurface,
@@ -87,7 +87,7 @@ class OtpForm extends StatelessWidget {
           errorPinTheme: PinTheme(
             width: 48,
             height: 56,
-            textStyle: GoogleFonts.inter(
+            textStyle: TextStyle(fontFamily: 'Inter', 
               fontSize: 22,
               fontWeight: FontWeight.w600,
               color: themeExt.onSurface,
@@ -104,7 +104,7 @@ class OtpForm extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             otpError!,
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'Inter', 
               color: themeExt.error,
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -121,7 +121,7 @@ class OtpForm extends StatelessWidget {
           children: [
             Text(
               "Didn't receive the code? ",
-              style: GoogleFonts.inter(
+              style: TextStyle(fontFamily: 'Inter', 
                 color: themeExt.onSurfaceVariant,
                 fontSize: 14,
               ),
@@ -140,7 +140,7 @@ class OtpForm extends StatelessWidget {
                 onTap: onResendCode,
                 child: Text(
                   'Resend Code',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter', 
                     color: themeExt.primary,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -150,7 +150,7 @@ class OtpForm extends StatelessWidget {
             else
               Text(
                 'Resend in ${secondsRemaining}s',
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'Inter', 
                   color: themeExt.onSurfaceVariant.withValues(alpha: 0.5),
                   fontWeight: FontWeight.w500,
                   fontSize: 14,

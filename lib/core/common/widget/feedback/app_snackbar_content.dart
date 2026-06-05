@@ -49,7 +49,7 @@ class _AppSnackbarContent extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: GoogleFonts.inter(
+              style: TextStyle(fontFamily: 'Inter', 
                 fontSize: 14.0,
                 fontWeight: FontWeight.w500,
                 color: foregroundColor,

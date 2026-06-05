@@ -19,22 +19,81 @@ void registerCustomCategory({
 }) {
   try {
     final nameLower = name.toLowerCase().trim();
-    final codePoint = int.tryParse(iconHex, radix: 16);
-    if (codePoint != null) {
-      // ignore: non_const_argument_for_const_parameter
-      final iconData = IconData(codePoint, fontFamily: 'MaterialIcons');
-      final cleanHex = colorHex.replaceAll('#', '').replaceAll('0x', '');
-      final Color color;
-      if (cleanHex.length == 6) {
-        color = Color(int.parse('FF$cleanHex', radix: 16));
-      } else if (cleanHex.length == 8) {
-        color = Color(int.parse(cleanHex, radix: 16));
-      } else {
-        color = const Color(0xFF5856D6);
-      }
-      _customCategoriesCache[nameLower] = CategoryDetails(icon: iconData, color: color);
+    final iconData = _getConstIconFromHex(iconHex);
+    final cleanHex = colorHex.replaceAll('#', '').replaceAll('0x', '');
+    final Color color;
+    if (cleanHex.length == 6) {
+      color = Color(int.parse('FF$cleanHex', radix: 16));
+    } else if (cleanHex.length == 8) {
+      color = Color(int.parse(cleanHex, radix: 16));
+    } else {
+      color = const Color(0xFF5856D6);
     }
+    _customCategoriesCache[nameLower] = CategoryDetails(icon: iconData, color: color);
   } catch (_) {}
+}
+
+/// Dynamic IconData constructor call is avoided to support Flutter font tree-shaking.
+IconData _getConstIconFromHex(String hex) {
+  final cleanHex = hex.toLowerCase().trim().replaceAll('0x', '');
+  switch (cleanHex) {
+    case 'f58f':
+      return Icons.attach_money_rounded;
+    case 'f0170':
+      return Icons.shopping_basket_rounded;
+    case 'f0108':
+      return Icons.restaurant_rounded;
+    case 'f6b3':
+      return Icons.directions_car_rounded;
+    case 'f7f5':
+      return Icons.home_rounded;
+    case 'f012e':
+      return Icons.school_rounded;
+    case 'f767':
+      return Icons.fitness_center_rounded;
+    case 'f8b0':
+      return Icons.medical_services_rounded;
+    case 'f016f':
+      return Icons.shopping_bag_rounded;
+    case 'f54c':
+      return Icons.airplanemode_active_rounded;
+    case 'f02bf':
+      return Icons.wifi_rounded;
+    case 'f00e1':
+      return Icons.receipt_long_rounded;
+    case 'f0128':
+      return Icons.savings_rounded;
+    case 'f02c7':
+      return Icons.work_rounded;
+    case 'f0254':
+      return Icons.trending_up_rounded;
+    case 'f61a':
+      return Icons.card_giftcard_rounded;
+    case 'f614':
+      return Icons.campaign_rounded;
+    case 'f5b3':
+      return Icons.beach_access_rounded;
+    case 'f87a':
+      return Icons.local_play_rounded;
+    case 'f03b4':
+      return Icons.water_drop_rounded;
+    case 'f0343':
+      return Icons.key_rounded;
+    case 'f016b':
+      return Icons.shield_rounded;
+    case 'f002a':
+      return Icons.notifications_rounded;
+    case 'f0058':
+      return Icons.payments_rounded;
+    case 'f00e6':
+      return Icons.redeem_rounded;
+    case 'f0156':
+      return Icons.settings_backup_restore_rounded;
+    case 'f676':
+      return Icons.corporate_fare_rounded;
+    default:
+      return Icons.attach_money_rounded;
+  }
 }
 
 /// Resolves standard or custom icon and styling configuration from category key names.

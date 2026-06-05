@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
@@ -102,7 +102,7 @@ class _HomeErrorWidget extends StatelessWidget {
           const SizedBox(height: AppDimensions.stackMd),
           Text(
             'Failed to load dashboard data',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'Inter', 
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: themeExt.onSurface,
@@ -112,7 +112,7 @@ class _HomeErrorWidget extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'Inter', 
               fontSize: 13,
               color: themeExt.onSurfaceVariant,
             ),

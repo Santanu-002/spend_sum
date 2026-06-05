@@ -128,14 +128,24 @@ class AppScaffold extends StatelessWidget {
                       : SystemUiOverlayStyle.light,
                   actions: actions,
                   automaticallyImplyLeading: false,
+                  leadingWidth: leading != null
+                      ? null
+                      : ((onBackPressed != null ||
+                              (automaticallyImplyLeading &&
+                                  (ModalRoute.of(context)?.canPop ?? false)))
+                          ? 40 + AppDimensions.marginPage
+                          : null),
                   leading:
                       leading ??
                       ((onBackPressed != null ||
                               (automaticallyImplyLeading &&
                                   (ModalRoute.of(context)?.canPop ?? false)))
-                          ? AppBackButton(
-                              onPressed: onBackPressed,
-                              color: themeExt.onSurface,
+                          ? Padding(
+                              padding: const EdgeInsets.only(left: AppDimensions.marginPage),
+                              child: AppBackButton(
+                                onPressed: onBackPressed,
+                                color: themeExt.onSurface,
+                              ),
                             )
                           : null),
                 )

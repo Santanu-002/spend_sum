@@ -15,7 +15,7 @@ import 'package:spend_sum/features/dashboard/presentation/widgets/views/transact
 
 import 'package:spend_sum/core/theme/app_colors.dart';
 
-import 'package:google_fonts/google_fonts.dart';
+
 
 import 'package:spend_sum/features/dashboard/presentation/cubit/transaction_cubit.dart';
 
@@ -134,7 +134,7 @@ class DashboardPageContentState extends State<DashboardPageContent> {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                         child: Text(
                           'UNDO',
-                          style: GoogleFonts.inter(
+                          style: TextStyle(fontFamily: 'Inter', 
                             color: themeExt.primary,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,

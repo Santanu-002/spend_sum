@@ -147,12 +147,15 @@ abstract class AppButton extends StatelessWidget {
     final double maxWidth = width ?? double.infinity;
     final double maxHeight = height ?? double.infinity;
 
+    final resolvedPadding = padding ??
+        ((width == null && height == null)
+            ? const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0)
+            : const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0));
+
     return ButtonStyle(
       minimumSize: WidgetStateProperty.all(Size(minWidth, minHeight)),
       maximumSize: WidgetStateProperty.all(Size(maxWidth, maxHeight)),
-      padding: WidgetStateProperty.all(
-        padding ?? const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-      ),
+      padding: WidgetStateProperty.all(resolvedPadding),
       textStyle: WidgetStateProperty.all(
         textStyle ?? context.textTheme.labelLarge,
       ),

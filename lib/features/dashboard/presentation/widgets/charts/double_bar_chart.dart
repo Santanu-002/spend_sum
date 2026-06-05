@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 
@@ -77,7 +77,7 @@ class _DoubleBarChartState extends State<DoubleBarChart>
         child: Center(
           child: Text(
             'No historical chart data available',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'Inter', 
               color: themeExt.onSurfaceVariant,
               fontSize: 13,
               fontWeight: FontWeight.w500,
@@ -121,7 +121,7 @@ class _DoubleBarChartState extends State<DoubleBarChart>
                           : (widget.monthlyData[groupIndex]['expense'] as num).toDouble();
                       return BarTooltipItem(
                         '$type: ${widget.currencySymbol}${originalY.toStringAsFixed(2)}',
-                        GoogleFonts.inter(
+                        TextStyle(fontFamily: 'Inter', 
                           color: themeExt.inverseOnSurface,
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -158,7 +158,7 @@ class _DoubleBarChartState extends State<DoubleBarChart>
                           space: 6,
                           child: Text(
                             '${widget.currencySymbol}$label',
-                            style: GoogleFonts.inter(
+                            style: TextStyle(fontFamily: 'Inter', 
                               fontSize: 10,
                               fontWeight: FontWeight.w500,
                               color: themeExt.onSurfaceVariant.withValues(alpha: 0.7),
@@ -188,7 +188,7 @@ class _DoubleBarChartState extends State<DoubleBarChart>
                           space: 8,
                           child: Text(
                             label,
-                            style: GoogleFonts.inter(
+                            style: TextStyle(fontFamily: 'Inter', 
                               fontSize: fontSize,
                               fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
                               color: isCurrent ? themeExt.primary : themeExt.onSurfaceVariant,

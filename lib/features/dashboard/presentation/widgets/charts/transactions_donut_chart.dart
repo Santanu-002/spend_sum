@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:animated_digit/animated_digit.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 
@@ -128,7 +128,7 @@ class _TransactionsDonutChartState extends State<TransactionsDonutChart>
                     children: [
                       Text(
                         'Spent in ${widget.monthLabel}',
-                        style: GoogleFonts.inter(
+                        style: TextStyle(fontFamily: 'Inter', 
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: themeExt.onSurfaceVariant,
@@ -141,7 +141,7 @@ class _TransactionsDonutChartState extends State<TransactionsDonutChart>
                         prefix: widget.currencySymbol,
                         fractionDigits: 2,
                         enableSeparator: false,
-                        textStyle: GoogleFonts.outfit(
+                        textStyle: TextStyle(fontFamily: 'Outfit', 
                           fontSize: 28,
                           fontWeight: FontWeight.w700,
                           color: themeExt.onSurface,

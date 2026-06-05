@@ -173,7 +173,6 @@ class _OnboardingPageContentState extends State<_OnboardingPageContent>
                 text: 'Skip',
                 width: null,
                 height: null,
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               ),
             ),
         ],

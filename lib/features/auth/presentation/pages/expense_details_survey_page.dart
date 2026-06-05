@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/widget/button/app_button.dart';
 import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
@@ -143,7 +143,7 @@ class _ExpenseDetailsSurveyPageContentState
                 const SizedBox(height: AppDimensions.stackSm),
                 Text(
                   'Set your budget survey limit to track your spending and calculate your total savings later.',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter', 
                     fontSize: 15,
                     color: themeExt.onSurfaceVariant,
                     height: 1.4,
@@ -155,7 +155,7 @@ class _ExpenseDetailsSurveyPageContentState
                 Text.rich(
                   TextSpan(
                     text: 'Budget Amount ',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: themeExt.onSurface,
@@ -183,7 +183,7 @@ class _ExpenseDetailsSurveyPageContentState
                       RegExp(r'^\d*\.?\d{0,2}'),
                     ),
                   ],
-                  style: GoogleFonts.outfit(
+                  style: TextStyle(fontFamily: 'Outfit', 
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: themeExt.onSurface,
@@ -197,7 +197,7 @@ class _ExpenseDetailsSurveyPageContentState
                       padding: const EdgeInsets.only(right: 8.0, left: 4.0),
                       child: Text(
                         currencySymbol,
-                        style: GoogleFonts.outfit(
+                        style: TextStyle(fontFamily: 'Outfit', 
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: themeExt.primary,
@@ -238,7 +238,7 @@ class _ExpenseDetailsSurveyPageContentState
                 Text.rich(
                   TextSpan(
                     text: 'Budget Period ',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: themeExt.onSurface,
@@ -273,7 +273,7 @@ class _ExpenseDetailsSurveyPageContentState
                         color: themeExt.onSurfaceVariant,
                       ),
                       dropdownColor: themeExt.surfaceContainerHigh,
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'Inter', 
                         color: themeExt.onSurface,
                         fontSize: 16,
                       ),
@@ -310,7 +310,7 @@ class _ExpenseDetailsSurveyPageContentState
                   loading: isLoading,
                   child: Text(
                     'Save and Continue',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),

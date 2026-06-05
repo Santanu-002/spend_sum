@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
@@ -136,7 +136,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
           loading: _isSaving,
           child: Text(
             'Save Budget Target',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'Inter', 
               fontWeight: FontWeight.w700,
               fontSize: 16,
             ),
@@ -153,7 +153,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
             // Budget Input Block
             Text(
               'Target Limit Amount',
-              style: GoogleFonts.inter(
+              style: TextStyle(fontFamily: 'Inter', 
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: themeExt.onSurface,
@@ -168,7 +168,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
               ],
-              style: GoogleFonts.outfit(
+              style: TextStyle(fontFamily: 'Outfit', 
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: themeExt.onSurface,
@@ -182,7 +182,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
                   padding: const EdgeInsets.only(right: 8.0, left: 4.0),
                   child: Text(
                     currencySymbol,
-                    style: GoogleFonts.outfit(
+                    style: TextStyle(fontFamily: 'Outfit', 
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: themeExt.primary,
@@ -224,7 +224,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
                     onPressed: () => _adjustBudget(-100),
                     height: 38,
                     padding: EdgeInsets.zero,
-                    textStyle: GoogleFonts.inter(
+                    textStyle: TextStyle(fontFamily: 'Inter', 
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
@@ -237,7 +237,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
                     onPressed: () => _adjustBudget(-500),
                     height: 38,
                     padding: EdgeInsets.zero,
-                    textStyle: GoogleFonts.inter(
+                    textStyle: TextStyle(fontFamily: 'Inter', 
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
@@ -250,7 +250,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
                     onPressed: () => _adjustBudget(-1000),
                     height: 38,
                     padding: EdgeInsets.zero,
-                    textStyle: GoogleFonts.inter(
+                    textStyle: TextStyle(fontFamily: 'Inter', 
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
@@ -267,7 +267,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
                     onPressed: () => _adjustBudget(100),
                     height: 38,
                     padding: EdgeInsets.zero,
-                    textStyle: GoogleFonts.inter(
+                    textStyle: TextStyle(fontFamily: 'Inter', 
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
@@ -280,7 +280,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
                     onPressed: () => _adjustBudget(500),
                     height: 38,
                     padding: EdgeInsets.zero,
-                    textStyle: GoogleFonts.inter(
+                    textStyle: TextStyle(fontFamily: 'Inter', 
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
@@ -293,7 +293,7 @@ class _WalletPageContentState extends State<_WalletPageContent> {
                     onPressed: () => _adjustBudget(1000),
                     height: 38,
                     padding: EdgeInsets.zero,
-                    textStyle: GoogleFonts.inter(
+                    textStyle: TextStyle(fontFamily: 'Inter', 
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),

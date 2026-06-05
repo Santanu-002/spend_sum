@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/util/category_icon_util.dart';
+import 'package:spend_sum/core/common/widget/button/app_back_button.dart';
 import 'package:spend_sum/core/common/widget/button/app_button.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
@@ -164,24 +165,8 @@ class _SelectCategorySheetContentState extends State<_SelectCategorySheetContent
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: GestureDetector(
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      SystemSound.play(SystemSoundType.click);
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(AppDimensions.stackSm),
-                      decoration: BoxDecoration(
-                        color: themeExt.surfaceContainer,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.chevron_left_rounded,
-                        color: themeExt.onSurface,
-                        size: AppDimensions.iconLg,
-                      ),
-                    ),
+                  child: AppBackButton(
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
                 Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:animated_digit/animated_digit.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/common/util/currency_util.dart';
@@ -79,7 +79,7 @@ class HomeContentLayout extends StatelessWidget {
                   bottom: -28,
                   child: Text(
                     currencySymbol,
-                    style: GoogleFonts.outfit(
+                    style: TextStyle(fontFamily: 'Outfit', 
                       fontSize: 160,
                       fontWeight: FontWeight.w800,
                       color: Colors.white.withValues(alpha: 0.07),
@@ -99,7 +99,7 @@ class HomeContentLayout extends StatelessWidget {
                       children: [
                         Text(
                           'This Month Spend',
-                          style: GoogleFonts.inter(
+                          style: TextStyle(fontFamily: 'Inter', 
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: themeExt.onPrimary.withValues(alpha: 0.8),
@@ -157,7 +157,7 @@ class HomeContentLayout extends StatelessWidget {
                               const SizedBox(width: 6),
                               Text(
                                 'Up to date',
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'Inter', 
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: themeExt.onPrimary,
@@ -177,7 +177,7 @@ class HomeContentLayout extends StatelessWidget {
                               AnimatedDigitWidget(
                                 value: data!.percentageChange.abs().round(),
                                 suffix: '%',
-                                textStyle: GoogleFonts.inter(
+                                textStyle: TextStyle(fontFamily: 'Inter', 
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                   color: themeExt.onPrimary,
@@ -189,7 +189,7 @@ class HomeContentLayout extends StatelessWidget {
                                 data!.percentageChange < 0
                                     ? 'less than last month'
                                     : 'more than last month',
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'Inter', 
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                   color: themeExt.onPrimary.withValues(alpha: 0.9),
@@ -259,7 +259,7 @@ class HomeContentLayout extends StatelessWidget {
                   const SizedBox(width: 14),
                   Text(
                     'Spending Wallet',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                       color: themeExt.onSurface,
@@ -354,7 +354,6 @@ class HomeContentLayout extends StatelessWidget {
                 text: 'See All',
                 width: null,
                 height: null,
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               ),
             ],
             ),
@@ -400,7 +399,7 @@ class HomeContentLayout extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text(
                       'No transactions recorded yet.',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'Inter', 
                         fontSize: 14,
                         color: themeExt.onSurfaceVariant,
                         fontWeight: FontWeight.w500,
@@ -534,7 +533,7 @@ class HomeContentLayout extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   catName[0].toUpperCase() + catName.substring(1),
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter', 
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: themeExt.onSurface,
@@ -546,7 +545,7 @@ class HomeContentLayout extends StatelessWidget {
                   catAmount > 0
                       ? '$currencySymbol${catAmount.toStringAsFixed(0)}'
                       : '${currencySymbol}0',
-                  style: GoogleFonts.outfit(
+                  style: TextStyle(fontFamily: 'Outfit', 
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: themeExt.onSurface,

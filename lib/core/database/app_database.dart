@@ -99,51 +99,41 @@ class AppDatabase extends _$AppDatabase {
       },
       beforeOpen: (details) async {
         final existing = await select(categories).get();
-        if (existing.isEmpty) {
+        final needsSeeding = existing.isEmpty || existing.any((c) => c.icon.contains('_'));
+        if (needsSeeding) {
+          await delete(categories).go();
           final defaultCategories = [
-            const CategoriesCompanion(name: Value('Groceries'), icon: Value('shopping_basket_rounded'), color: Value('0xFF4CD964')),
-            const CategoriesCompanion(name: Value('Travel'), icon: Value('airplanemode_active_rounded'), color: Value('0xFF5AC8FA')),
-            const CategoriesCompanion(name: Value('Car'), icon: Value('directions_car_rounded'), color: Value('0xFF007AFF')),
-            const CategoriesCompanion(name: Value('Home'), icon: Value('home_rounded'), color: Value('0xFF5856D6')),
-            const CategoriesCompanion(name: Value('Insurances'), icon: Value('shield_rounded'), color: Value('0xFF4CD964')),
-            const CategoriesCompanion(name: Value('Education'), icon: Value('school_rounded'), color: Value('0xFF5856D6')),
-            const CategoriesCompanion(name: Value('Marketing'), icon: Value('campaign_rounded'), color: Value('0xFFFF9500')),
-            const CategoriesCompanion(name: Value('shopping'), icon: Value('shopping_bag_rounded'), color: Value('0xFF4CD964')),
-            const CategoriesCompanion(name: Value('Internet'), icon: Value('wifi_rounded'), color: Value('0xFF5856D6')),
-            const CategoriesCompanion(name: Value('Water'), icon: Value('water_drop_rounded'), color: Value('0xFF007AFF')),
-            const CategoriesCompanion(name: Value('Rent'), icon: Value('key_rounded'), color: Value('0xFFFF9500')),
-            const CategoriesCompanion(name: Value('Gym'), icon: Value('fitness_center_rounded'), color: Value('0xFFFF9500')),
-            const CategoriesCompanion(name: Value('Subscription'), icon: Value('notifications_rounded'), color: Value('0xFF5856D6')),
-            const CategoriesCompanion(name: Value('Vacation'), icon: Value('beach_access_rounded'), color: Value('0xFF4CD964')),
-            const CategoriesCompanion(name: Value('Food'), icon: Value('restaurant_rounded'), color: Value('0xFFFF2D55')),
-            const CategoriesCompanion(name: Value('Entertainment'), icon: Value('local_play_rounded'), color: Value('0xFFFF9500')),
-            const CategoriesCompanion(name: Value('Health'), icon: Value('medical_services_rounded'), color: Value('0xFFFF3B30')),
-            const CategoriesCompanion(name: Value('Bills'), icon: Value('receipt_long_rounded'), color: Value('0xFFFFCC00')),
-            const CategoriesCompanion(name: Value('Savings'), icon: Value('savings_rounded'), color: Value('0xFF4CD964')),
-            const CategoriesCompanion(name: Value('Other'), icon: Value('apps_rounded'), color: Value('0xFF5856D6')),
-            const CategoriesCompanion(name: Value('Salary'), icon: Value('attach_money_rounded'), color: Value('0xFF4CD964'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Freelance'), icon: Value('work_rounded'), color: Value('0xFF5AC8FA'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Investments'), icon: Value('trending_up_rounded'), color: Value('0xFF5856D6'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Gifts'), icon: Value('card_giftcard_rounded'), color: Value('0xFFFF2D55'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Bonus'), icon: Value('redeem_rounded'), color: Value('0xFFFF9500'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Refunds'), icon: Value('settings_backup_restore_rounded'), color: Value('0xFF007AFF'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Rental'), icon: Value('corporate_fare_rounded'), color: Value('0xFFFFCC00'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Other Income'), icon: Value('payments_rounded'), color: Value('0xFFFFCC00'), isExpense: Value(false)),
+            const CategoriesCompanion(name: Value('Groceries'), icon: Value('f0170'), color: Value('0xFF00B475')),
+            const CategoriesCompanion(name: Value('Travel'), icon: Value('f54c'), color: Value('0xFF5AC8FA')),
+            const CategoriesCompanion(name: Value('Car'), icon: Value('f6b3'), color: Value('0xFF007AFF')),
+            const CategoriesCompanion(name: Value('Home'), icon: Value('f7f5'), color: Value('0xFF5856D6')),
+            const CategoriesCompanion(name: Value('Insurances'), icon: Value('f016b'), color: Value('0xFF00B475')),
+            const CategoriesCompanion(name: Value('Education'), icon: Value('f012e'), color: Value('0xFF5856D6')),
+            const CategoriesCompanion(name: Value('Marketing'), icon: Value('f614'), color: Value('0xFFFF9500')),
+            const CategoriesCompanion(name: Value('shopping'), icon: Value('f016f'), color: Value('0xFF00B475')),
+            const CategoriesCompanion(name: Value('Internet'), icon: Value('f02bf'), color: Value('0xFF5856D6')),
+            const CategoriesCompanion(name: Value('Water'), icon: Value('f03b4'), color: Value('0xFF007AFF')),
+            const CategoriesCompanion(name: Value('Rent'), icon: Value('f0343'), color: Value('0xFFFF9500')),
+            const CategoriesCompanion(name: Value('Gym'), icon: Value('f767'), color: Value('0xFFFF9500')),
+            const CategoriesCompanion(name: Value('Subscription'), icon: Value('f002a'), color: Value('0xFF5856D6')),
+            const CategoriesCompanion(name: Value('Vacation'), icon: Value('f5b3'), color: Value('0xFF00B475')),
+            const CategoriesCompanion(name: Value('Food'), icon: Value('f0108'), color: Value('0xFFFF2D55')),
+            const CategoriesCompanion(name: Value('Entertainment'), icon: Value('f87a'), color: Value('0xFFFF9500')),
+            const CategoriesCompanion(name: Value('Health'), icon: Value('f8b0'), color: Value('0xFFFF3B30')),
+            const CategoriesCompanion(name: Value('Bills'), icon: Value('f00e1'), color: Value('0xFFFFCC00')),
+            const CategoriesCompanion(name: Value('Savings'), icon: Value('f0128'), color: Value('0xFF00B475')),
+            const CategoriesCompanion(name: Value('Other'), icon: Value('f58f'), color: Value('0xFF5856D6')),
+            const CategoriesCompanion(name: Value('Salary'), icon: Value('f58f'), color: Value('0xFF00B475'), isExpense: Value(false)),
+            const CategoriesCompanion(name: Value('Freelance'), icon: Value('f02c7'), color: Value('0xFF5AC8FA'), isExpense: Value(false)),
+            const CategoriesCompanion(name: Value('Investments'), icon: Value('f0254'), color: Value('0xFF5856D6'), isExpense: Value(false)),
+            const CategoriesCompanion(name: Value('Gifts'), icon: Value('f61a'), color: Value('0xFFFF2D55'), isExpense: Value(false)),
+            const CategoriesCompanion(name: Value('Bonus'), icon: Value('f00e6'), color: Value('0xFFFF9500'), isExpense: Value(false)),
+            const CategoriesCompanion(name: Value('Refunds'), icon: Value('f0156'), color: Value('0xFF007AFF'), isExpense: Value(false)),
+            const CategoriesCompanion(name: Value('Rental'), icon: Value('f676'), color: Value('0xFFFFCC00'), isExpense: Value(false)),
+            const CategoriesCompanion(name: Value('Other Income'), icon: Value('f0058'), color: Value('0xFFFFCC00'), isExpense: Value(false)),
           ];
           for (final cat in defaultCategories) {
             await into(categories).insert(cat);
-          }
-        } else {
-          final additionalCategories = [
-            const CategoriesCompanion(name: Value('Bonus'), icon: Value('redeem_rounded'), color: Value('0xFFFF9500'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Refunds'), icon: Value('settings_backup_restore_rounded'), color: Value('0xFF007AFF'), isExpense: Value(false)),
-            const CategoriesCompanion(name: Value('Rental'), icon: Value('corporate_fare_rounded'), color: Value('0xFFFFCC00'), isExpense: Value(false)),
-          ];
-          for (final cat in additionalCategories) {
-            final check = await (select(categories)..where((t) => t.name.equals(cat.name.value))).get();
-            if (check.isEmpty) {
-              await into(categories).insert(cat);
-            }
           }
         }
 

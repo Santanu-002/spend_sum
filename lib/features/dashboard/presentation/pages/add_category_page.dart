@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/widget/button/app_button.dart';
 import 'package:spend_sum/core/common/widget/layout/app_scaffold.dart';
@@ -241,7 +241,7 @@ class _AddCategoryPageContentState extends State<_AddCategoryPageContent>
                 // Category Name
                 Text(
                   'Category Name',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter', 
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: themeExt.onSurface,
@@ -251,7 +251,7 @@ class _AddCategoryPageContentState extends State<_AddCategoryPageContent>
                 TextFormField(
                   controller: _nameController,
                   textCapitalization: TextCapitalization.words,
-                  style: GoogleFonts.inter(color: themeExt.onSurface),
+                  style: TextStyle(fontFamily: 'Inter', color: themeExt.onSurface),
                   decoration: InputDecoration(
                     hintText: _isExpense
                         ? 'e.g. Shopping, Travel, Bills, Groceries'
@@ -303,7 +303,7 @@ class _AddCategoryPageContentState extends State<_AddCategoryPageContent>
                 // Icon Selector
                 Text(
                   'Choose Icon',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter', 
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: themeExt.onSurface,
@@ -365,7 +365,7 @@ class _AddCategoryPageContentState extends State<_AddCategoryPageContent>
                 // Color Selector
                 Text(
                   'Choose Color',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(fontFamily: 'Inter', 
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: themeExt.onSurface,
@@ -430,7 +430,7 @@ class _AddCategoryPageContentState extends State<_AddCategoryPageContent>
                   loading: _isSaving,
                   child: Text(
                     'Create Category',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                     ),

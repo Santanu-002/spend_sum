@@ -2,7 +2,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:spend_sum/core/theme/app_colors.dart';
 import 'package:spend_sum/core/theme/app_dimensions.dart';
-import 'package:spend_sum/features/onboarding/presentation/widgets/painter/crescent_logo_painter.dart';
 
 /// The first onboarding slide showing the orbital rotating logo graphic.
 class OnboardingSlideOne extends StatelessWidget {
@@ -95,11 +94,11 @@ class OnboardingSlideOne extends StatelessWidget {
                             ],
                           ),
                           alignment: Alignment.center,
-                          child: CustomPaint(
-                            size: Size(centerRadius * 0.9, centerRadius * 0.9),
-                            painter: CrescentLogoPainter(
-                              color: themeExt.primaryContainer,
-                            ),
+                          child: Image.asset(
+                            'assets/logo/spalsh/splash_logo.png',
+                            width: centerRadius * 1.3,
+                            height: centerRadius * 1.3,
+                            fit: BoxFit.contain,
                           ),
                         ),
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/common/util/currency_util.dart';
 import 'package:spend_sum/core/common/util/category_icon_util.dart';
@@ -184,7 +184,7 @@ class _TransactionsViewState extends State<TransactionsView> {
                                   key: _searchBarKey,
                                   focusNode: _searchFocusNode,
                                   controller: _searchController,
-                                  style: GoogleFonts.inter(color: themeExt.onSurface),
+                                  style: TextStyle(fontFamily: 'Inter', color: themeExt.onSurface),
                                   decoration: InputDecoration(
                                     hintText: 'Search by title...',
                                     hintStyle: TextStyle(

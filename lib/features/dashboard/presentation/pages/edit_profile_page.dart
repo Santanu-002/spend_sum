@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:spend_sum/app/dependency_injection.dart';
 import 'package:spend_sum/core/common/cubit/user_cubit.dart';
 import 'package:spend_sum/core/common/widget/button/app_button.dart';
@@ -232,7 +232,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                   const SizedBox(height: AppDimensions.stackSm),
                   Text(
                     'Modify your account name, email address, date of birth, and gender preferences.',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontSize: 14,
                       color: themeExt.onSurfaceVariant,
                       height: 1.4,
@@ -244,7 +244,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                   Text.rich(
                     TextSpan(
                       text: 'Full Name ',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'Inter', 
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: themeExt.onSurface,
@@ -270,7 +270,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
                     ],
-                    style: GoogleFonts.inter(color: themeExt.onSurface),
+                    style: TextStyle(fontFamily: 'Inter', color: themeExt.onSurface),
                     decoration: InputDecoration(
                       hintText: 'Enter full name',
                       hintStyle: TextStyle(
@@ -316,7 +316,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                   // Email Input (Optional)
                   Text(
                     'Email Address (Optional)',
-                    style: GoogleFonts.inter(
+                    style: TextStyle(fontFamily: 'Inter', 
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: themeExt.onSurface,
@@ -335,7 +335,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                       ),
                     ],
                     onFieldSubmitted: (_) => _saveProfile(),
-                    style: GoogleFonts.inter(color: themeExt.onSurface),
+                    style: TextStyle(fontFamily: 'Inter', color: themeExt.onSurface),
                     decoration: InputDecoration(
                       hintText: 'Enter email address',
                       hintStyle: TextStyle(
@@ -396,7 +396,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                             Text.rich(
                               TextSpan(
                                 text: 'Date of Birth ',
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'Inter', 
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: themeExt.onSurface,
@@ -449,7 +449,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                                         _selectedDateOfBirth == null
                                             ? 'DD/MM/YYYY'
                                             : _formatDate(_selectedDateOfBirth!),
-                                        style: GoogleFonts.inter(
+                                        style: TextStyle(fontFamily: 'Inter', 
                                           color: _selectedDateOfBirth == null
                                               ? themeExt.onSurfaceVariant
                                                   .withValues(alpha: 0.5)
@@ -466,7 +466,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                               const SizedBox(height: 4),
                               Text(
                                 'Date of birth is required',
-                                style: GoogleFonts.inter(
+                                style: TextStyle(fontFamily: 'Inter', 
                                   color: theme.colorScheme.error,
                                   fontSize: 12,
                                 ),
@@ -484,7 +484,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                           children: [
                             Text(
                               'Gender (Optional)',
-                              style: GoogleFonts.inter(
+                              style: TextStyle(fontFamily: 'Inter', 
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: themeExt.onSurface,
@@ -520,7 +520,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                                     color: themeExt.onSurfaceVariant,
                                   ),
                                   dropdownColor: themeExt.surfaceContainerHigh,
-                                  style: GoogleFonts.inter(
+                                  style: TextStyle(fontFamily: 'Inter', 
                                     color: themeExt.onSurface,
                                     fontSize: 15,
                                   ),
@@ -561,7 +561,7 @@ class _EditProfilePageContentState extends State<_EditProfilePageContent> {
                     loading: _isLoading,
                     child: Text(
                       'Save Changes',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'Inter', 
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
                       ),
