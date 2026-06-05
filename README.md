@@ -29,12 +29,12 @@ Here is a preview of the SpendSum application. You can view all **38 screenshots
 ### ☀️ Light Mode
 | Home View | Transaction View | Analytics View | Add New Transaction |
 |---|---|---|---|
-| ![Home View](assets/screenshots/light_mode/Screenshot_light_mode_10.jpg) | ![Transaction View](assets/screenshots/light_mode/Screenshot_light_mode_12.jpg) | ![Analytics View](assets/screenshots/light_mode/Screenshot_light_mode_14.jpg) | ![Add New Transaction](assets/screenshots/light_mode/Screenshot_light_mode_16.jpg) |
+| <img src="assets/screenshots/light_mode/Screenshot_light_mode_10.jpg" width="250" alt="Home View"> | <img src="assets/screenshots/light_mode/Screenshot_light_mode_12.jpg" width="250" alt="Transaction View"> | <img src="assets/screenshots/light_mode/Screenshot_light_mode_14.jpg" width="250" alt="Analytics View"> | <img src="assets/screenshots/light_mode/Screenshot_light_mode_16.jpg" width="250" alt="Add New Transaction"> |
 
 ### 🌙 Dark Mode
 | Home View | Transaction View | Analytics View | Add New Transaction |
 |---|---|---|---|
-| ![Home View](assets/screenshots/dark_mode/Screenshot_dark_mode_10.jpg) | ![Transaction View](assets/screenshots/dark_mode/Screenshot_dark_mode_12.jpg) | ![Analytics View](assets/screenshots/dark_mode/Screenshot_dark_mode_14.jpg) | ![Add New Transaction](assets/screenshots/dark_mode/Screenshot_dark_mode_16.jpg) |
+| <img src="assets/screenshots/dark_mode/Screenshot_dark_mode_10.jpg" width="250" alt="Home View"> | <img src="assets/screenshots/dark_mode/Screenshot_dark_mode_12.jpg" width="250" alt="Transaction View"> | <img src="assets/screenshots/dark_mode/Screenshot_dark_mode_14.jpg" width="250" alt="Analytics View"> | <img src="assets/screenshots/dark_mode/Screenshot_dark_mode_16.jpg" width="250" alt="Add New Transaction"> |
 
 ---
 
