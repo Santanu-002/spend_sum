@@ -12,13 +12,13 @@ Below is the complete gallery of Light Mode screenshots.
 
 | | | |
 |:---:|:---:|:---:|
-| ![Light 1](light_mode/Screenshot_light_mode_1.jpg) | ![Light 2](light_mode/Screenshot_light_mode_2.jpg) | ![Light 3](light_mode/Screenshot_light_mode_3.jpg) |
-| ![Light 4](light_mode/Screenshot_light_mode_4.jpg) | ![Light 5](light_mode/Screenshot_light_mode_5.jpg) | ![Light 6](light_mode/Screenshot_light_mode_6.jpg) |
-| ![Light 7](light_mode/Screenshot_light_mode_7.jpg) | ![Light 8](light_mode/Screenshot_light_mode_8.jpg) | ![Light 9](light_mode/Screenshot_light_mode_9.jpg) |
-| ![Light 10](light_mode/Screenshot_light_mode_10.jpg) | ![Light 11](light_mode/Screenshot_light_mode_11.jpg) | ![Light 12](light_mode/Screenshot_light_mode_12.jpg) |
-| ![Light 13](light_mode/Screenshot_light_mode_13.jpg) | ![Light 14](light_mode/Screenshot_light_mode_14.jpg) | ![Light 15](light_mode/Screenshot_light_mode_15.jpg) |
-| ![Light 16](light_mode/Screenshot_light_mode_16.jpg) | ![Light 17](light_mode/Screenshot_light_mode_17.jpg) | ![Light 18](light_mode/Screenshot_light_mode_18.jpg) |
-| ![Light 19](light_mode/Screenshot_light_mode_19.jpg) | | |
+| <img src="light_mode/Screenshot_light_mode_1.jpg" width="250" alt="Light 1"> | <img src="light_mode/Screenshot_light_mode_2.jpg" width="250" alt="Light 2"> | <img src="light_mode/Screenshot_light_mode_3.jpg" width="250" alt="Light 3"> |
+| <img src="light_mode/Screenshot_light_mode_4.jpg" width="250" alt="Light 4"> | <img src="light_mode/Screenshot_light_mode_5.jpg" width="250" alt="Light 5"> | <img src="light_mode/Screenshot_light_mode_6.jpg" width="250" alt="Light 6"> |
+| <img src="light_mode/Screenshot_light_mode_7.jpg" width="250" alt="Light 7"> | <img src="light_mode/Screenshot_light_mode_8.jpg" width="250" alt="Light 8"> | <img src="light_mode/Screenshot_light_mode_9.jpg" width="250" alt="Light 9"> |
+| <img src="light_mode/Screenshot_light_mode_10.jpg" width="250" alt="Light 10"> | <img src="light_mode/Screenshot_light_mode_11.jpg" width="250" alt="Light 11"> | <img src="light_mode/Screenshot_light_mode_12.jpg" width="250" alt="Light 12"> |
+| <img src="light_mode/Screenshot_light_mode_13.jpg" width="250" alt="Light 13"> | <img src="light_mode/Screenshot_light_mode_14.jpg" width="250" alt="Light 14"> | <img src="light_mode/Screenshot_light_mode_15.jpg" width="250" alt="Light 15"> |
+| <img src="light_mode/Screenshot_light_mode_16.jpg" width="250" alt="Light 16"> | <img src="light_mode/Screenshot_light_mode_17.jpg" width="250" alt="Light 17"> | <img src="light_mode/Screenshot_light_mode_18.jpg" width="250" alt="Light 18"> |
+| <img src="light_mode/Screenshot_light_mode_19.jpg" width="250" alt="Light 19"> | | |
 
 ---
 
@@ -28,10 +28,10 @@ Below is the complete gallery of Dark Mode screenshots.
 
 | | | |
 |:---:|:---:|:---:|
-| ![Dark 1](dark_mode/Screenshot_dark_mode_1.jpg) | ![Dark 2](dark_mode/Screenshot_dark_mode_2.jpg) | ![Dark 3](dark_mode/Screenshot_dark_mode_3.jpg) |
-| ![Dark 4](dark_mode/Screenshot_dark_mode_4.jpg) | ![Dark 5](dark_mode/Screenshot_dark_mode_5.jpg) | ![Dark 6](dark_mode/Screenshot_dark_mode_6.jpg) |
-| ![Dark 7](dark_mode/Screenshot_dark_mode_7.jpg) | ![Dark 8](dark_mode/Screenshot_dark_mode_8.jpg) | ![Dark 9](dark_mode/Screenshot_dark_mode_9.jpg) |
-| ![Dark 10](dark_mode/Screenshot_dark_mode_10.jpg) | ![Dark 11](dark_mode/Screenshot_dark_mode_11.jpg) | ![Dark 12](dark_mode/Screenshot_dark_mode_12.jpg) |
-| ![Dark 13](dark_mode/Screenshot_dark_mode_13.jpg) | ![Dark 14](dark_mode/Screenshot_dark_mode_14.jpg) | ![Dark 15](dark_mode/Screenshot_dark_mode_15.jpg) |
-| ![Dark 16](dark_mode/Screenshot_dark_mode_16.jpg) | ![Dark 17](dark_mode/Screenshot_dark_mode_17.jpg) | ![Dark 18](dark_mode/Screenshot_dark_mode_18.jpg) |
-| ![Dark 19](dark_mode/Screenshot_dark_mode_19.jpg) | | |
+| <img src="dark_mode/Screenshot_dark_mode_1.jpg" width="250" alt="Dark 1"> | <img src="dark_mode/Screenshot_dark_mode_2.jpg" width="250" alt="Dark 2"> | <img src="dark_mode/Screenshot_dark_mode_3.jpg" width="250" alt="Dark 3"> |
+| <img src="dark_mode/Screenshot_dark_mode_4.jpg" width="250" alt="Dark 4"> | <img src="dark_mode/Screenshot_dark_mode_5.jpg" width="250" alt="Dark 5"> | <img src="dark_mode/Screenshot_dark_mode_6.jpg" width="250" alt="Dark 6"> |
+| <img src="dark_mode/Screenshot_dark_mode_7.jpg" width="250" alt="Dark 7"> | <img src="dark_mode/Screenshot_dark_mode_8.jpg" width="250" alt="Dark 8"> | <img src="dark_mode/Screenshot_dark_mode_9.jpg" width="250" alt="Dark 9"> |
+| <img src="dark_mode/Screenshot_dark_mode_10.jpg" width="250" alt="Dark 10"> | <img src="dark_mode/Screenshot_dark_mode_11.jpg" width="250" alt="Dark 11"> | <img src="dark_mode/Screenshot_dark_mode_12.jpg" width="250" alt="Dark 12"> |
+| <img src="dark_mode/Screenshot_dark_mode_13.jpg" width="250" alt="Dark 13"> | <img src="dark_mode/Screenshot_dark_mode_14.jpg" width="250" alt="Dark 14"> | <img src="dark_mode/Screenshot_dark_mode_15.jpg" width="250" alt="Dark 15"> |
+| <img src="dark_mode/Screenshot_dark_mode_16.jpg" width="250" alt="Dark 16"> | <img src="dark_mode/Screenshot_dark_mode_17.jpg" width="250" alt="Dark 17"> | <img src="dark_mode/Screenshot_dark_mode_18.jpg" width="250" alt="Dark 18"> |
+| <img src="dark_mode/Screenshot_dark_mode_19.jpg" width="250" alt="Dark 19"> | | |
