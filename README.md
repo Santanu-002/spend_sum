@@ -27,14 +27,14 @@ The visual aesthetics, glassmorphic card stylings, and transitions were inspired
 Here is a preview of the SpendSum application. You can view all **38 screenshots** in the [Full Screenshots Gallery](assets/screenshots/Screenshots.md).
 
 ### ☀️ Light Mode
-| | | | |
+| Home View | Transaction View | Analytics View | Add New Transaction |
 |:---:|:---:|:---:|:---:|
-| ![Light 10](assets/screenshots/light_mode/Screenshot_light_mode_10.jpg) | ![Light 12](assets/screenshots/light_mode/Screenshot_light_mode_12.jpg) | ![Light 14](assets/screenshots/light_mode/Screenshot_light_mode_14.jpg) | ![Light 16](assets/screenshots/light_mode/Screenshot_light_mode_16.jpg) |
+| ![Home View](assets/screenshots/light_mode/Screenshot_light_mode_10.jpg) | ![Transaction View](assets/screenshots/light_mode/Screenshot_light_mode_12.jpg) | ![Analytics View](assets/screenshots/light_mode/Screenshot_light_mode_14.jpg) | ![Add New Transaction](assets/screenshots/light_mode/Screenshot_light_mode_16.jpg) |
 
 ### 🌙 Dark Mode
-| | | | |
+| Home View | Transaction View | Analytics View | Add New Transaction |
 |:---:|:---:|:---:|:---:|
-| ![Dark 10](assets/screenshots/dark_mode/Screenshot_dark_mode_10.jpg) | ![Dark 12](assets/screenshots/dark_mode/Screenshot_dark_mode_12.jpg) | ![Dark 14](assets/screenshots/dark_mode/Screenshot_dark_mode_14.jpg) | ![Dark 16](assets/screenshots/dark_mode/Screenshot_dark_mode_16.jpg) |
+| ![Home View](assets/screenshots/dark_mode/Screenshot_dark_mode_10.jpg) | ![Transaction View](assets/screenshots/dark_mode/Screenshot_dark_mode_12.jpg) | ![Analytics View](assets/screenshots/dark_mode/Screenshot_dark_mode_14.jpg) | ![Add New Transaction](assets/screenshots/dark_mode/Screenshot_dark_mode_16.jpg) |
 
 ---
 
