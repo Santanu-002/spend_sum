@@ -66,7 +66,7 @@ Here is a preview of the SpendSum application. You can view all **38 screenshots
 | Database | Drift (SQLite) |
 | Routing | GoRouter |
 | Error Handling | fpdart `Either` |
-| Fonts | Google Fonts (Outfit, Inter) |
+| Fonts | Outfit, Inter |
 
 ---
 
